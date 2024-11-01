@@ -111,7 +111,7 @@ MonoBehaviour:
     horizontal: 20
     vertical: 20
     invertVertical: 0
-    invertHorizontal: 0
+    invertHorizontal: 1
   cameraAngle:
     min: 0
     max: 80
@@ -172,6 +172,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 28e408f3-1c6c-4920-a2da-8e7e924c07d2
     m_ActionName: 'Character/Interact[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: facdf138-9c18-4c62-a023-92ca27fef739
+    m_ActionName: 'Character/Sprint[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Camera
