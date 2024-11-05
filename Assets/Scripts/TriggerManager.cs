@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class TriggerManager : MonoBehaviour
 {
+    public TutorialManager tutorialManager;
+
     void OnTriggerEnter(Collider collider)
     {
-        TutorialManager tutorialManager = collider.GetComponent<TutorialManager>();
-        if (tutorialManager != null) {
-            tutorialManager.DisplayTutorial();
-            collider.transform.position += Vector3.forward * 5f; // move collider forward for next tutorial
+        if(collider.CompareTag("tutorial")) {
+            if (tutorialManager != null) {
+                tutorialManager.DisplayTutorial();
+            }
+            else {
+                Debug.Log("Collider does not have a TutorialManager component.");
+            }
         }
-        else {
-            Debug.Log("Collider does not have a TutorialManager component.");
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        if(collider.CompareTag("tutorial")) {
+            Debug.Log("trigger exitted");
+            Destroy(collider.gameObject);
         }
     }
 }
