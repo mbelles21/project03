@@ -94,20 +94,26 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void Aim(InputAction.CallbackContext context){
-        if(context.started){
-            Debug.Log("Aiming");
-            isAiming = true;
-            anim.SetBool("Aiming", true);
-            thrownGrenade = Instantiate(grenade, spawnPoint.transform.position, Quaternion.identity);
-            thrownGrenade.transform.SetParent(spawnPoint.transform, false);
-        }
-        if(context.canceled){
-            isAiming = false;
-            anim.SetBool("Aiming", false);
-            if(thrownGrenade != null && !isThrowing){
-                GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
-                grenade.DestroyGrenade();
+        // only allow if player has grenades to use (note: logic will need to be changed if adding different throwables)
+        if(Inventory.GrenadeCount > 0) {
+            if(context.started){
+                Debug.Log("Aiming");
+                isAiming = true;
+                anim.SetBool("Aiming", true);
+                thrownGrenade = Instantiate(grenade, spawnPoint.transform.position, Quaternion.identity);
+                thrownGrenade.transform.SetParent(spawnPoint.transform, false);
             }
+            if(context.canceled){
+                isAiming = false;
+                anim.SetBool("Aiming", false);
+                if(thrownGrenade != null && !isThrowing){
+                    GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
+                    grenade.DestroyGrenade();
+                }
+            }
+        }
+        else {
+            Debug.Log("no grenades");
         }
     }
 
