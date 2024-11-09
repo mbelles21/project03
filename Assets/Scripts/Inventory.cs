@@ -10,12 +10,12 @@ public class Inventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GrenadeCount = ammo;
     }
 
     // Update is called once per frame
     void Update()
     {
-        GrenadeCount = ammo;
+        
     }
 }

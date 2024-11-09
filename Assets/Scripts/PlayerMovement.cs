@@ -114,7 +114,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         else {
+            // repeat logic to prevent getting stuck in throwing state
             Debug.Log("no grenades");
+            isAiming = false;
+            anim.SetBool("Aiming", false);
+            if(thrownGrenade != null && !isThrowing){
+                GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
+                grenade.DestroyGrenade();
+            }
         }
     }
 
@@ -151,6 +158,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public IEnumerator Throw(){
+        Inventory.GrenadeCount--; // use a grenade
+        Debug.Log("Grenades: " + Inventory.GrenadeCount);
+
         isThrowing = true;
         GrenadeThrow grenadeScript = thrownGrenade.GetComponent<GrenadeThrow>();
         grenadeScript.TurnOffLine();

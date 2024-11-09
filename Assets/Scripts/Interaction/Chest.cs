@@ -6,6 +6,9 @@ public class Chest : MonoBehaviour, IInteractable
 {
     public string prompt;
     public InteractPromptUI interactPromptUI;
+    public GameObject chestLid;
+
+    private bool isOpen = false; 
 
     void Start()
     {
@@ -16,9 +19,21 @@ public class Chest : MonoBehaviour, IInteractable
 
     public bool Interact(Interactor interactor)
     {
-        Debug.Log("opening chest");
-        // TODO: chest logic
-        return true;
+        if(!isOpen) {
+            Debug.Log("opening chest");
+            isOpen = true;
+            chestLid.transform.Rotate(0f, 0f, -45f);
+            interactPromptUI.Close();
+
+            // TODO: get an item
+
+            return true;
+        }
+        else {
+            Debug.Log("chest already opened");
+            return false; // cannot be opened again
+        }
+        
     }
 
     public bool GetInteractUIState()
@@ -30,7 +45,9 @@ public class Chest : MonoBehaviour, IInteractable
     {
         bool state = interactPromptUI.isDisplayed;
         if(!state) {
-            interactPromptUI.SetUp(prompt);
+            if(!isOpen) {
+                interactPromptUI.SetUp(prompt); // only show prompt if chest closed
+            }
         }
         else {
             interactPromptUI.Close();

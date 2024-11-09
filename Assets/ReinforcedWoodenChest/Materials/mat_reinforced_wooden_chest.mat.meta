@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 430cfca8406e64b40915b0c22cbda0e4
+timeCreated: 1469514147
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 68139
+  packageName: Reinforced Wooden Chest
+  packageVersion: 1.0
+  assetPath: Assets/ReinforcedWoodenChest/Materials/mat_reinforced_wooden_chest.mat
+  uploadId: 129197
