@@ -23,19 +23,31 @@ public class EnemyBehavior : MonoBehaviour
     public bool playerInSightRange, playerInAttackRange;
 
     private void Awake(){
-        player = GameObject.Find("PlayerObj").transform;
+        player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update(){
-        //Check for sight and attack range
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+    // Check for sight and attack range
+    playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+    playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if(!playerInSightRange && !playerInAttackRange) Patroling();
-        if(playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if(playerInSightRange && playerInAttackRange) AttackPlayer();
+    if(!playerInSightRange && !playerInAttackRange) 
+    {
+        Debug.Log("Patrolling");
+        Patroling();
     }
+    if(playerInSightRange && !playerInAttackRange) 
+    {
+        Debug.Log("Chasing Player");
+        ChasePlayer();
+    }
+    if(playerInSightRange && playerInAttackRange) 
+    {
+        Debug.Log("Attacking Player");
+        AttackPlayer();
+    }
+}
     
     private void Patroling(){
         if(!walkPointSet) SearchWalkPoint();
