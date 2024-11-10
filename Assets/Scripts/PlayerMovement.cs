@@ -26,11 +26,15 @@ public class PlayerMovement : MonoBehaviour
     public GameObject spawnPoint;
     public GameObject grenade;
     private GameObject thrownGrenade;
+
+    private Inventory playerInventory;
     
     void Start(){
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         maceSwing = Mace.GetComponent<MaceSwing>();
+
+        playerInventory = GetComponent<Inventory>();
     }
 
     void Update(){
@@ -90,18 +94,32 @@ public class PlayerMovement : MonoBehaviour
     public void Interact(InputAction.CallbackContext context){
         if (context.started) {
             Debug.Log("Interact With Item");
+            GetComponent<Interactor>().InteractWithObject();
         }
     }
 
     public void Aim(InputAction.CallbackContext context){
-        if(context.started){
-            Debug.Log("Aiming");
-            isAiming = true;
-            anim.SetBool("Aiming", true);
-            thrownGrenade = Instantiate(grenade, spawnPoint.transform.position, Quaternion.identity);
-            thrownGrenade.transform.SetParent(spawnPoint.transform, false);
+        // only allow if player has grenades to use (note: logic will need to be changed if adding different throwables)
+        if(Inventory.GrenadeCount > 0) {
+            if(context.started){
+                Debug.Log("Aiming");
+                isAiming = true;
+                anim.SetBool("Aiming", true);
+                thrownGrenade = Instantiate(grenade, spawnPoint.transform.position, Quaternion.identity);
+                thrownGrenade.transform.SetParent(spawnPoint.transform, false);
+            }
+            if(context.canceled){
+                isAiming = false;
+                anim.SetBool("Aiming", false);
+                if(thrownGrenade != null && !isThrowing){
+                    GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
+                    grenade.DestroyGrenade();
+                }
+            }
         }
-        if(context.canceled){
+        else {
+            // repeat logic to prevent getting stuck in throwing state
+            Debug.Log("no grenades");
             isAiming = false;
             anim.SetBool("Aiming", false);
             if(thrownGrenade != null && !isThrowing){
@@ -144,6 +162,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public IEnumerator Throw(){
+        Inventory.GrenadeCount--; // use a grenade
+        playerInventory.UpdateUIText(); // update count text 
+        // Debug.Log("Grenades: " + Inventory.GrenadeCount);
+
         isThrowing = true;
         GrenadeThrow grenadeScript = thrownGrenade.GetComponent<GrenadeThrow>();
         grenadeScript.TurnOffLine();
