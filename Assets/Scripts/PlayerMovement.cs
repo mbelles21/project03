@@ -26,11 +26,15 @@ public class PlayerMovement : MonoBehaviour
     public GameObject spawnPoint;
     public GameObject grenade;
     private GameObject thrownGrenade;
+
+    private Inventory playerInventory;
     
     void Start(){
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         maceSwing = Mace.GetComponent<MaceSwing>();
+
+        playerInventory = GetComponent<Inventory>();
     }
 
     void Update(){
@@ -159,7 +163,8 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Throw(){
         Inventory.GrenadeCount--; // use a grenade
-        Debug.Log("Grenades: " + Inventory.GrenadeCount);
+        playerInventory.UpdateUIText(); // update count text 
+        // Debug.Log("Grenades: " + Inventory.GrenadeCount);
 
         isThrowing = true;
         GrenadeThrow grenadeScript = thrownGrenade.GetComponent<GrenadeThrow>();

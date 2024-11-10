@@ -25,7 +25,15 @@ public class Chest : MonoBehaviour, IInteractable
             chestLid.transform.Rotate(0f, 0f, -45f);
             interactPromptUI.Close();
 
-            // TODO: get an item
+            // TODO: adjust based on item pool
+            Inventory playerInventory = interactor.GetComponent<Inventory>();
+            if(playerInventory != null) {
+                Inventory.GrenadeCount++;
+                playerInventory.UpdateUIText();
+            }
+            else {
+                Debug.Log("no inventory");
+            }
 
             return true;
         }

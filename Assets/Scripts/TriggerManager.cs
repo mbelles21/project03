@@ -5,16 +5,16 @@ using UnityEngine;
 public class TriggerManager : MonoBehaviour
 {
     private LevelManager levelManager;
-    private TutorialManager tutorialManager;
+    private TutorialCollider tutorialCollider;
 
     void Start() 
     {
         levelManager = FindAnyObjectByType<LevelManager>();
-        tutorialManager = FindAnyObjectByType<TutorialManager>();
     }
 
     void OnTriggerEnter(Collider collider)
     {
+        // logic for loading next floor (if necessary)
         if(collider.CompareTag("Finish")) {
             if(levelManager != null) {
                 levelManager.GoDownFloor();
@@ -23,11 +23,12 @@ public class TriggerManager : MonoBehaviour
 
         // logic for tutorials 
         if(collider.CompareTag("tutorial")) {
-            if (tutorialManager != null) {
-                tutorialManager.DisplayTutorial();
+            tutorialCollider = collider.GetComponent<TutorialCollider>();
+            if(tutorialCollider != null) {
+                tutorialCollider.PassTutorialID(); // so TutorialManager doesn't have to be in this script
             }
             else {
-                Debug.Log("tutorial manager not connected");
+                Debug.Log("could not get tutorial collider");
             }
         }
     }
