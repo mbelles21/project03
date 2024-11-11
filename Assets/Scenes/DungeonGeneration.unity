@@ -252,18 +252,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1501879094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6ed3639ea9e74c98b5af7e4c0349ab5, type: 3}
+  m_Script: {fileID: 11500000, guid: 36f75b3b9b43a422b8522d82332e0288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   basicRoomPrefab: {fileID: 5183342727990278175, guid: 06b12df8f40fd4037ad63d350e1d282b, type: 3}
   lShapeRoomPrefab: {fileID: 7319314700448526382, guid: cd0eeff42222f44ab809f58952f3961f, type: 3}
   lShapeFlippedPrefab: {fileID: 3816014532385238468, guid: 1a63531af93354cccafd0063c9695bcc, type: 3}
   stairRoomPrefab: {fileID: 572315910468196001, guid: ff866d476765f4dafad6137eefea7f1a, type: 3}
+  corridorPrefab: {fileID: 0}
   generateOnStart: 1
   minRooms: 5
   maxRooms: 8
   roomSpacing: 18
-  roomScale: {x: 1.5, y: 1.5, z: 1.5}
+  floorHeight: {x: 0, y: -5, z: 0}
+  totalFloors: 3
   generateKey: 103
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
