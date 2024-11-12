@@ -12,7 +12,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 direction;
     private float gravity = -9.81f;
     private float velocity;
-    private float rotationSpeed = 500f;
+    public float rotationSpeed = .8f;
+    public float dodgeSpeed = 8f;
     public Camera cam;
     public GameObject HandHit;
     public GameObject HipSpot;
@@ -26,6 +27,13 @@ public class PlayerMovement : MonoBehaviour
     public GameObject spawnPoint;
     public GameObject grenade;
     private GameObject thrownGrenade;
+    private float height = 2f;
+    private Vector3 center = new Vector3(0, 1, 0);
+    public Vector3 newCenter;
+    public float newHeight;
+    private bool isMoving;
+    public float dodgeDistance = 5f;
+    public float dodgeDuration = 0.2f;
 
     private Inventory playerInventory;
     
@@ -41,11 +49,15 @@ public class PlayerMovement : MonoBehaviour
         ApplyRotation();
         ApplyGravity();
         ApplyMovement();
+        if(thrownGrenade == null && isAiming && !isThrowing && !isSwinging){
+            thrownGrenade = Instantiate(grenade, spawnPoint.transform.position, Quaternion.identity);
+            thrownGrenade.transform.SetParent(spawnPoint.transform, false);
+        }
         if(thrownGrenade != null){
             thrownGrenade.transform.localPosition = new Vector3(0,0,0);
             Vector3 throwDirection = cam.transform.forward;
             GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
-            grenade.ApplyDirection(new Vector3(throwDirection.x-0.1f, throwDirection.y+0.8f, throwDirection.z));
+            grenade.ApplyDirection(new Vector3(throwDirection.x-0.1f, throwDirection.y+0.55f, throwDirection.z));
         }
     }
 
@@ -59,12 +71,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void ApplyRotation(){
-        direction = Quaternion.Euler(0.0f, cam.transform.eulerAngles.y, 0.0f) * new Vector3(input.x, 0.0f, input.y);
-        Vector3 cameraForward = cam.transform.forward;
-        cameraForward.y = 0;
-        cameraForward.Normalize();
-        var targetRotation = Quaternion.LookRotation(cameraForward, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        Quaternion targetRotation = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     private void ApplyMovement(){
@@ -76,11 +84,15 @@ public class PlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context){
         if(context.started){
             anim.SetBool("Walking", true);
+            isMoving = true;
         } else if(context.canceled){
             anim.SetBool("Walking", false);
+            isMoving = false;
         }
         input = context.ReadValue<Vector2>();
         direction = new Vector3(input.x, 0, input.y);
+        direction = direction.x * cam.transform.right.normalized + direction.z * cam.transform.forward.normalized;
+        direction.y = 0f;
     }
 
     public void Sprint(InputAction.CallbackContext context){
@@ -88,6 +100,14 @@ public class PlayerMovement : MonoBehaviour
             movement.isSprinting = true;
         } else if (context.canceled) {
             movement.isSprinting= false;
+        }
+    }
+
+    public void Dodge(InputAction.CallbackContext context){
+        if(context.started || context.performed){
+            if(isMoving){
+                StartCoroutine(PerformDodge());
+            }
         }
     }
 
@@ -177,12 +197,31 @@ public class PlayerMovement : MonoBehaviour
         thrownGrenade = null;
         if(grenadeScript != null){
             Vector3 throwDirection = cam.transform.forward;
-            throwDirection = new Vector3(throwDirection.x, throwDirection.y+2f, throwDirection.z);
+            throwDirection = new Vector3(throwDirection.x, throwDirection.y+1f, throwDirection.z);
             grenadeScript.Throw(throwDirection);
         }
         yield return new WaitForSeconds(.4f);
         isThrowing = false;
     }
+
+    private IEnumerator PerformDodge(){
+        anim.SetTrigger("Roll");
+        yield return new WaitForSeconds(.8f);
+        cc.height = newHeight;
+        cc.center = newCenter;
+        float elapsedTime = 0f;
+        Vector3 dodgeDirection = direction.normalized * dodgeDistance;
+
+        while(elapsedTime < dodgeDuration){
+            cc.Move(dodgeDirection * (Time.deltaTime / dodgeDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        cc.height = height;
+        cc.center = center;
+    }
+
+
 
     private bool IsGrounded() => cc.isGrounded;
 }
