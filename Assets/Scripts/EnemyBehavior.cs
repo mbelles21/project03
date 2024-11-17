@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    public float fieldOfViewAngle = 120f; // Default FOV angle
     public NavMeshAgent agent;
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
@@ -27,26 +28,35 @@ public class EnemyBehavior : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
-    private void Update(){
-    // Check for sight and attack range
-    playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-    playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+    private void Update()
+{
+    // Check if the player is within sight range
+    float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+    playerInSightRange = distanceToPlayer <= sightRange && IsPlayerInFieldOfView();
 
-    if(!playerInSightRange && !playerInAttackRange) 
+    // Check if the player is within attack range
+    playerInAttackRange = distanceToPlayer <= attackRange;
+
+    if (!playerInSightRange && !playerInAttackRange)
     {
-        Debug.Log("Patrolling");
         Patroling();
     }
-    if(playerInSightRange && !playerInAttackRange) 
+    if (playerInSightRange && !playerInAttackRange)
     {
-        Debug.Log("Chasing Player");
         ChasePlayer();
     }
-    if(playerInSightRange && playerInAttackRange) 
+    if (playerInSightRange && playerInAttackRange)
     {
-        Debug.Log("Attacking Player");
         AttackPlayer();
     }
+}
+private bool IsPlayerInFieldOfView()
+{
+    Vector3 directionToPlayer = (player.position - transform.position).normalized;
+    float angleBetweenEnemyAndPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+
+    // Check if the player is within the specified field of view angle
+    return angleBetweenEnemyAndPlayer < fieldOfViewAngle / 2;
 }
     
     private void Patroling(){
