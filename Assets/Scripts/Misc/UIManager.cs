@@ -14,6 +14,11 @@ public class UIManager : MonoBehaviour
     public PlayerMovement player;
     public CinemachineVirtualCamera cinemachineCamera;
 
+    public void Awake(){
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     public void Update(){
         levelTimer += Time.deltaTime;
         UpdateTimerText();
@@ -30,10 +35,14 @@ public class UIManager : MonoBehaviour
             togglePause = !togglePause;
             pauseMenu.SetActive(togglePause);
             if(togglePause){
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 player.enabled = false;
                 cinemachineCamera.enabled = false;
                 Time.timeScale = 0f;
             } else {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 cinemachineCamera.enabled = true;
                 player.enabled = true;
                 Time.timeScale = 1f;
@@ -47,5 +56,7 @@ public class UIManager : MonoBehaviour
         cinemachineCamera.enabled = true;
         player.enabled = true;
         Time.timeScale = 1f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }
