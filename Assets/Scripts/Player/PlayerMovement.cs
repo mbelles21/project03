@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private float velocity;
     public float rotationSpeed = .8f;
     public float dodgeSpeed = 8f;
-    public Camera cam;
+    private Camera cam;
     public GameObject HandHit;
     public GameObject HipSpot;
     public GameObject Mace;
@@ -25,11 +25,11 @@ public class PlayerMovement : MonoBehaviour
     private MaceSwing maceSwing;
     [SerializeField] private Movement movement;
     public GameObject spawnPoint;
+    public List<GameObject> grenadeList = new List<GameObject>();
+    private int currentIndex = 0;
     public GameObject grenade;
     private GameObject thrownGrenade;
     private float height = 2f;
-    private Vector3 center = new Vector3(0, 1, 0);
-    public Vector3 newCenter;
     public float newHeight;
     private bool isMoving;
     public float dodgeDistance = 5f;
@@ -41,8 +41,9 @@ public class PlayerMovement : MonoBehaviour
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         maceSwing = Mace.GetComponent<MaceSwing>();
-
+        cam = Camera.main;
         playerInventory = GetComponent<Inventory>();
+        grenade = grenadeList[currentIndex];
     }
 
     void Update(){
@@ -71,7 +72,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void ApplyRotation(){
-        Quaternion targetRotation = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f);
+        direction = Quaternion.Euler(0.0f, cam.transform.eulerAngles.y, 0.0f) * new Vector3(input.x, 0.0f, input.y);
+        Vector3 cameraForward = cam.transform.forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
+        var targetRotation = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
@@ -91,8 +96,6 @@ public class PlayerMovement : MonoBehaviour
         }
         input = context.ReadValue<Vector2>();
         direction = new Vector3(input.x, 0, input.y);
-        direction = direction.x * cam.transform.right.normalized + direction.z * cam.transform.forward.normalized;
-        direction.y = 0f;
     }
 
     public void Sprint(InputAction.CallbackContext context){
@@ -208,7 +211,6 @@ public class PlayerMovement : MonoBehaviour
         anim.SetTrigger("Roll");
         yield return new WaitForSeconds(.8f);
         cc.height = newHeight;
-        cc.center = newCenter;
         float elapsedTime = 0f;
         Vector3 dodgeDirection = direction.normalized * dodgeDistance;
 
@@ -218,10 +220,14 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
         cc.height = height;
-        cc.center = center;
     }
 
-
+    public void Swap(InputAction.CallbackContext context){
+        if(context.started){
+            currentIndex = (currentIndex + 1) % grenadeList.Count;
+            grenade = grenadeList[currentIndex];
+        }
+    }
 
     private bool IsGrounded() => cc.isGrounded;
 }

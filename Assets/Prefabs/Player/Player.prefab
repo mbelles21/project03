@@ -4320,6 +4320,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: fe5b7df9-e34a-492a-b8bc-26898eb5effb
     m_ActionName: 'Menus/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8248010557914861159}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: Swap
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5b2e82c5-d32c-4793-be34-b392fc004d4d
+    m_ActionName: 'Character/Swap[/Keyboard/1]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Character
@@ -4339,7 +4355,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 4
   dodgeSpeed: 8
-  cam: {fileID: 7537000956972875286}
   HandHit: {fileID: 4409590572188412246}
   HipSpot: {fileID: 8548569622686283683}
   Mace: {fileID: 1579319366953454842}
@@ -4350,8 +4365,10 @@ MonoBehaviour:
     isSprinting: 0
     currentSpeed: 0
   spawnPoint: {fileID: 3766643678553054639}
-  grenade: {fileID: 4232313756544990907, guid: 4fe2f76c01de826408b9b4b908a5f83e, type: 3}
-  newCenter: {x: 0, y: 0.5, z: 0}
+  grenadeList:
+  - {fileID: 4232313756544990907, guid: 4fe2f76c01de826408b9b4b908a5f83e, type: 3}
+  - {fileID: 5188462909036345351, guid: 99a302edd8cbd144f9dcc050e51bc95b, type: 3}
+  grenade: {fileID: 0}
   newHeight: 0.5
   dodgeDistance: 2
   dodgeDuration: 0.5
