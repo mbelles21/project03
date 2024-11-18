@@ -90,4 +90,12 @@ public class EnemyBehavior : MonoBehaviour
     private void ResetAttack(){
         alreadyAttacked = false;
     }
+
+    public void TakeStunDamage(float stun){
+        
+    }
+
+    public void StunEnemy(){
+        
+    }
 }

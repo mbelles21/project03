@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GrenadeThrow : MonoBehaviour
 {
+    public int Type;
+    //1 = flashbang, 2 = stun ball
     public bool AimingCurrently;
     [Range(0, -10)]
     public float customGravity;
@@ -13,8 +15,8 @@ public class GrenadeThrow : MonoBehaviour
     public float stunDamage = 75f;
     private Rigidbody rb;
     private Vector3 throwDir;
-    public Camera cam;
     private GameObject spawnPoint;
+    public GameObject flash;
     private ItemTrajectory itemTrajectory;
     // Start is called before the first frame update
     void Awake() {
@@ -36,7 +38,20 @@ public class GrenadeThrow : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider other){
-        
+        if(other.CompareTag("Player")){
+            return;
+        }
+        if(Type == 1){
+            GameObject flashbang = Instantiate(flash, transform.position, Quaternion.identity);
+            Flash flasher = flashbang.GetComponent<Flash>();
+            flasher.SetDamage(stunDamage);
+        } else {
+            //Stun Enemy AI
+            EnemyBehavior enemy = other.gameObject.GetComponent<EnemyBehavior>();
+            if(enemy != null){
+                enemy.StunEnemy();
+            }
+        }
     }
 
     public void Throw(Vector3 throwDirection){
