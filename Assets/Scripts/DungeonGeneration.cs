@@ -1,375 +1,210 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class DungeonGenerator : MonoBehaviour
 {
     [Header("Room Prefabs")]
-    public GameObject basicRoomPrefab;
-    public GameObject lShapeRoomPrefab;
-    public GameObject lShapeFlippedPrefab;
-    public GameObject stairRoomPrefab;
-    public GameObject corridorPrefab;  // For connecting rooms
+    public GameObject startingRoomPrefab;
+    public GameObject[] normalRoomPrefabs;  // 1x1 rooms
+    public GameObject[] largeRoomPrefabs;   // 2x2 rooms
+    public GameObject[] longRoomPrefabs;    // 1x2 rooms
 
     [Header("Generation Settings")]
-    public bool generateOnStart = true;
-    public int minRooms = 5;
-    public int maxRooms = 8;
+    public int numberOfNormalRooms = 5;
+    public int numberOfLargeRooms = 1;
+    public int numberOfLongRooms = 2;
     public float roomSpacing = 18f;
-    public Vector3 floorHeight = new Vector3(0, -5f, 0);
-    public int totalFloors = 3;
-    public KeyCode generateKey = KeyCode.G;
 
-    private List<List<RoomData>> floors = new List<List<RoomData>>();  // Rooms organized by floor
-    private HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>();
-    private Dictionary<Vector3Int, RoomData> roomGrid = new Dictionary<Vector3Int, RoomData>();
+    private HashSet<Vector2Int> occupiedTiles = new HashSet<Vector2Int>();
+    private List<GameObject> placedRooms = new List<GameObject>();
 
-    private class RoomData
+    void Start()
     {
-        public GameObject instance;
-        public Vector3Int position;
-        public List<DoorPoint> doors = new List<DoorPoint>();
-        public bool isStairRoom;
-        public HashSet<RoomData> connectedRooms = new HashSet<RoomData>();
+        GenerateDungeon();
+    }
 
-        public RoomData(GameObject roomObj, Vector3Int pos, bool isStair = false)
+    void GenerateDungeon()
+    {
+        // Place starting room
+        PlaceRoom(startingRoomPrefab, Vector2Int.zero, RoomSize.Normal);
+
+        // Place large rooms first (since they need more space)
+        for (int i = 0; i < numberOfLargeRooms; i++)
         {
-            instance = roomObj;
-            position = pos;
-            isStairRoom = isStair;
-            doors.AddRange(roomObj.GetComponentsInChildren<DoorPoint>());
+            TryPlaceLargeRoom();
         }
 
-        public bool IsConnectedTo(RoomData other)
+        // Place long rooms
+        for (int i = 0; i < numberOfLongRooms; i++)
         {
-            return connectedRooms.Contains(other);
+            TryPlaceLongRoom();
+        }
+
+        // Fill in with normal rooms
+        for (int i = 0; i < numberOfNormalRooms; i++)
+        {
+            TryPlaceNormalRoom();
         }
     }
 
-    private void Start()
+    enum RoomSize { Normal, Large, Long }
+
+    private bool CanPlaceRoomAt(Vector2Int position, RoomSize size)
     {
-        if (generateOnStart)
+        switch (size)
         {
-            GenerateDungeon();
+            case RoomSize.Normal:
+                return !occupiedTiles.Contains(position);
+
+            case RoomSize.Large:
+                // Check 2x2 area
+                for (int x = 0; x < 2; x++)
+                    for (int y = 0; y < 2; y++)
+                        if (occupiedTiles.Contains(position + new Vector2Int(x, y)))
+                            return false;
+                return true;
+
+            case RoomSize.Long:
+                // Check 1x2 area
+                return !occupiedTiles.Contains(position) &&
+                       !occupiedTiles.Contains(position + Vector2Int.up);
+
+            default:
+                return false;
         }
     }
 
-    private void Update()
+    private void OccupyTiles(Vector2Int position, RoomSize size)
     {
-        if (Input.GetKeyDown(generateKey))
+        switch (size)
         {
-            ClearExistingDungeon();
-            GenerateDungeon();
+            case RoomSize.Normal:
+                occupiedTiles.Add(position);
+                break;
+
+            case RoomSize.Large:
+                for (int x = 0; x < 2; x++)
+                    for (int y = 0; y < 2; y++)
+                        occupiedTiles.Add(position + new Vector2Int(x, y));
+                break;
+
+            case RoomSize.Long:
+                occupiedTiles.Add(position);
+                occupiedTiles.Add(position + Vector2Int.up);
+                break;
         }
     }
 
-    public void GenerateDungeon()
+    private List<Vector2Int> GetValidPositionsForSize(RoomSize size)
     {
-        Debug.Log("Starting dungeon generation...");
+        List<Vector2Int> validPositions = new List<Vector2Int>();
+        HashSet<Vector2Int> checkedPositions = new HashSet<Vector2Int>();
 
-        // Initialize floors
-        for (int i = 0; i < totalFloors; i++)
+        // Get positions adjacent to existing rooms
+        foreach (Vector2Int occupied in occupiedTiles)
         {
-            floors.Add(new List<RoomData>());
+            CheckAdjacentPosition(occupied + Vector2Int.up, size, validPositions, checkedPositions);
+            CheckAdjacentPosition(occupied + Vector2Int.down, size, validPositions, checkedPositions);
+            CheckAdjacentPosition(occupied + Vector2Int.left, size, validPositions, checkedPositions);
+            CheckAdjacentPosition(occupied + Vector2Int.right, size, validPositions, checkedPositions);
         }
 
-        // Generate each floor
-        for (int floor = 0; floor < totalFloors; floor++)
-        {
-            GenerateFloor(floor);
-        }
-
-        // Connect floors with stairs
-        ConnectFloors();
-
-        // Final pass to ensure all doors are either connected or sealed
-        SealUnusedDoors();
-
-        Debug.Log("Dungeon generation complete!");
+        return validPositions;
     }
 
-    private void GenerateFloor(int floorNumber)
+    private void CheckAdjacentPosition(Vector2Int pos, RoomSize size, List<Vector2Int> validPositions, HashSet<Vector2Int> checkedPositions)
     {
-        int roomsToPlace = Random.Range(minRooms, maxRooms + 1);
-        List<RoomData> floorRooms = floors[floorNumber];
+        if (checkedPositions.Contains(pos)) return;
+        checkedPositions.Add(pos);
 
-        // Place first room at center
-        PlaceRoom(Vector3Int.zero + Vector3Int.up * floorNumber);
-
-        // Place remaining rooms
-        for (int i = 1; i < roomsToPlace; i++)
+        if (CanPlaceRoomAt(pos, size) && HasAdjacentRoom(pos))
         {
-            TryPlaceConnectedRoom(floorNumber);
+            validPositions.Add(pos);
         }
-
-        // Ensure rooms are connected
-        ConnectRoomsOnFloor(floorNumber);
     }
 
-    private void TryPlaceConnectedRoom(int floor)
+    private bool HasAdjacentRoom(Vector2Int pos)
     {
-        // Get a random existing room on this floor
-        List<RoomData> floorRooms = floors[floor];
-        if (floorRooms.Count == 0) return;
+        return occupiedTiles.Contains(pos + Vector2Int.up) ||
+               occupiedTiles.Contains(pos + Vector2Int.down) ||
+               occupiedTiles.Contains(pos + Vector2Int.left) ||
+               occupiedTiles.Contains(pos + Vector2Int.right);
+    }
 
-        RoomData sourceRoom = floorRooms[Random.Range(0, floorRooms.Count)];
+    private void TryPlaceNormalRoom()
+    {
+        if (normalRoomPrefabs == null || normalRoomPrefabs.Length == 0) return;
 
-        // Try to place room connected to an available door
-        foreach (DoorPoint door in sourceRoom.doors.Where(d => !d.isConnected))
+        var validPositions = GetValidPositionsForSize(RoomSize.Normal);
+        if (validPositions.Count > 0)
         {
-            Vector3Int neighborPos = GetNeighborPosition(sourceRoom.position, door.direction);
+            Vector2Int pos = validPositions[Random.Range(0, validPositions.Count)];
+            GameObject prefab = normalRoomPrefabs[Random.Range(0, normalRoomPrefabs.Length)];
+            PlaceRoom(prefab, pos, RoomSize.Normal);
+        }
+    }
 
-            if (!occupiedPositions.Contains(neighborPos))
+    private void TryPlaceLargeRoom()
+    {
+        if (largeRoomPrefabs == null || largeRoomPrefabs.Length == 0) return;
+
+        var validPositions = GetValidPositionsForSize(RoomSize.Large);
+        if (validPositions.Count > 0)
+        {
+            Vector2Int pos = validPositions[Random.Range(0, validPositions.Count)];
+            GameObject prefab = largeRoomPrefabs[Random.Range(0, largeRoomPrefabs.Length)];
+            PlaceRoom(prefab, pos, RoomSize.Large);
+        }
+    }
+
+    private void TryPlaceLongRoom()
+    {
+        if (longRoomPrefabs == null || longRoomPrefabs.Length == 0) return;
+
+        var validPositions = GetValidPositionsForSize(RoomSize.Long);
+        if (validPositions.Count > 0)
+        {
+            Vector2Int pos = validPositions[Random.Range(0, validPositions.Count)];
+            GameObject prefab = longRoomPrefabs[Random.Range(0, longRoomPrefabs.Length)];
+            PlaceRoom(prefab, pos, RoomSize.Long);
+        }
+    }
+
+    private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size)
+    {
+        Vector3 worldPos = new Vector3(gridPos.x * roomSpacing, 0, gridPos.y * roomSpacing);
+        GameObject room = Instantiate(prefab, worldPos, Quaternion.identity);
+        room.transform.SetParent(transform);
+        placedRooms.Add(room);
+        OccupyTiles(gridPos, size);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (!Application.isPlaying) return;
+
+        // Draw grid
+        Gizmos.color = Color.gray;
+        float gridSize = roomSpacing;
+        int range = 10;
+
+        for (int x = -range; x <= range; x++)
+        {
+            for (int y = -range; y <= range; y++)
             {
-                // Try to place a room that can connect to this door
-                if (TryPlaceConnectingRoom(neighborPos, door))
+                Vector3 pos = new Vector3(x * gridSize, 0, y * gridSize);
+                if (occupiedTiles.Contains(new Vector2Int(x, y)))
                 {
-                    return;
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawWireCube(pos, new Vector3(gridSize - 0.1f, 0.1f, gridSize - 0.1f));
+                    Gizmos.color = Color.gray;
+                }
+                else
+                {
+                    Gizmos.DrawWireCube(pos, new Vector3(gridSize - 0.1f, 0.1f, gridSize - 0.1f));
                 }
             }
         }
-    }
-
-    private bool TryPlaceConnectingRoom(Vector3Int position, DoorPoint connectingDoor)
-    {
-        // Try different room prefabs
-        GameObject[] prefabs = { basicRoomPrefab, lShapeRoomPrefab, lShapeFlippedPrefab };
-
-        foreach (GameObject prefab in prefabs)
-        {
-            // Try different rotations
-            for (int rotation = 0; rotation < 4; rotation++)
-            {
-                Quaternion rot = Quaternion.Euler(0, rotation * 90, 0);
-                GameObject roomInstance = Instantiate(prefab, GetWorldPosition(position), rot, transform);
-
-                RoomData newRoom = new RoomData(roomInstance, position);
-
-                // Check if any door aligns with the connecting door
-                if (HasCompatibleDoor(newRoom, connectingDoor))
-                {
-                    // Place room
-                    floors[position.y].Add(newRoom);
-                    occupiedPositions.Add(position);
-                    roomGrid[position] = newRoom;
-                    return true;
-                }
-
-                Destroy(roomInstance);
-            }
-        }
-
-        return false;
-    }
-
-    private bool HasCompatibleDoor(RoomData room, DoorPoint targetDoor)
-    {
-        DoorDirection neededDirection = GetOppositeDirection(targetDoor.direction);
-        return room.doors.Any(d => d.direction == neededDirection && !d.isConnected);
-    }
-
-    private void ConnectRoomsOnFloor(int floor)
-    {
-        List<RoomData> floorRooms = floors[floor];
-
-        foreach (RoomData room in floorRooms)
-        {
-            foreach (DoorPoint door in room.doors.Where(d => !d.isConnected))
-            {
-                Vector3Int neighborPos = GetNeighborPosition(room.position, door.direction);
-
-                if (roomGrid.TryGetValue(neighborPos, out RoomData neighbor))
-                {
-                    // Find matching door on neighbor
-                    DoorPoint matchingDoor = neighbor.doors.FirstOrDefault(d =>
-                        d.direction == GetOppositeDirection(door.direction) && !d.isConnected);
-
-                    if (matchingDoor != null)
-                    {
-                        ConnectDoors(door, matchingDoor);
-                        room.connectedRooms.Add(neighbor);
-                        neighbor.connectedRooms.Add(room);
-                    }
-                    else if (!door.isConnected && !door.optional)
-                    {
-                        // Place corridor if needed
-                        PlaceCorridor(room.position, neighborPos);
-                    }
-                }
-            }
-        }
-    }
-
-    private void ConnectFloors()
-    {
-        for (int floor = 0; floor < totalFloors - 1; floor++)
-        {
-            // Place stair room
-            Vector3Int stairPos = GetValidStairPosition(floor);
-            GameObject stairInstance = Instantiate(stairRoomPrefab, GetWorldPosition(stairPos), Quaternion.identity, transform);
-            RoomData stairRoom = new RoomData(stairInstance, stairPos, true);
-
-            floors[floor].Add(stairRoom);
-            occupiedPositions.Add(stairPos);
-            roomGrid[stairPos] = stairRoom;
-
-            // Connect to rooms on both floors
-            ConnectStairRoom(stairRoom, floor);
-        }
-    }
-    private void ConnectDoors(DoorPoint door1, DoorPoint door2)
-    {
-        // Mark both doors as connected
-        door1.isConnected = true;
-        door2.isConnected = true;
-
-        // Open the doorways
-        door1.OpenDoorway();
-        door2.OpenDoorway();
-
-        // You could add additional connection logic here
-        // For example:
-        // - Create a physical connection between rooms
-        // - Add triggers for room transitions
-        // - Update navigation meshes
-    }
-    private bool CanConnectDoors(DoorPoint door1, DoorPoint door2)
-    {
-        // Check if doors are already connected
-        if (door1.isConnected || door2.isConnected)
-            return false;
-
-        // Check if doors face each other
-        if (door1.direction != GetOppositeDirection(door2.direction))
-            return false;
-
-        // Additional validation could be added here
-        return true;
-    }
-    private Vector3Int GetValidStairPosition(int floor)
-    {
-        List<Vector3Int> validPositions = new List<Vector3Int>();
-
-        // Find positions next to existing rooms
-        foreach (RoomData room in floors[floor])
-        {
-            foreach (DoorPoint door in room.doors.Where(d => !d.isConnected))
-            {
-                Vector3Int neighborPos = GetNeighborPosition(room.position, door.direction);
-                if (!occupiedPositions.Contains(neighborPos))
-                {
-                    validPositions.Add(neighborPos);
-                }
-            }
-        }
-
-        return validPositions[Random.Range(0, validPositions.Count)];
-    }
-
-    private void ConnectStairRoom(RoomData stairRoom, int floor)
-    {
-        // Connect to current floor
-        ConnectRoomsOnFloor(floor);
-
-        // Connect to floor above (if exists)
-        if (floor < totalFloors - 1)
-        {
-            Vector3Int upperPos = stairRoom.position + Vector3Int.up;
-            if (!occupiedPositions.Contains(upperPos))
-            {
-                // Place connection point or special room on upper floor
-                PlaceRoom(upperPos);
-            }
-        }
-    }
-
-    private void PlaceCorridor(Vector3Int from, Vector3Int to)
-    {
-        Vector3 corridorPos = GetWorldPosition((from + to) / 2);
-        Vector3 direction = GetWorldPosition(to) - GetWorldPosition(from);
-
-        GameObject corridor = Instantiate(corridorPrefab, corridorPos, Quaternion.LookRotation(direction), transform);
-        // Scale corridor to fit between rooms if needed
-        corridor.transform.localScale = new Vector3(1, 1, direction.magnitude / roomSpacing);
-    }
-
-    private Vector3 GetWorldPosition(Vector3Int gridPos)
-    {
-        return new Vector3(
-            gridPos.x * roomSpacing,
-            gridPos.y * floorHeight.y,
-            gridPos.z * roomSpacing
-        );
-    }
-
-    private Vector3Int GetNeighborPosition(Vector3Int pos, DoorDirection dir)
-    {
-        switch (dir)
-        {
-            case DoorDirection.North: return pos + Vector3Int.forward;
-            case DoorDirection.South: return pos + Vector3Int.back;
-            case DoorDirection.East: return pos + Vector3Int.right;
-            case DoorDirection.West: return pos + Vector3Int.left;
-            default: return pos;
-        }
-    }
-
-    private DoorDirection GetOppositeDirection(DoorDirection dir)
-    {
-        switch (dir)
-        {
-            case DoorDirection.North: return DoorDirection.South;
-            case DoorDirection.South: return DoorDirection.North;
-            case DoorDirection.East: return DoorDirection.West;
-            case DoorDirection.West: return DoorDirection.East;
-            default: return dir;
-        }
-    }
-
-    private void PlaceRoom(Vector3Int position)
-    {
-        GameObject prefab = basicRoomPrefab; // Could randomly select from available prefabs
-        GameObject instance = Instantiate(prefab, GetWorldPosition(position), Quaternion.identity, transform);
-        RoomData room = new RoomData(instance, position);
-
-        floors[position.y].Add(room);
-        occupiedPositions.Add(position);
-        roomGrid[position] = room;
-    }
-
-    private void SealUnusedDoors()
-    {
-        foreach (var floorRooms in floors)
-        {
-            foreach (RoomData room in floorRooms)
-            {
-                foreach (DoorPoint door in room.doors)
-                {
-                    if (!door.isConnected)
-                    {
-                        door.SealDoorway();
-                    }
-                }
-            }
-        }
-    }
-
-    private void ClearExistingDungeon()
-    {
-        foreach (var floorRooms in floors)
-        {
-            foreach (RoomData room in floorRooms)
-            {
-                if (room.instance != null)
-                {
-                    Destroy(room.instance);
-                }
-            }
-        }
-
-        floors.Clear();
-        occupiedPositions.Clear();
-        roomGrid.Clear();
     }
 }
