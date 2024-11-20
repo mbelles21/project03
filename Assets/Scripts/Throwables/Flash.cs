@@ -6,18 +6,14 @@ public class Flash : MonoBehaviour
 {
     private float damage;
 
-    void Start(){
-        Destroy(gameObject, 2f);
-    }
-
     public void SetDamage(float grenade){
         damage = grenade;
     }
 
     public void OnTriggerEnter(Collider other){
-        EnemyStun enemy = other.gameObject.GetComponent<EnemyStun>();
+        EnemyBehavior enemy = other.gameObject.GetComponent<EnemyBehavior>();
         if(enemy != null){
-            enemy.DealStun(damage);
+            enemy.TakeStunDamage(damage);
         }
     }
 }

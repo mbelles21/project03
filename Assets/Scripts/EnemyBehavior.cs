@@ -92,44 +92,6 @@ public class EnemyBehavior : MonoBehaviour
     private void Patrol()
     {
         if (waypoints.Length == 0) return;
-    //States
-    public float sightRange, attackRange;
-    public bool playerInSightRange, playerInAttackRange;
-    private EnemyStun enemyStun;
-
-    private void Awake(){
-        player = GameObject.Find("Player").transform;
-        agent = GetComponent<NavMeshAgent>();
-        enemyStun = GetComponent<EnemyStun>();
-    }
-
-    private void Update()
-{
-    // Check if the player is within sight range
-    float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-    playerInSightRange = distanceToPlayer <= sightRange && IsPlayerInFieldOfView();
-
-    // Check if the player is within attack range
-    playerInAttackRange = distanceToPlayer <= attackRange;
-    if(!enemyStun.isStunned){
-        if (!playerInSightRange && !playerInAttackRange)
-        {
-            Patroling();
-        }
-        if (playerInSightRange && !playerInAttackRange)
-        {
-            ChasePlayer();
-        }
-        if (playerInSightRange && playerInAttackRange)
-        {
-            AttackPlayer();
-        }
-    }
-}
-private bool IsPlayerInFieldOfView()
-{
-    Vector3 directionToPlayer = (player.position - transform.position).normalized;
-    float angleBetweenEnemyAndPlayer = Vector3.Angle(transform.forward, directionToPlayer);
 
         Transform targetWaypoint = waypoints[currentWaypointIndex];
         MoveTowards(targetWaypoint.position, patrolSpeed);
