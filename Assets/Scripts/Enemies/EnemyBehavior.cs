@@ -28,7 +28,6 @@ public class EnemyBehavior : MonoBehaviour
 
     private int currentWaypointIndex = 0;
     private bool isChasing = false;
-    private bool isStunned = false;
 
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
@@ -36,6 +35,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public float obstacleDetectionDistance = 1.5f; // Distance to check for obstacles
     public float jumpForce = 5f; // Force applied to the enemy's Rigidbody for jumping
+    private EnemyStun enemyStun;
 
     private void Start()
     {
@@ -44,11 +44,12 @@ public class EnemyBehavior : MonoBehaviour
 
         rb.useGravity = true; // Ensure gravity is enabled
         rb.freezeRotation = true; // Prevent physics-induced rotation
+        enemyStun = GetComponent<EnemyStun>();
     }
 
     private void Update()
     {
-        if (isStunned)
+        if (enemyStun.isStunned)
         {
             rb.velocity = Vector3.zero; // Stop all movement while stunned
             return;
@@ -159,27 +160,5 @@ public class EnemyBehavior : MonoBehaviour
 
             // Optionally, apply damage directly to the player's health script (if implemented)
         }
-    }
-
-    public void StunEnemy(float duration = 2f)
-    {
-        if (!isStunned)
-        {
-            isStunned = true;
-            StartCoroutine(RecoverFromStun(duration));
-        }
-    }
-
-    public void TakeStunDamage(float damage = 10f, float stunDuration = 2f)
-    {
-    StunEnemy(stunDuration);
-    Debug.Log($"Enemy took {damage} damage and is stunned for {stunDuration} seconds.");
-    }
-
-
-    private IEnumerator RecoverFromStun(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        isStunned = false;
     }
 }
