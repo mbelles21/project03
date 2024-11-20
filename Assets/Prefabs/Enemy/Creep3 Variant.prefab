@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &8876543737373827357
+--- !u!1001 &5432765942324269466
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -86,96 +86,62 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6899769094566875523, guid: f3978c44f7fb36246b698fdea7f77528, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4546533820695152748}
+      addedObject: {fileID: 4906519454522966943}
     - targetCorrespondingSourceObject: {fileID: 6899769094566875523, guid: f3978c44f7fb36246b698fdea7f77528, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1644651397921677166}
-    - targetCorrespondingSourceObject: {fileID: 6899769094566875523, guid: f3978c44f7fb36246b698fdea7f77528, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7734939895977698613}
+      addedObject: {fileID: 9160521789019714964}
   m_SourcePrefab: {fileID: 100100000, guid: f3978c44f7fb36246b698fdea7f77528, type: 3}
---- !u!1 &2661405349604634782 stripped
+--- !u!1 &1487851130866401305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6899769094566875523, guid: f3978c44f7fb36246b698fdea7f77528, type: 3}
-  m_PrefabInstance: {fileID: 8876543737373827357}
+  m_PrefabInstance: {fileID: 5432765942324269466}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4546533820695152748
+--- !u!114 &4906519454522966943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661405349604634782}
+  m_GameObject: {fileID: 1487851130866401305}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 849b7fc563400a54b901caeeffcdaeda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  patrolSpeed: 5
-  chaseSpeed: 5
-  detectionRange: 5
-  chaseStopRange: 5
-  attackRange: 1
-  attackCooldown: 5
-  projectilePrefab: {fileID: 0}
-  projectileSpawnPoint: {fileID: 0}
-  meleeAttackRange: 1.5
-  meleeAttackCooldown: 1
-  meleeDamage: 20
+  agent: {fileID: 9160521789019714964}
   player: {fileID: 0}
-  obstacleDetectionDistance: 1.5
-  jumpForce: 5
---- !u!54 &1644651397921677166
-Rigidbody:
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 1
+  walkPoint: {x: 0, y: 0, z: 0}
+  walkPointRange: 50
+  timeBetweenAttacks: 0
+  sightRange: 50
+  attackRange: 0
+  playerInSightRange: 0
+  playerInAttackRange: 0
+--- !u!195 &9160521789019714964
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661405349604634782}
-  serializedVersion: 4
-  m_Mass: 60
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 32
-  m_CollisionDetection: 2
---- !u!136 &7734939895977698613
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2661405349604634782}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_GameObject: {fileID: 1487851130866401305}
   m_Enabled: 1
-  serializedVersion: 2
+  m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Height: 2.25
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.15, z: 0}
+  m_Speed: 10
+  m_Acceleration: 10
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
