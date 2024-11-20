@@ -19,64 +19,44 @@ public class EnemyBehavior : MonoBehaviour
     public float timeBetweenAttacks;
     bool alreadyAttacked;
 
-    public float obstacleDetectionDistance = 1.5f; // Distance to check for obstacles
-    public float jumpForce = 5f; // Force applied to the enemy's Rigidbody for jumping
+    //States
+    public float sightRange, attackRange;
+    public bool playerInSightRange, playerInAttackRange;
+    private EnemyStun enemyStun;
 
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
-
-        rb.useGravity = true; // Ensure gravity is enabled
-        rb.freezeRotation = true; // Prevent physics-induced rotation
+    private void Awake(){
+        player = GameObject.Find("Player").transform;
+        agent = GetComponent<NavMeshAgent>();
+        enemyStun = GetComponent<EnemyStun>();
     }
 
     private void Update()
-    {
-        if (isStunned)
-        {
-            rb.velocity = Vector3.zero; // Stop all movement while stunned
-            return;
-        }
+{
+    // Check if the player is within sight range
+    float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+    playerInSightRange = distanceToPlayer <= sightRange && IsPlayerInFieldOfView();
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        if (enemyType == EnemyType.Ranged && distanceToPlayer <= attackRange && distanceToPlayer > detectionRange)
+    // Check if the player is within attack range
+    playerInAttackRange = distanceToPlayer <= attackRange;
+    if(!enemyStun.isStunned){
+        if (!playerInSightRange && !playerInAttackRange)
         {
-            // Ranged enemy attacks if within attack range but outside detection range
-            AttackRanged();
+            Patroling();
         }
-        else if (enemyType == EnemyType.Melee && distanceToPlayer <= meleeAttackRange)
-        {
-            // Melee enemy attacks if within melee range
-            AttackMelee();
-        }
-        else if (distanceToPlayer <= detectionRange)
-        {
-            // Start chasing the player
-            isChasing = true;
-        }
-        else if (isChasing && distanceToPlayer > chaseStopRange)
-        {
-            // Stop chasing if the player is out of range
-            isChasing = false;
-        }
-
-        if (isChasing)
+        if (playerInSightRange && !playerInAttackRange)
         {
             ChasePlayer();
         }
-        else if (distanceToPlayer > attackRange)
+        if (playerInSightRange && playerInAttackRange)
         {
-            Patrol();
+            AttackPlayer();
         }
-
-        RotateTowards(player.position); // Always face the player
     }
-
-    private void Patrol()
-    {
-        if (waypoints.Length == 0) return;
+}
+private bool IsPlayerInFieldOfView()
+{
+    Vector3 directionToPlayer = (player.position - transform.position).normalized;
+    float angleBetweenEnemyAndPlayer = Vector3.Angle(transform.forward, directionToPlayer);
 
     // Check if the player is within the specified field of view angle
     return angleBetweenEnemyAndPlayer < fieldOfViewAngle / 2;
