@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4161571640560337105
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.5463799
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.327587
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499778527496504266, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7022166616792728551, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_Name
+      value: Crab_Red Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 9075331889804021858, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_Mass
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9075331889804021858, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      propertyPath: m_Constraints
+      value: 32
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7022166616792728551, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 6877782339962834306}
+  m_SourcePrefab: {fileID: 100100000, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+--- !u!1 &6391557911922459446 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7022166616792728551, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+  m_PrefabInstance: {fileID: 4161571640560337105}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6877782339962834306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6391557911922459446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 849b7fc563400a54b901caeeffcdaeda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 1
+  waypoints: []
+  patrolSpeed: 0
+  chaseSpeed: 0
+  detectionRange: 10
+  chaseStopRange: 0
+  attackRange: 20
+  attackCooldown: 5
+  projectilePrefab: {fileID: 4232294174898533401, guid: ed5d6e8e70b508c4c95c2833fac62fe7, type: 3}
+  projectileSpawnPoint: {fileID: 8365258062129730745}
+  meleeAttackRange: 0
+  meleeAttackCooldown: 1
+  meleeDamage: 20
+  player: {fileID: 0}
+  obstacleDetectionDistance: 1.5
+  jumpForce: 5
+--- !u!4 &8365258062129730745 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5609095593088996456, guid: 1c252196ec3e418459263e024db9516d, type: 3}
+  m_PrefabInstance: {fileID: 4161571640560337105}
+  m_PrefabAsset: {fileID: 0}

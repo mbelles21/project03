@@ -71,3 +71,187 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .DS_Store
+Assets/Vampire/Vampire.unity
+Assets/Vampire/Vampire Animator Controller.controller.meta
+Assets/Vampire/Vampire Animator Controller.controller
+Assets/Vampire/Textures/T_Vampire_Wings_Occlusion_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Wings_Occlusion_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Wings_Normal_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Wings_Normal_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Wings_Metalness+Gloss_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Wings_Metalness+Gloss_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Wings_Albedo_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Wings_Albedo_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Occlusion_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Occlusion_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Normal_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Normal_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Metalness+Gloss_Skin3.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Metalness+Gloss_Skin3.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Metalness+Gloss_Skin2.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Metalness+Gloss_Skin2.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Metalness+Gloss_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Metalness+Gloss_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Albedo_Skin3.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Albedo_Skin3.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Albedo_Skin2.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Albedo_Skin2.tga
+Assets/Vampire/Textures/T_Vampire_Horns_Albedo_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Horns_Albedo_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Hair_Normal.tga.meta
+Assets/Vampire/Textures/T_Vampire_Hair_Normal.tga
+Assets/Vampire/Textures/T_Vampire_Hair_Color+Alpha.tga.meta
+Assets/Vampire/Textures/T_Vampire_Hair_Color+Alpha.tga
+Assets/Vampire/Textures/T_Vampire_Hair_AO.tga.meta
+Assets/Vampire/Textures/T_Vampire_Hair_AO.tga
+Assets/Vampire/Textures/T_Vampire_Eyes_Rougness.tga.meta
+Assets/Vampire/Textures/T_Vampire_Eyes_Rougness.tga
+Assets/Vampire/Textures/T_Vampire_Eyes_Normal.tga.meta
+Assets/Vampire/Textures/T_Vampire_Eyes_Normal.tga
+Assets/Vampire/Textures/T_Vampire_Eyes_Emissive.tga.meta
+Assets/Vampire/Textures/T_Vampire_Eyes_Emissive.tga
+Assets/Vampire/Textures/T_Vampire_Eyes_Albedo.tga.meta
+Assets/Vampire/Textures/T_Vampire_Eyes_Albedo.tga
+Assets/Vampire/Textures/T_Vampire_Body_Occlusion_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Occlusion_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Body_Normal_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Normal_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Body_Metalness+Gloss_Skin3.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Metalness+Gloss_Skin3.tga
+Assets/Vampire/Textures/T_Vampire_Body_Metalness+Gloss_Skin2.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Metalness+Gloss_Skin2.tga
+Assets/Vampire/Textures/T_Vampire_Body_Metalness+Gloss_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Metalness+Gloss_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Body_Albedo_Skin3.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Albedo_Skin3.tga
+Assets/Vampire/Textures/T_Vampire_Body_Albedo_Skin2.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Albedo_Skin2.tga
+Assets/Vampire/Textures/T_Vampire_Body_Albedo_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Body_Albedo_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Occlusion_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Occlusion_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Normal_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Normal_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Metalness+Gloss_Skin3.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Metalness+Gloss_Skin3.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Metalness+Gloss_Skin2.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Metalness+Gloss_Skin2.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Metalness+Gloss_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Metalness+Gloss_Skin1.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Albedo_Skin3.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Albedo_Skin3.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Albedo_Skin2.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Albedo_Skin2.tga
+Assets/Vampire/Textures/T_Vampire_Armor_Albedo_Skin1.tga.meta
+Assets/Vampire/Textures/T_Vampire_Armor_Albedo_Skin1.tga
+Assets/Vampire/Textures.meta
+Assets/Vampire/Prefab/Vampyre Skin3 Prefab.prefab.meta
+Assets/Vampire/Prefab/Vampyre Skin3 Prefab.prefab
+Assets/Vampire/Prefab/Vampyre Skin2 Prefab.prefab.meta
+Assets/Vampire/Prefab/Vampyre Skin2 Prefab.prefab
+Assets/Vampire/Prefab/Vampyre Skin1 Prefab.prefab.meta
+Assets/Vampire/Prefab/Vampyre Skin1 Prefab.prefab
+Assets/Vampire/Prefab.meta
+Assets/Vampire/Mesh/Vampyre.fbx.meta
+Assets/Vampire/Mesh/Vampyre.fbx
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Wings.mat.meta
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Wings.mat
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Horns.mat.meta
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Horns.mat
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Eye.mat.meta
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Eye.mat
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Body.mat.meta
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Body.mat
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Armor.mat.meta
+Assets/Vampire/Mesh/Materials/Mat_Vampyr_Armor.mat
+Assets/Vampire/Mesh/Materials.meta
+Assets/Vampire/Mesh.meta
+Assets/Vampire/Materials/Mat_Vampyr_Wings_Skin1.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Wings_Skin1.mat
+Assets/Vampire/Materials/Mat_Vampyr_Horns_Skin3.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Horns_Skin3.mat
+Assets/Vampire/Materials/Mat_Vampyr_Horns_Skin2.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Horns_Skin2.mat
+Assets/Vampire/Materials/Mat_Vampyr_Horns_Skin1.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Horns_Skin1.mat
+Assets/Vampire/Materials/Mat_Vampyr_Hair.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Hair.mat
+Assets/Vampire/Materials/Mat_Vampyr_Glass.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Glass.mat
+Assets/Vampire/Materials/Mat_Vampyr_Eye_Skin2.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Eye_Skin2.mat
+Assets/Vampire/Materials/Mat_Vampyr_Eye_Skin1.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Eye_Skin1.mat
+Assets/Vampire/Materials/Mat_Vampyr_Body_Skin3.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Body_Skin3.mat
+Assets/Vampire/Materials/Mat_Vampyr_Body_Skin2.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Body_Skin2.mat
+Assets/Vampire/Materials/Mat_Vampyr_Body_Skin1.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Body_Skin1.mat
+Assets/Vampire/Materials/Mat_Vampyr_Armor_Skin3.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Armor_Skin3.mat
+Assets/Vampire/Materials/Mat_Vampyr_Armor_Skin2.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Armor_Skin2.mat
+Assets/Vampire/Materials/Mat_Vampyr_Armor_Skin1.mat.meta
+Assets/Vampire/Materials/Mat_Vampyr_Armor_Skin1.mat
+Assets/Vampire/Materials.meta
+Assets/Vampire/Animations/Vampire@Walking_R.fbx.meta
+Assets/Vampire/Animations/Vampire@Walking_R.fbx
+Assets/Vampire/Animations/Vampire@Walking_L.fbx.meta
+Assets/Vampire/Animations/Vampire@Walking_L.fbx
+Assets/Vampire/Animations/Vampire@Walking.fbx.meta
+Assets/Vampire/Animations/Vampire@Walking.fbx
+Assets/Vampire/Animations/Vampire@Walking Back.fbx.meta
+Assets/Vampire/Animations/Vampire@Walking Back.fbx
+Assets/Vampire/Animations/Vampire@Turn 180.fbx.meta
+Assets/Vampire/Animations/Vampire@Turn 180.fbx
+Assets/Vampire/Animations/Vampire@Run.fbx.meta
+Assets/Vampire/Animations/Vampire@Run.fbx
+Assets/Vampire/Animations/Vampire@Jump.fbx.meta
+Assets/Vampire/Animations/Vampire@Jump.fbx
+Assets/Vampire/Animations/Vampire@Iddle 2.fbx.meta
+Assets/Vampire/Animations/Vampire@Iddle 2.fbx
+Assets/Vampire/Animations/Vampire@Iddle 1.fbx.meta
+Assets/Vampire/Animations/Vampire@Iddle 1.fbx
+Assets/Vampire/Animations/Vampire@Gethit 2.fbx.meta
+Assets/Vampire/Animations/Vampire@Gethit 2.fbx
+Assets/Vampire/Animations/Vampire@Gethit 1.fbx.meta
+Assets/Vampire/Animations/Vampire@Gethit 1.fbx
+Assets/Vampire/Animations/Vampire@Flying_R.fbx.meta
+Assets/Vampire/Animations/Vampire@Flying_R.fbx
+Assets/Vampire/Animations/Vampire@Flying_L.fbx.meta
+Assets/Vampire/Animations/Vampire@Flying_L.fbx
+Assets/Vampire/Animations/Vampire@Flying UP.fbx.meta
+Assets/Vampire/Animations/Vampire@Flying UP.fbx
+Assets/Vampire/Animations/Vampire@Flying DN.fbx.meta
+Assets/Vampire/Animations/Vampire@Flying DN.fbx
+Assets/Vampire/Animations/Vampire@Flying Back.fbx.meta
+Assets/Vampire/Animations/Vampire@Flying Back.fbx
+Assets/Vampire/Animations/Vampire@Flight.fbx.meta
+Assets/Vampire/Animations/Vampire@Flight.fbx
+Assets/Vampire/Animations/Vampire@Flight 3.fbx.meta
+Assets/Vampire/Animations/Vampire@Flight 3.fbx
+Assets/Vampire/Animations/Vampire@Flight 2.fbx.meta
+Assets/Vampire/Animations/Vampire@Flight 2.fbx
+Assets/Vampire/Animations/Vampire@Dodge.fbx.meta
+Assets/Vampire/Animations/Vampire@Dodge.fbx
+Assets/Vampire/Animations/Vampire@Dead 3.fbx.meta
+Assets/Vampire/Animations/Vampire@Dead 3.fbx
+Assets/Vampire/Animations/Vampire@Dead 2.fbx.meta
+Assets/Vampire/Animations/Vampire@Dead 2.fbx
+Assets/Vampire/Animations/Vampire@Dead 1.fbx.meta
+Assets/Vampire/Animations/Vampire@Dead 1.fbx
+Assets/Vampire/Animations/Vampire@Crouched Walking.fbx.meta
+Assets/Vampire/Animations/Vampire@Crouched Walking.fbx
+Assets/Vampire/Animations/Vampire@Attack 5.fbx.meta
+Assets/Vampire/Animations/Vampire@Attack 5.fbx
+Assets/Vampire/Animations/Vampire@Attack 4.fbx.meta
+Assets/Vampire/Animations/Vampire@Attack 4.fbx
+Assets/Vampire/Animations/Vampire@Attack 3.fbx.meta
+Assets/Vampire/Animations/Vampire@Attack 3.fbx
+Assets/Vampire/Animations/Vampire@Attack 2.fbx.meta
+Assets/Vampire/Animations/Vampire@Attack 2.fbx
+Assets/Vampire/Animations/Vampire@Attack 1.fbx.meta
+Assets/Vampire/Animations/Vampire@Attack 1.fbx
+Assets/Vampire/Animations.meta
+Assets/Vampire.meta
