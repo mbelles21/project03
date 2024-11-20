@@ -18,7 +18,6 @@ public class GrenadeThrow : MonoBehaviour
     private GameObject spawnPoint;
     public GameObject flash;
     private ItemTrajectory itemTrajectory;
-    private bool hasTriggered = false;
     // Start is called before the first frame update
     void Awake() {
         rb = GetComponent<Rigidbody>();
@@ -39,32 +38,20 @@ public class GrenadeThrow : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider other){
-        if (hasTriggered) return;
-        if (other.CompareTag("Player"))
-        {
+        if(other.CompareTag("Player")){
             return;
         }
-        hasTriggered = true;
-        
-        if (Type == 1)
-        {
+        if(Type == 1){
             GameObject flashbang = Instantiate(flash, transform.position, Quaternion.identity);
             Flash flasher = flashbang.GetComponent<Flash>();
-            if(flasher != null){
-                flasher.SetDamage(stunDamage);
-            }
-        }
-        else
-        {
-            // Stun Enemy AI
-            EnemyStun enemy = other.gameObject.GetComponent<EnemyStun>();
-            if (enemy != null)
-            {
+            flasher.SetDamage(stunDamage);
+        } else {
+            //Stun Enemy AI
+            EnemyBehavior enemy = other.gameObject.GetComponent<EnemyBehavior>();
+            if(enemy != null){
                 enemy.StunEnemy();
             }
         }
-
-        Destroy(gameObject);
     }
 
     public void Throw(Vector3 throwDirection){
