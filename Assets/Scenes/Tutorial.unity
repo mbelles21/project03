@@ -1181,8 +1181,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7156284513511206603, guid: 5a22fbfbf53158f46be3844d3dc66b38, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 316608762}
   m_SourcePrefab: {fileID: 100100000, guid: 5a22fbfbf53158f46be3844d3dc66b38, type: 3}
+--- !u!1 &316608761 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7156284513511206603, guid: 5a22fbfbf53158f46be3844d3dc66b38, type: 3}
+  m_PrefabInstance: {fileID: 316608760}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &316608762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316608761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43edf44f7ab59b4fbbaa988d19ee810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunLength: 5
+  maxStun: 100
+  currStun: 0
+  isStunned: 0
 --- !u!1001 &340681745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5566,8 +5590,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5853061875599692551, guid: ee7653e1c01f4fc4692599f2119bcb98, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1912587031}
   m_SourcePrefab: {fileID: 100100000, guid: ee7653e1c01f4fc4692599f2119bcb98, type: 3}
+--- !u!1 &1912587030 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5853061875599692551, guid: ee7653e1c01f4fc4692599f2119bcb98, type: 3}
+  m_PrefabInstance: {fileID: 1912587029}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1912587031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912587030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43edf44f7ab59b4fbbaa988d19ee810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunLength: 5
+  maxStun: 100
+  currStun: 0
+  isStunned: 0
 --- !u!1 &2003520627
 GameObject:
   m_ObjectHideFlags: 0
@@ -6126,8 +6174,11 @@ SceneRoots:
   - {fileID: 599766952}
   - {fileID: 340681745}
   - {fileID: 1318858016}
-  - {fileID: 3375828497014129161}
+  - {fileID: 316608760}
+  - {fileID: 128644106}
+  - {fileID: 1912587029}
   - {fileID: 2058714992}
+  - {fileID: 3375828497014129161}
   - {fileID: 1484878572}
   - {fileID: 6244549905362602627}
   - {fileID: 2003520628}
@@ -6136,6 +6187,3 @@ SceneRoots:
   - {fileID: 393135338}
   - {fileID: 1425619967}
   - {fileID: 1448714821}
-  - {fileID: 316608760}
-  - {fileID: 128644106}
-  - {fileID: 1912587029}

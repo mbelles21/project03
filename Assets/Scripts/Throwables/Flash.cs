@@ -15,9 +15,9 @@ public class Flash : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider other){
-        EnemyBehavior enemy = other.gameObject.GetComponent<EnemyBehavior>();
+        EnemyStun enemy = other.gameObject.GetComponent<EnemyStun>();
         if(enemy != null){
-            enemy.TakeStunDamage(damage);
+            enemy.DealStun(damage);
         }
     }
 }

@@ -22,10 +22,12 @@ public class EnemyBehavior : MonoBehaviour
     //States
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
+    private EnemyStun enemyStun;
 
     private void Awake(){
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        enemyStun = GetComponent<EnemyStun>();
     }
 
     private void Update()
@@ -36,18 +38,19 @@ public class EnemyBehavior : MonoBehaviour
 
     // Check if the player is within attack range
     playerInAttackRange = distanceToPlayer <= attackRange;
-
-    if (!playerInSightRange && !playerInAttackRange)
-    {
-        Patroling();
-    }
-    if (playerInSightRange && !playerInAttackRange)
-    {
-        ChasePlayer();
-    }
-    if (playerInSightRange && playerInAttackRange)
-    {
-        AttackPlayer();
+    if(!enemyStun.isStunned){
+        if (!playerInSightRange && !playerInAttackRange)
+        {
+            Patroling();
+        }
+        if (playerInSightRange && !playerInAttackRange)
+        {
+            ChasePlayer();
+        }
+        if (playerInSightRange && playerInAttackRange)
+        {
+            AttackPlayer();
+        }
     }
 }
 private bool IsPlayerInFieldOfView()
