@@ -10,7 +10,11 @@ public class MaceSwing : MonoBehaviour
 
     public void OnTriggerEnter(Collider other){
         if(isActive){
-            
+            EnemyStun enemy = other.gameObject.GetComponent<EnemyStun>();
+            if (enemy != null)
+            {
+                enemy.DealStun(stunDamage);
+            }
         }
     }
 }

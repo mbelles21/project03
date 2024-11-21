@@ -57,7 +57,7 @@ public class GrenadeThrow : MonoBehaviour
         else
         {
             // Stun Enemy AI
-            EnemyBehavior enemy = other.gameObject.GetComponent<EnemyBehavior>();
+            EnemyStun enemy = other.gameObject.GetComponent<EnemyStun>();
             if (enemy != null)
             {
                 enemy.StunEnemy();
