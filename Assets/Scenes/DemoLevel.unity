@@ -4205,6 +4205,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creep3 Variant (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8308701776496192787, guid: 19e7a67704dfa054291da823b3b362a3, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 340681746}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5178,6 +5182,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3389931842251212555, guid: 70a0038d63871e34d907a965e60e2572, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 340681746}
     - target: {fileID: 8347136970724159149, guid: 70a0038d63871e34d907a965e60e2572, type: 3}
       propertyPath: m_Name
       value: Crab_Red Variant
@@ -5381,6 +5389,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creep3 Variant (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8308701776496192787, guid: 19e7a67704dfa054291da823b3b362a3, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 340681746}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
