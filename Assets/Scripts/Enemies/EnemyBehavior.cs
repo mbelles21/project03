@@ -36,6 +36,7 @@ public class EnemyBehavior : MonoBehaviour
     public float obstacleDetectionDistance = 1.5f; // Distance to check for obstacles
     public float jumpForce = 5f; // Force applied to the enemy's Rigidbody for jumping
     private EnemyStun enemyStun;
+    private Animator anim;
 
     private void Start()
     {
@@ -45,6 +46,10 @@ public class EnemyBehavior : MonoBehaviour
         rb.useGravity = true; // Ensure gravity is enabled
         rb.freezeRotation = true; // Prevent physics-induced rotation
         enemyStun = GetComponent<EnemyStun>();
+        anim = GetComponent<Animator>();
+        if(anim == null){
+            anim = GetComponentInChildren<Animator>();
+        }
     }
 
     private void Update()
@@ -96,6 +101,7 @@ public class EnemyBehavior : MonoBehaviour
 
         Transform targetWaypoint = waypoints[currentWaypointIndex];
         MoveTowards(targetWaypoint.position, patrolSpeed);
+        RotateTowards(targetWaypoint.position);
 
         if (Vector3.Distance(transform.position, targetWaypoint.position) < 2f)
         {
@@ -110,6 +116,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void MoveTowards(Vector3 target, float speed)
     {
+        anim.SetBool("Walk", true);
         Vector3 direction = (target - transform.position).normalized;
         Vector3 velocity = direction * speed;
         velocity.y = rb.velocity.y; // Retain vertical velocity for gravity
@@ -151,6 +158,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void AttackMelee()
     {
+        anim.SetTrigger("Attack");
         if (Time.time - lastAttackTime >= meleeAttackCooldown)
         {
             lastAttackTime = Time.time;

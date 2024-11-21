@@ -39,6 +39,9 @@ public class GrenadeThrow : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider other){
+        if(AimingCurrently){
+            return;
+        }
         if (hasTriggered) return;
         if (other.CompareTag("Player"))
         {

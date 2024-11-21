@@ -205,6 +205,12 @@ public class PlayerMovement : MonoBehaviour
         }
         yield return new WaitForSeconds(.4f);
         isThrowing = false;
+        isAiming = false;
+        anim.SetBool("Aiming", false);
+        if(thrownGrenade != null && !isThrowing){
+            GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
+            grenade.DestroyGrenade();
+        }
     }
 
     private IEnumerator PerformDodge(){
@@ -230,6 +236,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private bool IsGrounded() => cc.isGrounded;
+
+    public bool GetAiming(){
+        return isAiming;
+    }
 }
 
 [Serializable]
