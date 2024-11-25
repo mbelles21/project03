@@ -10,11 +10,6 @@ public class Chest : MonoBehaviour, IInteractable
 
     private bool isOpen = false; 
 
-    void Start()
-    {
-        interactPromptUI = GetComponentInChildren<InteractPromptUI>();
-    }
-
     public string InteractPrompt => prompt; // return the prompt
 
     public bool Interact(Interactor interactor)
