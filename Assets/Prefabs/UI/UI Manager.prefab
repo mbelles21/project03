@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2021782704945029153
 RectTransform:
   m_ObjectHideFlags: 0
@@ -453,6 +453,7 @@ GameObject:
   - component: {fileID: 3666866061401739135}
   - component: {fileID: 3070377923333023883}
   - component: {fileID: 1055617334743030339}
+  - component: {fileID: 1318971589520034466}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -572,6 +573,18 @@ MonoBehaviour:
   pauseMenu: {fileID: 5453359662671864694}
   player: {fileID: 0}
   cinemachineCamera: {fileID: 0}
+--- !u!114 &1318971589520034466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358127269929805466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bcef2cd6c551c4fa0c6c34d972a2aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2397596273959287989
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,7 +944,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1970705339538577565}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1318971589520034466}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: GoToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5253239640112944495
 GameObject:
   m_ObjectHideFlags: 0

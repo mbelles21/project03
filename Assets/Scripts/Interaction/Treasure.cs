@@ -19,13 +19,16 @@ public class Treasure : MonoBehaviour, IInteractable
             isTaken = true;
             treasureObj.SetActive(false);
             interactPromptUI.Close();
+
+            MenuManager menuManager = FindAnyObjectByType<MenuManager>(); 
+            menuManager.GoToMainMenu(); // TODO: change for more specific stuff
+
             return true;
         }
         else {
             Debug.Log("no more treasure");
             return false; // cannot be opened again
         }
-        
     }
 
     public bool GetInteractUIState()
