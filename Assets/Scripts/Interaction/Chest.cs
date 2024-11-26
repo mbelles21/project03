@@ -7,6 +7,7 @@ public class Chest : MonoBehaviour, IInteractable
     public string prompt;
     public InteractPromptUI interactPromptUI;
     public GameObject chestLid;
+    public GameObject itemPopupUI;
 
     private bool isOpen = false; 
 
@@ -29,6 +30,8 @@ public class Chest : MonoBehaviour, IInteractable
             else {
                 Debug.Log("no inventory");
             }
+
+            itemPopupUI.SetActive(true);
 
             return true;
         }
