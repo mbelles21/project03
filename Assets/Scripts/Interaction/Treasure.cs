@@ -20,8 +20,8 @@ public class Treasure : MonoBehaviour, IInteractable
             treasureObj.SetActive(false);
             interactPromptUI.Close();
 
-            MenuManager menuManager = FindAnyObjectByType<MenuManager>(); 
-            menuManager.GoToMainMenu(); // TODO: change for more specific stuff
+            UIManager uiManager = FindAnyObjectByType<UIManager>();
+            uiManager.GameCleared(); // in UIManager bc that's where timer logic is
 
             return true;
         }
