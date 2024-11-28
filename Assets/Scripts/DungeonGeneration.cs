@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
+    public GameObject player;
+    
     [Header("Room Prefabs")]
     public GameObject startingRoomPrefab;
     public GameObject stairRoomPrefab;
@@ -34,9 +36,13 @@ public class DungeonGenerator : MonoBehaviour
     private List<GameObject> generatedRooms = new List<GameObject>();
     private Vector2Int startRoomPosition = Vector2Int.zero;
 
+    private EnemySpawner enemySpawner;
+
 
     void Start()
     {
+        enemySpawner = GetComponent<EnemySpawner>();
+
         if (stairRoomPrefab == null)
         {
             Debug.LogError("Stair Room Prefab is not assigned!");
@@ -87,8 +93,9 @@ public class DungeonGenerator : MonoBehaviour
             occupiedTiles.Clear();
 
             // Place starting room
-            PlaceRoom(startingRoomPrefab, Vector2Int.zero, RoomSize.Normal);
+            PlaceRoom(startingRoomPrefab, Vector2Int.zero, RoomSize.Normal, enemiesAllowed: false);
             startRoomPosition = Vector2Int.zero;
+            player.transform.position = new Vector3(0, -5, 0); // move player to starting room
             yield return null;
 
             // Place large rooms first
@@ -323,13 +330,13 @@ public class DungeonGenerator : MonoBehaviour
         {
             Vector2Int pos = validPositions[Random.Range(0, validPositions.Count)];
             Debug.Log($"Placing stair room at position: {pos}");
-            PlaceRoom(stairRoomPrefab, pos, RoomSize.Normal);
+            PlaceRoom(stairRoomPrefab, pos, RoomSize.Normal, enemiesAllowed: false);
             return true;
         }
         return false;
     }
 
-    private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size)
+    private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size, bool enemiesAllowed = true)
     {
         Vector3 worldPos = new Vector3(gridPos.x * roomSpacing, 0, gridPos.y * roomSpacing);
         GameObject room = Instantiate(prefab, worldPos, Quaternion.identity);
@@ -346,7 +353,13 @@ public class DungeonGenerator : MonoBehaviour
                 roomBehaviour.ShowWall(i);
             }
         }
+
+        // start logic to spawn enemies
+        if(enemySpawner != null && enemiesAllowed) {
+            enemySpawner.SpawnEnemy(worldPos);
+        }        
     }
+
     private int GetDoorIndex(string doorName)
     {
         switch (doorName)

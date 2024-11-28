@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public static int CurrentFloor = 1;
+    
     private UIManager uiManager;
 
     // Start is called before the first frame update
