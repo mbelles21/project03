@@ -8,7 +8,7 @@ public class DungeonRoom : MonoBehaviour
     public RoomType roomType = RoomType.Normal;
 
     [Header("Room Properties")]
-    public Vector2Int gridSize = new Vector2Int(1, 1); // 2,2 for large rooms, 1,2 for long rooms
+    public Vector2Int gridSize = new Vector2Int(1, 1);
     public float roomHeight = 6f;
     public bool isStartingRoom = false;
 
