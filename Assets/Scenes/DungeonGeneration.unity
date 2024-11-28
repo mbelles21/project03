@@ -220,7 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 697958587}
-  - component: {fileID: 697958586}
+  - component: {fileID: 697958588}
   m_Layer: 0
   m_Name: DungeonGenerate
   m_TagString: Untagged
@@ -228,29 +228,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &697958586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697958585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370553af289084971a2f47568b1692ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingRoomPrefab: {fileID: 3751251552166253454, guid: 1b92d20b413a746ae8a05b694e141c40, type: 3}
-  endRoomPrefab: {fileID: 6315769544145929860, guid: 79e6af4d8e9494067b08f8d70b57d3e8, type: 3}
-  normalRoomPrefabs:
-  - {fileID: 6974592565622917001, guid: bc7f016572f8a4a6990c45d6568a568e, type: 3}
-  largeRoomPrefabs:
-  - {fileID: 54125094164079368, guid: 764b13a05fa1d4e2cb0ac7d275163428, type: 3}
-  longRoomPrefabs: []
-  numberOfNormalRooms: 7
-  numberOfLargeRooms: 2
-  numberOfLongRooms: 0
-  roomSpacing: 18
 --- !u!4 &697958587
 Transform:
   m_ObjectHideFlags: 0
@@ -266,6 +243,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &697958588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697958585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370553af289084971a2f47568b1692ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingRoomPrefab: {fileID: 3751251552166253454, guid: 1b92d20b413a746ae8a05b694e141c40, type: 3}
+  stairRoomPrefab: {fileID: 7307159777703094897, guid: 4ccf4b1076c4a43ff85ca4c5d69000b7, type: 3}
+  normalRoomPrefabs:
+  - {fileID: 6974592565622917001, guid: bc7f016572f8a4a6990c45d6568a568e, type: 3}
+  largeRoomPrefabs:
+  - {fileID: 54125094164079368, guid: 764b13a05fa1d4e2cb0ac7d275163428, type: 3}
+  - {fileID: 8239437837450737668, guid: 0c7d847f79f144108995264bf3b25c0f, type: 3}
+  longRoomPrefabs: []
+  useRandomCounts: 1
+  numberOfNormalRooms: 5
+  numberOfLargeRooms: 1
+  numberOfLongRooms: 0
+  normalRoomRange: {x: 5, y: 12}
+  largeRoomRange: {x: 1, y: 5}
+  longRoomRange: {x: 0, y: 0}
+  roomSpacing: 18
+  minimumDistanceFromStart: 6
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
