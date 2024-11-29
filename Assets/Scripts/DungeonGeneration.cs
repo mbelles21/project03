@@ -356,7 +356,7 @@ public class DungeonGenerator : MonoBehaviour
 
         // start logic to spawn enemies
         if(enemySpawner != null && enemiesAllowed) {
-            enemySpawner.SpawnEnemy(worldPos);
+            enemySpawner.SpawnEnemy(worldPos, (int)size);
         }        
     }
 
