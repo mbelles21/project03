@@ -11,25 +11,24 @@ public class EnemySpawner : MonoBehaviour
     public float baseSpawnChance = 0.2f;
     public float incrementPerFloor = 0.05f;
     public float maxSpawnChance = 1f;
-    
-    private static int EnemyCount = 0; // mostly for debugging purposes
 
-    public void SpawnEnemy(Vector3 roomPos)
+    public void SpawnEnemy(Vector3 roomPos, int roomSize)
     {
         // TODO: will also need to parent enemies to same obj as room
 
-        bool canSpawn = CheckSpawnChance();
-        int index = Random.Range(0, enemyPrefabs.Count);
+        // roomSize 1 means large room --> spawn 2 enemies
+        int spawnCount = roomSize == 1 ? 2 : 1;
 
-        if(canSpawn) {
-            Debug.Log("enemy spawned at " + roomPos);
-            Vector3 spawnPos = new Vector3(roomPos.x, -5f, roomPos.z);
-            Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity);
+        for(int i = 0; i < spawnCount; i++) {
+            bool canSpawn = CheckSpawnChance();
+            int index = Random.Range(0, enemyPrefabs.Count);
 
-            EnemyCount++;
-            Debug.Log("enemies: " + EnemyCount);
+            if(canSpawn) {
+                Debug.Log("enemy spawned at " + roomPos);
+                Vector3 spawnPos = new Vector3(roomPos.x + i * 18, -5f, roomPos.z + i * 18); // to offset second enemy pos (if applicable)
+                Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity);
+            }
         }
-        
     }
 
     bool CheckSpawnChance()
