@@ -26,7 +26,8 @@ public class LevelManager : MonoBehaviour
         // if scene has TutorialManager it's the tutorial, else it's a normal level
         // TODO: change logic when getting the real level
         if(tutorialManager != null) {
-            SceneManager.LoadScene("DemoLevel");
+            // SceneManager.LoadScene("DemoLevel");
+            Debug.Log("tutorial completed!");
         }
         else {
             SceneManager.LoadScene("MainMenu");
