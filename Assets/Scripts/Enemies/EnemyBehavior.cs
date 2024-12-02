@@ -38,6 +38,10 @@ public class EnemyBehavior : MonoBehaviour
     private EnemyStun enemyStun;
     private Animator anim;
 
+    // Random wandering variables
+    private Vector3 randomTarget;
+    private float timeToNextRandomMove = 0f;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -47,7 +51,8 @@ public class EnemyBehavior : MonoBehaviour
         rb.freezeRotation = true; // Prevent physics-induced rotation
         enemyStun = GetComponent<EnemyStun>();
         anim = GetComponent<Animator>();
-        if(anim == null){
+        if (anim == null)
+        {
             anim = GetComponentInChildren<Animator>();
         }
     }
@@ -91,27 +96,55 @@ public class EnemyBehavior : MonoBehaviour
         {
             Patrol();
         }
-
-        RotateTowards(player.position); // Always face the player
     }
 
     private void Patrol()
     {
-        if (waypoints.Length == 0) return;
-
-        Transform targetWaypoint = waypoints[currentWaypointIndex];
-        MoveTowards(targetWaypoint.position, patrolSpeed);
-        RotateTowards(targetWaypoint.position);
-
-        if (Vector3.Distance(transform.position, targetWaypoint.position) < 2f)
+        if (waypoints.Length > 0)
         {
-            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+            // Patrol to waypoints
+            Transform targetWaypoint = waypoints[currentWaypointIndex];
+            MoveTowards(targetWaypoint.position, patrolSpeed);
+            RotateTowards(targetWaypoint.position);
+
+            if (Vector3.Distance(transform.position, targetWaypoint.position) < 2f)
+            {
+                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+            }
         }
+        else
+        {
+            // Random wandering
+            WanderRandomly();
+        }
+    }
+
+    private void WanderRandomly()
+    {
+        if (timeToNextRandomMove <= 0f || Vector3.Distance(transform.position, randomTarget) < 1f)
+        {
+            // Generate a random target position within a certain range
+            randomTarget = new Vector3(
+                transform.position.x + Random.Range(-10f, 10f), // Adjust range as needed
+                transform.position.y,
+                transform.position.z + Random.Range(-10f, 10f)
+            );
+
+            timeToNextRandomMove = Random.Range(2f, 5f); // Random time before next move
+        }
+
+        // Move towards the random target
+        MoveTowards(randomTarget, patrolSpeed);
+        RotateTowards(randomTarget);
+
+        // Decrease the time to the next random move
+        timeToNextRandomMove -= Time.deltaTime;
     }
 
     private void ChasePlayer()
     {
         MoveTowards(player.position, chaseSpeed);
+        RotateTowards(player.position);
     }
 
     private void MoveTowards(Vector3 target, float speed)
@@ -143,7 +176,7 @@ public class EnemyBehavior : MonoBehaviour
             {
                 GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
                 EnemyProjectile projectileScript = projectile.GetComponent<EnemyProjectile>();
-                
+
                 if (projectileScript != null)
                 {
                     Vector3 direction = (player.position - projectileSpawnPoint.position).normalized;
@@ -153,8 +186,6 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
     }
-
-
 
     private void AttackMelee()
     {
