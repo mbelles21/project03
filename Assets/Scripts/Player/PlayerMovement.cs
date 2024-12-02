@@ -100,9 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Sprint(InputAction.CallbackContext context){
         if(context.started){
-            movement.isSprinting = true;
-        } else if (context.canceled) {
-            movement.isSprinting= false;
+            movement.isSprinting = !movement.isSprinting;
         }
     }
 

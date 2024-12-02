@@ -41,6 +41,8 @@ public class EnemyBehavior : MonoBehaviour
     // Random wandering variables
     private Vector3 randomTarget;
     private float timeToNextRandomMove = 0f;
+    public delegate void HitPlayer(float damage);
+    public static event HitPlayer hitPlayer;
 
     private void Start()
     {
@@ -196,7 +198,7 @@ public class EnemyBehavior : MonoBehaviour
 
             // Deal damage to the player (replace this with your own damage logic)
             Debug.Log($"Melee enemy attacked the player for {meleeDamage} damage!");
-
+            hitPlayer.Invoke(meleeDamage);
             // Optionally, apply damage directly to the player's health script (if implemented)
         }
     }

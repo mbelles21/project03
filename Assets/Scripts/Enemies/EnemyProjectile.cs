@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
+    public float damage = 15f;
     public float speed = 10f; // Speed of the projectile
     public float lifetime = 5f; // Time before the projectile is destroyed
     private Vector3 direction; // Direction to move the projectile
@@ -26,5 +27,9 @@ public class EnemyProjectile : MonoBehaviour
     {
         Debug.Log($"Projectile hit: {other.name}");
         Destroy(gameObject); // Destroy the projectile on impact
+        PlayerHealth healthBar = other.GetComponent<PlayerHealth>();
+        if (healthBar != null){
+            healthBar.takeDamage(damage);
+        }
     }
 }
