@@ -111,8 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 1
   waypoints: []
-  patrolSpeed: 0
-  chaseSpeed: 0
+  patrolSpeed: 2
+  chaseSpeed: 2
   detectionRange: 10
   chaseStopRange: 0
   attackRange: 20

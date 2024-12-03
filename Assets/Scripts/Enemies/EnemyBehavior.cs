@@ -55,6 +55,8 @@ public class EnemyBehavior : MonoBehaviour
         {
             anim = GetComponentInChildren<Animator>();
         }
+
+        player = FindAnyObjectByType<PlayerMovement>().gameObject.transform;
     }
 
     private void Update()
