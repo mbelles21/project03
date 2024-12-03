@@ -80,6 +80,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Creep3 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8979022353975496759, guid: f3978c44f7fb36246b698fdea7f77528, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3c0991e025ebb694e9867c254d8f1c94, type: 2}
+    - target: {fileID: 8979022355182249155, guid: f3978c44f7fb36246b698fdea7f77528, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3c0991e025ebb694e9867c254d8f1c94, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
