@@ -5,7 +5,7 @@ using UnityEngine;
 public class DungeonGenerator : MonoBehaviour
 {
     public GameObject player;
-    
+
     [Header("Room Prefabs")]
     public GameObject startingRoomPrefab;
     public GameObject stairRoomPrefab;
@@ -38,11 +38,12 @@ public class DungeonGenerator : MonoBehaviour
 
     private EnemySpawner enemySpawner;
 
+    public bool IsGenerationComplete { get; private set; } = false;
+    public bool IsFinalFloor { get; private set; } = false;
+
 
     void Start()
     {
-        enemySpawner = GetComponent<EnemySpawner>();
-
         if (stairRoomPrefab == null)
         {
             Debug.LogError("Stair Room Prefab is not assigned!");
@@ -50,6 +51,7 @@ public class DungeonGenerator : MonoBehaviour
         }
         StartCoroutine(GenerateDungeonSequence());
     }
+
 
     private void DetermineRoomCounts(out int normalCount, out int largeCount, out int longCount)
     {
@@ -68,9 +70,58 @@ public class DungeonGenerator : MonoBehaviour
             longCount = numberOfLongRooms;
         }
     }
+    private bool ValidateRoomCounts()
+    {
+        int normalRoomCount = 0;
+        int largeRoomCount = 0;
+
+        foreach (GameObject room in generatedRooms)
+        {
+            // Check if the room's name matches any of the prefab names
+            string roomName = room.name.Replace("(Clone)", "");
+
+            bool isNormalRoom = false;
+            bool isLargeRoom = false;
+
+            // Check normal room prefabs
+            foreach (GameObject prefab in normalRoomPrefabs)
+            {
+                if (roomName == prefab.name)
+                {
+                    isNormalRoom = true;
+                    break;
+                }
+            }
+
+            // Check large room prefabs
+            foreach (GameObject prefab in largeRoomPrefabs)
+            {
+                if (roomName == prefab.name)
+                {
+                    isLargeRoom = true;
+                    break;
+                }
+            }
+
+            if (isNormalRoom) normalRoomCount++;
+            if (isLargeRoom) largeRoomCount++;
+        }
+
+        if (useRandomCounts)
+        {
+            return normalRoomCount >= normalRoomRange.x &&
+                   largeRoomCount >= largeRoomRange.x;
+        }
+        else
+        {
+            return normalRoomCount >= numberOfNormalRooms &&
+                   largeRoomCount >= numberOfLargeRooms;
+        }
+    }
 
     IEnumerator GenerateDungeonSequence()
     {
+        IsGenerationComplete = false;
         bool successfulGeneration = false;
         int maxAttempts = 3;
         int currentAttempt = 0;
@@ -93,9 +144,8 @@ public class DungeonGenerator : MonoBehaviour
             occupiedTiles.Clear();
 
             // Place starting room
-            PlaceRoom(startingRoomPrefab, Vector2Int.zero, RoomSize.Normal, enemiesAllowed: false);
+            PlaceRoom(startingRoomPrefab, Vector2Int.zero, RoomSize.Normal);
             startRoomPosition = Vector2Int.zero;
-            player.transform.position = new Vector3(0, -5, 0); // move player to starting room
             yield return null;
 
             // Place large rooms first
@@ -135,7 +185,7 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
 
-            if (stairPlaced)
+            if (stairPlaced && ValidateRoomCounts())
             {
                 // Place remaining normal rooms
                 for (int i = halfNormal; i < normalRooms; i++)
@@ -149,7 +199,7 @@ public class DungeonGenerator : MonoBehaviour
             }
             else
             {
-                Debug.Log("Failed to place stair room, retrying generation...");
+                Debug.Log("Failed to meet room requirements or place stair room, retrying generation...");
                 yield return new WaitForSeconds(0.1f);
                 continue;
             }
@@ -158,6 +208,7 @@ public class DungeonGenerator : MonoBehaviour
         if (!successfulGeneration)
         {
             Debug.LogError($"Failed to generate valid dungeon after {maxAttempts} attempts!");
+            IsGenerationComplete = true; // Set to true even on failure so we don't hang
             yield break;
         }
 
@@ -167,35 +218,9 @@ public class DungeonGenerator : MonoBehaviour
         ResetAllDoors();
 
         DungeonConnectionHandler.Instance.ProcessConnections();
+
+        IsGenerationComplete = true; // Set to true when generation is successful
     }
-
-    // void GenerateDungeon()
-    // {
-    //     // Place starting room
-    //     PlaceRoom(startingRoomPrefab, Vector2Int.zero, RoomSize.Normal);
-
-    //     // Place large rooms first (since they need more space)
-    //     for (int i = 0; i < numberOfLargeRooms; i++)
-    //     {
-    //         TryPlaceLargeRoom();
-    //     }
-
-    //     // Place long rooms
-    //     for (int i = 0; i < numberOfLongRooms; i++)
-    //     {
-    //         TryPlaceLongRoom();
-    //     }
-
-    //     // Fill in with normal rooms
-    //     for (int i = 0; i < numberOfNormalRooms; i++)
-    //     {
-    //         TryPlaceNormalRoom();
-    //     }
-
-    //     // ProcessDoorConnections();
-    //     Invoke("ForceDoorCheck", 0.5f);
-
-    // }
 
     enum RoomSize { Normal, Large, Long }
 
@@ -226,23 +251,34 @@ public class DungeonGenerator : MonoBehaviour
 
     private void OccupyTiles(Vector2Int position, RoomSize size)
     {
+        Debug.Log($"OccupyTiles: Starting occupation at position ({position.x}, {position.y}) for size {size}");
+        int beforeCount = occupiedTiles.Count;
+
         switch (size)
         {
             case RoomSize.Normal:
                 occupiedTiles.Add(position);
+                Debug.Log($"OccupyTiles: Added normal room tile at ({position.x}, {position.y})");
                 break;
 
             case RoomSize.Large:
                 for (int x = 0; x < 2; x++)
                     for (int y = 0; y < 2; y++)
-                        occupiedTiles.Add(position + new Vector2Int(x, y));
+                    {
+                        Vector2Int pos = position + new Vector2Int(x, y);
+                        occupiedTiles.Add(pos);
+                        Debug.Log($"OccupyTiles: Added large room tile at ({pos.x}, {pos.y})");
+                    }
                 break;
 
             case RoomSize.Long:
                 occupiedTiles.Add(position);
                 occupiedTiles.Add(position + Vector2Int.up);
+                Debug.Log($"OccupyTiles: Added long room tiles at ({position.x}, {position.y}) and ({position.x}, {position.y + 1})");
                 break;
         }
+
+        Debug.Log($"OccupyTiles: Tiles before: {beforeCount}, after: {occupiedTiles.Count}");
     }
 
     private List<Vector2Int> GetValidPositionsForSize(RoomSize size)
@@ -281,18 +317,24 @@ public class DungeonGenerator : MonoBehaviour
                occupiedTiles.Contains(pos + Vector2Int.right);
     }
 
-
-    private void TryPlaceNormalRoom()
+    private bool TryPlaceNormalRoom()
     {
-        if (normalRoomPrefabs == null || normalRoomPrefabs.Length == 0) return;
+        if (normalRoomPrefabs == null || normalRoomPrefabs.Length == 0) return false;
 
-        var validPositions = GetValidPositionsForSize(RoomSize.Normal);
-        if (validPositions.Count > 0)
+        int maxAttempts = 10; // Adjust this value as needed
+        while (maxAttempts > 0)
         {
-            Vector2Int pos = validPositions[Random.Range(0, validPositions.Count)];
-            GameObject prefab = normalRoomPrefabs[Random.Range(0, normalRoomPrefabs.Length)];
-            PlaceRoom(prefab, pos, RoomSize.Normal);
+            var validPositions = GetValidPositionsForSize(RoomSize.Normal);
+            if (validPositions.Count > 0)
+            {
+                Vector2Int pos = validPositions[Random.Range(0, validPositions.Count)];
+                GameObject prefab = normalRoomPrefabs[Random.Range(0, normalRoomPrefabs.Length)];
+                PlaceRoom(prefab, pos, RoomSize.Normal);
+                return true;
+            }
+            maxAttempts--;
         }
+        return false;
     }
 
     private void TryPlaceLargeRoom()
@@ -330,7 +372,7 @@ public class DungeonGenerator : MonoBehaviour
         {
             Vector2Int pos = validPositions[Random.Range(0, validPositions.Count)];
             Debug.Log($"Placing stair room at position: {pos}");
-            PlaceRoom(stairRoomPrefab, pos, RoomSize.Normal, enemiesAllowed: false);
+            PlaceRoom(stairRoomPrefab, pos, RoomSize.Normal);
             return true;
         }
         return false;
@@ -338,179 +380,31 @@ public class DungeonGenerator : MonoBehaviour
 
     private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size, bool enemiesAllowed = true)
     {
-        Vector3 worldPos = new Vector3(gridPos.x * roomSpacing, 0, gridPos.y * roomSpacing);
+        Debug.Log($"PlaceRoom: Placing {prefab.name} at position ({gridPos.x}, {gridPos.y})");
+
+        float heightOffset = 1f;
+        Vector3 worldPos = new Vector3(gridPos.x * roomSpacing, heightOffset, gridPos.y * roomSpacing);
         GameObject room = Instantiate(prefab, worldPos, Quaternion.identity);
         room.transform.SetParent(transform);
         generatedRooms.Add(room);
+
+        Debug.Log($"PlaceRoom: Before OccupyTiles, current occupied count: {occupiedTiles.Count}");
         OccupyTiles(gridPos, size);
+        Debug.Log($"PlaceRoom: After OccupyTiles, new occupied count: {occupiedTiles.Count}");
 
         RoomBehaviour roomBehaviour = room.GetComponent<RoomBehaviour>();
         if (roomBehaviour != null)
         {
-            // Start with walls showing and doorways hidden
             for (int i = 0; i < roomBehaviour.wallSections.Length; i++)
             {
                 roomBehaviour.ShowWall(i);
             }
         }
 
-        // start logic to spawn enemies
-        if(enemySpawner != null && enemiesAllowed) {
+        // Enemy spawning logic
+        if (enemySpawner != null && enemiesAllowed)
+        {
             enemySpawner.SpawnEnemy(worldPos, (int)size);
-        }        
-    }
-
-    private int GetDoorIndex(string doorName)
-    {
-        switch (doorName)
-        {
-            case "NorthPoint": return 0;
-            case "SouthPoint": return 1;
-            case "EastPoint": return 2;
-            case "WestPoint": return 3;
-            default: return -1;
-        }
-    }
-
-    void ForceDoorCheck()
-    {
-        DoorPoint[] allDoors = FindObjectsByType<DoorPoint>(FindObjectsSortMode.None);
-        Debug.Log($"Checking {allDoors.Length} doors");
-
-        // First, make sure all doorways are closed
-        foreach (DoorPoint door in allDoors)
-        {
-            RoomBehaviour room = door.GetComponentInParent<RoomBehaviour>();
-            int index = GetDoorIndex(door.gameObject.name);
-
-            if (room != null && room.wallSections != null && index >= 0)
-            {
-                var wallSection = room.wallSections[index];
-                if (wallSection.completeWall != null)
-                {
-                    wallSection.completeWall.SetActive(true);
-                    Debug.Log($"Setting wall active for {door.gameObject.name}");
-                }
-                if (wallSection.doorwayOpen != null)
-                {
-                    wallSection.doorwayOpen.SetActive(false);
-                    Debug.Log($"Setting doorway inactive for {door.gameObject.name}");
-                }
-            }
-        }
-
-        // Then check for connections
-        foreach (DoorPoint door in allDoors)
-        {
-            Collider[] nearby = Physics.OverlapSphere(door.transform.position, 1f);
-            foreach (Collider other in nearby)
-            {
-                DoorPoint otherDoor = other.GetComponent<DoorPoint>();
-                if (otherDoor != null && otherDoor != door)
-                {
-                    Debug.Log($"Processing connection: {door.gameObject.name} and {otherDoor.gameObject.name}");
-
-                    RoomBehaviour room1 = door.GetComponentInParent<RoomBehaviour>();
-                    RoomBehaviour room2 = otherDoor.GetComponentInParent<RoomBehaviour>();
-
-                    int index1 = GetDoorIndex(door.gameObject.name);
-                    int index2 = GetDoorIndex(otherDoor.gameObject.name);
-
-                    // Explicitly toggle both sides
-                    if (room1 != null && index1 >= 0)
-                    {
-                        var wallSection = room1.wallSections[index1];
-                        if (wallSection.completeWall != null)
-                        {
-                            wallSection.completeWall.SetActive(false);
-                            Debug.Log($"Deactivating wall for {door.gameObject.name}");
-                        }
-                        if (wallSection.doorwayOpen != null)
-                        {
-                            wallSection.doorwayOpen.SetActive(true);
-                            Debug.Log($"Activating doorway for {door.gameObject.name}");
-                        }
-                    }
-
-                    if (room2 != null && index2 >= 0)
-                    {
-                        var wallSection = room2.wallSections[index2];
-                        if (wallSection.completeWall != null)
-                        {
-                            wallSection.completeWall.SetActive(false);
-                            Debug.Log($"Deactivating wall for {otherDoor.gameObject.name}");
-                        }
-                        if (wallSection.doorwayOpen != null)
-                        {
-                            wallSection.doorwayOpen.SetActive(true);
-                            Debug.Log($"Activating doorway for {otherDoor.gameObject.name}");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private bool HasValidStairConnection(Vector2Int pos)
-    {
-        // Check North connection
-        if (occupiedTiles.Contains(pos + Vector2Int.up))
-        {
-            Debug.Log($"Valid north connection found at {pos}");
-            return true;
-        }
-
-        // Check East connection
-        if (occupiedTiles.Contains(pos + Vector2Int.right))
-        {
-            Debug.Log($"Valid east connection found at {pos}");
-            return true;
-        }
-
-        // Check West connection
-        if (occupiedTiles.Contains(pos + Vector2Int.left))
-        {
-            Debug.Log($"Valid west connection found at {pos}");
-            return true;
-        }
-
-        Debug.Log($"No valid connections found at position {pos}");
-        return false;
-    }
-
-    void ProcessDoorConnections()
-    {
-        DoorPoint[] allDoors = FindObjectsByType<DoorPoint>(FindObjectsSortMode.None);
-        Debug.Log($"Processing {allDoors.Length} door points");
-
-        foreach (var door1 in allDoors)
-        {
-            foreach (var door2 in allDoors)
-            {
-                if (door1 != door2 && Vector3.Distance(door1.transform.position, door2.transform.position) < 2f)
-                {
-                    RoomBehaviour room1 = door1.GetComponentInParent<RoomBehaviour>();
-                    RoomBehaviour room2 = door2.GetComponentInParent<RoomBehaviour>();
-
-                    if (room1 != null && room2 != null)
-                    {
-                        int index1 = GetDoorIndex(door1.gameObject.name);
-                        int index2 = GetDoorIndex(door2.gameObject.name);
-
-                        Debug.Log($"Found connection between {door1.name} and {door2.name}");
-
-                        // Force both sides to show doorways
-                        if (index1 >= 0 && index2 >= 0)
-                        {
-                            room1.wallSections[index1].completeWall.SetActive(false);
-                            room1.wallSections[index1].doorwayOpen.SetActive(true);
-
-                            room2.wallSections[index2].completeWall.SetActive(false);
-                            room2.wallSections[index2].doorwayOpen.SetActive(true);
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -521,56 +415,44 @@ public class DungeonGenerator : MonoBehaviour
 
         foreach (Vector2Int occupied in occupiedTiles)
         {
-            CheckAdjacentPositionForStairs(occupied + Vector2Int.up, validPositions, checkedPositions, minDistance);
-            CheckAdjacentPositionForStairs(occupied + Vector2Int.down, validPositions, checkedPositions, minDistance);
-            CheckAdjacentPositionForStairs(occupied + Vector2Int.left, validPositions, checkedPositions, minDistance);
-            CheckAdjacentPositionForStairs(occupied + Vector2Int.right, validPositions, checkedPositions, minDistance);
+            // Only check North, East, and West positions since stairs block South
+            CheckAdjacentPositionForStairs(occupied + Vector2Int.up, validPositions, checkedPositions, minDistance);    // North
+            CheckAdjacentPositionForStairs(occupied + Vector2Int.right, validPositions, checkedPositions, minDistance); // East
+            CheckAdjacentPositionForStairs(occupied + Vector2Int.left, validPositions, checkedPositions, minDistance);  // West
         }
 
-        // Filter for valid connections
+        // Filter positions - must have at least one valid connection on North, East, or West
         validPositions.RemoveAll(pos =>
-            !occupiedTiles.Contains(pos + Vector2Int.up) &&
-            !occupiedTiles.Contains(pos + Vector2Int.right) &&
-            !occupiedTiles.Contains(pos + Vector2Int.left));
+            !(occupiedTiles.Contains(pos + Vector2Int.up) ||    // North connection
+              occupiedTiles.Contains(pos + Vector2Int.right) ||  // East connection
+              occupiedTiles.Contains(pos + Vector2Int.left)));   // West connection
 
         return validPositions;
     }
-
     private void CheckAdjacentPositionForStairs(Vector2Int pos, List<Vector2Int> validPositions, HashSet<Vector2Int> checkedPositions, int minDistance)
     {
         if (checkedPositions.Contains(pos)) return;
         checkedPositions.Add(pos);
 
-        if (CanPlaceRoomAt(pos, RoomSize.Normal) && HasAdjacentRoom(pos))
+        if (CanPlaceRoomAt(pos, RoomSize.Normal))
         {
-            int distance = Mathf.Abs(pos.x - startRoomPosition.x) + Mathf.Abs(pos.y - startRoomPosition.y);
+            // Check if position has at least one valid connection on North, East, or West
+            bool hasValidConnection =
+                occupiedTiles.Contains(pos + Vector2Int.up) ||
+                occupiedTiles.Contains(pos + Vector2Int.right) ||
+                occupiedTiles.Contains(pos + Vector2Int.left);
 
-            if (distance >= minDistance)
+            if (hasValidConnection)
             {
-                validPositions.Add(pos);
-                Debug.Log($"Added position {pos} as valid stair position (distance: {distance})");
+                int distance = Mathf.Abs(pos.x - startRoomPosition.x) + Mathf.Abs(pos.y - startRoomPosition.y);
+                if (distance >= minDistance)
+                {
+                    validPositions.Add(pos);
+                    Debug.Log($"Added position {pos} as valid stair position (distance: {distance})");
+                }
             }
         }
     }
-
-    private void CheckAdjacentPositionForStairs(Vector2Int pos, List<Vector2Int> validPositions, HashSet<Vector2Int> checkedPositions)
-    {
-        if (checkedPositions.Contains(pos)) return;
-        checkedPositions.Add(pos);
-
-        if (CanPlaceRoomAt(pos, RoomSize.Normal) && HasAdjacentRoom(pos))
-        {
-            int distance = Mathf.Abs(pos.x - startRoomPosition.x) + Mathf.Abs(pos.y - startRoomPosition.y);
-            Debug.Log($"Checking position {pos} - Distance from start: {distance}, Minimum required: {minimumDistanceFromStart}");
-
-            if (distance >= minimumDistanceFromStart)
-            {
-                validPositions.Add(pos);
-                Debug.Log($"Added position {pos} as valid stair position");
-            }
-        }
-    }
-
     void ResetAllDoors()
     {
         var allRooms = FindObjectsByType<RoomBehaviour>(FindObjectsSortMode.None);
