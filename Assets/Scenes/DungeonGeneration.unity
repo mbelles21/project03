@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &130706558 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7121296918323479790, guid: 7dc0ff0b87d99a64bafc256b6e863f4c, type: 3}
-  m_PrefabInstance: {fileID: 2070065450}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &611644738
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9213104112613127802, guid: 4a7eb06705d395b4881bb98cd06bc5e8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7793563
+      value: 0.57552844
       objectReference: {fileID: 0}
     - target: {fileID: 9213104112613127802, guid: 4a7eb06705d395b4881bb98cd06bc5e8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -297,7 +292,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a7eb06705d395b4881bb98cd06bc5e8, type: 3}
---- !u!1 &697958585
+--- !u!1 &1386853170
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,79 +300,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 697958587}
-  - component: {fileID: 697958588}
-  - component: {fileID: 697958589}
+  - component: {fileID: 1386853172}
+  - component: {fileID: 1386853171}
   m_Layer: 0
-  m_Name: DungeonGenerate
+  m_Name: DungeonFloorManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &697958587
+--- !u!114 &1386853171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386853170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea40433cf703422aae06f5a8e8027e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dungeonGeneratorPrefab: {fileID: 503466310063357574, guid: b4d6d28783c06410cb1e4507e12d5838, type: 3}
+  verticalFloorSpacing: 50
+  maxFloors: 3
+  baseHeight: 1
+  loadingScreenUI: {fileID: 0}
+--- !u!4 &1386853172
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697958585}
+  m_GameObject: {fileID: 1386853170}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -15.808066, y: 4.091735, z: -62.14216}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &697958588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697958585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370553af289084971a2f47568b1692ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 130706558}
-  startingRoomPrefab: {fileID: 3751251552166253454, guid: 1b92d20b413a746ae8a05b694e141c40, type: 3}
-  stairRoomPrefab: {fileID: 7307159777703094897, guid: 4ccf4b1076c4a43ff85ca4c5d69000b7, type: 3}
-  normalRoomPrefabs:
-  - {fileID: 6974592565622917001, guid: bc7f016572f8a4a6990c45d6568a568e, type: 3}
-  largeRoomPrefabs:
-  - {fileID: 54125094164079368, guid: 764b13a05fa1d4e2cb0ac7d275163428, type: 3}
-  - {fileID: 8239437837450737668, guid: 0c7d847f79f144108995264bf3b25c0f, type: 3}
-  longRoomPrefabs: []
-  useRandomCounts: 1
-  numberOfNormalRooms: 5
-  numberOfLargeRooms: 1
-  numberOfLongRooms: 0
-  normalRoomRange: {x: 5, y: 12}
-  largeRoomRange: {x: 1, y: 5}
-  longRoomRange: {x: 0, y: 0}
-  roomSpacing: 18
-  minimumDistanceFromStart: 6
---- !u!114 &697958589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697958585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5506362e2dc70b843ab23f94ce1ffc1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefabs:
-  - {fileID: 7688541550393679934, guid: 19e7a67704dfa054291da823b3b362a3, type: 3}
-  - {fileID: 8347136970724159149, guid: 70a0038d63871e34d907a965e60e2572, type: 3}
-  baseSpawnChance: 0.2
-  incrementPerFloor: 0.05
-  maxSpawnChance: 1
 --- !u!1 &1576815967
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8176955150370589203, guid: 7dc0ff0b87d99a64bafc256b6e863f4c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.0077969
+      value: 0.8379403
       objectReference: {fileID: 0}
     - target: {fileID: 8176955150370589203, guid: 7dc0ff0b87d99a64bafc256b6e863f4c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -516,4 +479,4 @@ SceneRoots:
   - {fileID: 611644742}
   - {fileID: 2070065450}
   - {fileID: 683744355}
-  - {fileID: 697958587}
+  - {fileID: 1386853172}
