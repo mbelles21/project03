@@ -13,12 +13,20 @@ public class UIManager : MonoBehaviour
     private bool togglePause;
     public PlayerMovement player;
     public CinemachineVirtualCamera cinemachineCamera;
-
+    public GameObject deathScreen;
     private bool timerRunning = true;
 
     public void Awake(){
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void Start(){
+        PlayerHealth.playerDied += Died;
+    }
+
+    public void OnDestroy(){
+        PlayerHealth.playerDied -= Died;
     }
 
     public void Update(){
@@ -79,5 +87,15 @@ public class UIManager : MonoBehaviour
 
         ResultsManager resultsManager = FindAnyObjectByType<ResultsManager>();
         resultsManager.GetResults(levelTimer);
+    }
+
+    public void Died(){
+        togglePause = !togglePause;
+        deathScreen.SetActive(togglePause);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        player.enabled = false;
+        cinemachineCamera.enabled = false;
+        Time.timeScale = 0f;
     }
 }
