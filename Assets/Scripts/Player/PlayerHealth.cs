@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour
     public Slider slider;
     public float maxHealth = 100f;
     public float currentHealth = 0f;
+    public delegate void PlayerDied();
+    public static event PlayerDied playerDied;
 
     public void Start(){
         currentHealth = maxHealth;
@@ -15,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
         EnemyBehavior.HitPlayer += TakeDamage;
     }
 
-    public void Destroy(){
+    public void OnDestroy(){
         EnemyBehavior.HitPlayer -= TakeDamage;
     }
 
@@ -24,6 +26,7 @@ public class PlayerHealth : MonoBehaviour
         slider.value = currentHealth;
         if(currentHealth <= 0){
             //End Game
+            playerDied.Invoke();
         }
     }
 }
