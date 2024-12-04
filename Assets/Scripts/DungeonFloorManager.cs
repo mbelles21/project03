@@ -13,10 +13,9 @@ public class DungeonFloorManager : MonoBehaviour
     public GameObject loadingScreenUI;
 
     private Dictionary<int, GameObject> floors = new Dictionary<int, GameObject>();
-
     private Dictionary<int, Vector3> lastStairPositions = new Dictionary<int, Vector3>();
-
     private int currentFloorLevel = 1;
+    private bool IsGenerationComplete { get; set; } = false;
 
     private static DungeonFloorManager instance;
     public static DungeonFloorManager Instance
@@ -78,63 +77,116 @@ public class DungeonFloorManager : MonoBehaviour
 
     private IEnumerator GenerateFloorSequence(int floorLevel)
     {
-        if (dungeonGeneratorPrefab == null)
+        try
         {
-            Debug.LogError("Cannot generate floor: DungeonGenerator prefab is null!");
-            yield break;
+            if (dungeonGeneratorPrefab == null)
+            {
+                Debug.LogError("Cannot generate floor: DungeonGenerator prefab is null!");
+                yield break;
+            }
+
+            Debug.Log($"Starting generation of floor {floorLevel}");
+
+            if (loadingScreenUI != null)
+            {
+                loadingScreenUI.SetActive(true);
+            }
+
+            // Create new floor container
+            GameObject newFloorContainer = new GameObject($"Floor_{floorLevel}");
+            float floorHeight = (verticalFloorSpacing * (floorLevel - 1)) + baseHeight;
+            newFloorContainer.transform.position = new Vector3(0, floorHeight, 0);
+
+            // Setup new DungeonGenerator
+            DungeonGenerator generator = newFloorContainer.AddComponent<DungeonGenerator>();
+            if (generator == null)
+            {
+                Debug.LogError("Failed to add DungeonGenerator component!");
+                Destroy(newFloorContainer);
+                yield break;
+            }
+
+            CopyGeneratorSettings(generator);
+
+            // Handle floor management
+            if (floors.ContainsKey(floorLevel))
+            {
+                Debug.Log($"Removing existing floor {floorLevel}");
+                if (floors[floorLevel] != null)
+                {
+                    Destroy(floors[floorLevel]);
+                    yield return null;
+                }
+            }
+
+            floors[floorLevel] = newFloorContainer;
+
+            // Wait for generation with timeout
+            float timeoutDuration = 10f;
+            float elapsedTime = 0f;
+            while (!generator.IsGenerationComplete && elapsedTime < timeoutDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            if (!generator.IsGenerationComplete)
+            {
+                Debug.LogError("Dungeon generation timed out!");
+                Destroy(newFloorContainer);
+                yield break;
+            }
+
+            // Hide previous floor
+            if (floors.ContainsKey(currentFloorLevel) && currentFloorLevel != floorLevel)
+            {
+                if (floors[currentFloorLevel] != null)
+                {
+                    floors[currentFloorLevel].SetActive(false);
+                    Debug.Log($"Deactivated floor {currentFloorLevel}");
+                }
+            }
+
+            yield return StartCoroutine(TeleportPlayerToNewFloor(newFloorContainer));
+
+            // Wait for physics to settle
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(0.2f);
+
+            currentFloorLevel = floorLevel;
+            Debug.Log($"Floor {floorLevel} generation complete");
+
+            Debug.Log("Resetting all doors...");
+            generator.ResetAllDoors();  // Use the generator's method
+
+            DungeonConnectionHandler.Instance.ProcessConnections();
+
+            // Wait for door connections with timeout
+            elapsedTime = 0f;
+            while (DungeonConnectionHandler.Instance.IsProcessingConnections && elapsedTime < timeoutDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            if (DungeonConnectionHandler.Instance.IsProcessingConnections)
+            {
+                Debug.LogWarning("Door connection process timed out!");
+            }
+
+            IsGenerationComplete = true;
         }
-
-        Debug.Log($"Starting generation of floor {floorLevel}");
-
-        // Show loading screen if available
-        if (loadingScreenUI != null)
+        finally
         {
-            loadingScreenUI.SetActive(true);
-        }
-
-        // Create new floor container
-        GameObject newFloorContainer = new GameObject($"Floor_{floorLevel}");
-        float floorHeight = (verticalFloorSpacing * (floorLevel - 1)) + baseHeight;
-        newFloorContainer.transform.position = new Vector3(0, floorHeight, 0);
-
-        // Setup new DungeonGenerator
-        DungeonGenerator generator = newFloorContainer.AddComponent<DungeonGenerator>();
-        CopyGeneratorSettings(generator);
-
-        // Handle floor management
-        if (floors.ContainsKey(floorLevel))
-        {
-            Debug.Log($"Removing existing floor {floorLevel}");
-            Destroy(floors[floorLevel]);
-        }
-        floors[floorLevel] = newFloorContainer;
-
-        // Wait for dungeon generation to complete
-        yield return new WaitUntil(() => generator.IsGenerationComplete);
-
-        // Hide previous floor if it exists
-        if (floors.ContainsKey(currentFloorLevel) && currentFloorLevel != floorLevel)
-        {
-            floors[currentFloorLevel].SetActive(false);
-            Debug.Log($"Deactivated floor {currentFloorLevel}");
-        }
-
-        // Handle player teleportation
-        yield return StartCoroutine(TeleportPlayerToNewFloor(newFloorContainer));
-
-        currentFloorLevel = floorLevel;
-        Debug.Log($"Floor {floorLevel} generation complete");
-
-        // Hide loading screen
-        if (loadingScreenUI != null)
-        {
-            loadingScreenUI.SetActive(false);
+            if (loadingScreenUI != null)
+            {
+                loadingScreenUI.SetActive(false);
+            }
         }
     }
 
     private IEnumerator TeleportPlayerToNewFloor(GameObject newFloor)
     {
-        // Wait for floor to be ready but before physics update
         yield return new WaitForEndOfFrame();
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -144,11 +196,9 @@ public class DungeonFloorManager : MonoBehaviour
             yield break;
         }
 
-        // Find spawn point
         PlayerSpawnPoint spawnPointComponent = newFloor.GetComponentInChildren<PlayerSpawnPoint>(true);
         if (spawnPointComponent != null)
         {
-            // Disable physics components temporarily
             Rigidbody rb = player.GetComponent<Rigidbody>();
             CharacterController cc = player.GetComponent<CharacterController>();
 
@@ -163,10 +213,10 @@ public class DungeonFloorManager : MonoBehaviour
                 cc.enabled = false;
             }
 
-            // Set position instantly
             player.transform.position = spawnPointComponent.transform.position;
 
-            // Re-enable physics components
+            yield return new WaitForFixedUpdate();
+
             if (cc != null)
             {
                 cc.enabled = true;
@@ -183,48 +233,27 @@ public class DungeonFloorManager : MonoBehaviour
         }
     }
 
-    private Transform FindChildRecursively(Transform parent, string childName)
-    {
-        foreach (Transform child in parent)
-        {
-            if (child.name == childName)
-            {
-                Debug.Log($"Found child '{childName}' at position {child.position}");
-                return child;
-            }
-
-            Transform result = FindChildRecursively(child, childName);
-            if (result != null)
-                return result;
-        }
-        return null;
-    }
-
     private void CopyGeneratorSettings(DungeonGenerator generator)
     {
         if (dungeonGeneratorPrefab == null || generator == null) return;
 
-        // Copy all room prefabs
         generator.startingRoomPrefab = dungeonGeneratorPrefab.startingRoomPrefab;
         generator.stairRoomPrefab = dungeonGeneratorPrefab.stairRoomPrefab;
         generator.normalRoomPrefabs = dungeonGeneratorPrefab.normalRoomPrefabs;
         generator.largeRoomPrefabs = dungeonGeneratorPrefab.largeRoomPrefabs;
         generator.longRoomPrefabs = dungeonGeneratorPrefab.longRoomPrefabs;
 
-        // Copy generation settings
         generator.useRandomCounts = dungeonGeneratorPrefab.useRandomCounts;
         generator.numberOfNormalRooms = dungeonGeneratorPrefab.numberOfNormalRooms;
         generator.numberOfLargeRooms = dungeonGeneratorPrefab.numberOfLargeRooms;
         generator.numberOfLongRooms = dungeonGeneratorPrefab.numberOfLongRooms;
 
-        // Copy random generation ranges
         generator.normalRoomRange = dungeonGeneratorPrefab.normalRoomRange;
         generator.largeRoomRange = dungeonGeneratorPrefab.largeRoomRange;
         generator.longRoomRange = dungeonGeneratorPrefab.longRoomRange;
         generator.roomSpacing = dungeonGeneratorPrefab.roomSpacing;
         generator.minimumDistanceFromStart = dungeonGeneratorPrefab.minimumDistanceFromStart;
 
-        // Copy enemy spawner settings
         generator.SetupEnemySpawner();
 
         EnemySpawner originalSpawner = dungeonGeneratorPrefab.GetComponent<EnemySpawner>();
@@ -235,7 +264,6 @@ public class DungeonFloorManager : MonoBehaviour
             newSpawner.baseSpawnChance = originalSpawner.baseSpawnChance;
             newSpawner.incrementPerFloor = originalSpawner.incrementPerFloor;
             newSpawner.maxSpawnChance = originalSpawner.maxSpawnChance;
-
             Debug.Log($"Enemy spawner set up with {newSpawner.enemyPrefabs.Count} prefabs and base chance {newSpawner.baseSpawnChance}");
         }
         else
@@ -244,39 +272,12 @@ public class DungeonFloorManager : MonoBehaviour
         }
     }
 
-    // private void CopyGeneratorSettings(DungeonGenerator generator)
-    // {
-    //     if (dungeonGeneratorPrefab == null || generator == null) return;
-
-    //     // Copy all room prefabs
-    //     generator.startingRoomPrefab = dungeonGeneratorPrefab.startingRoomPrefab;
-    //     generator.stairRoomPrefab = dungeonGeneratorPrefab.stairRoomPrefab;
-    //     generator.normalRoomPrefabs = dungeonGeneratorPrefab.normalRoomPrefabs;
-    //     generator.largeRoomPrefabs = dungeonGeneratorPrefab.largeRoomPrefabs;
-    //     generator.longRoomPrefabs = dungeonGeneratorPrefab.longRoomPrefabs;
-
-    //     // Copy generation settings
-    //     generator.useRandomCounts = dungeonGeneratorPrefab.useRandomCounts;
-    //     generator.numberOfNormalRooms = dungeonGeneratorPrefab.numberOfNormalRooms;
-    //     generator.numberOfLargeRooms = dungeonGeneratorPrefab.numberOfLargeRooms;
-    //     generator.numberOfLongRooms = dungeonGeneratorPrefab.numberOfLongRooms;
-
-    //     // Copy random generation ranges
-    //     generator.normalRoomRange = dungeonGeneratorPrefab.normalRoomRange;
-    //     generator.largeRoomRange = dungeonGeneratorPrefab.largeRoomRange;
-    //     generator.longRoomRange = dungeonGeneratorPrefab.longRoomRange;
-
-    //     generator.roomSpacing = dungeonGeneratorPrefab.roomSpacing;
-    //     generator.minimumDistanceFromStart = dungeonGeneratorPrefab.minimumDistanceFromStart;
-    // }
     public void MoveToNextFloor(Vector3 stairPosition)
     {
         int nextFloorLevel = currentFloorLevel + 1;
         if (nextFloorLevel <= maxFloors)
         {
-            // Store the stair position for the current floor
             lastStairPositions[currentFloorLevel] = stairPosition;
-
             Debug.Log($"Stored stair position for floor {currentFloorLevel}: {stairPosition}");
             GenerateNewFloor(nextFloorLevel);
         }
@@ -298,57 +299,61 @@ public class DungeonFloorManager : MonoBehaviour
 
         if (floors.ContainsKey(previousFloor))
         {
-            // Hide current floor
             if (floors.ContainsKey(currentFloorLevel))
             {
                 floors[currentFloorLevel].SetActive(false);
             }
 
-            // Show previous floor
             floors[previousFloor].SetActive(true);
-
-            // Reprocess the door connections for the previous floor
-            StartCoroutine(ReprocessFloorConnections(previousFloor));
+            StartCoroutine(ReprocessPreviousFloor(previousFloor));
         }
     }
 
-    private IEnumerator ReprocessFloorConnections(int floorLevel)
+    private IEnumerator ReprocessPreviousFloor(int floorLevel)
     {
-        if (floors.ContainsKey(floorLevel))
+        if (!floors.ContainsKey(floorLevel)) yield break;
+
+        GameObject floor = floors[floorLevel];
+        if (floor == null)
         {
-            GameObject floor = floors[floorLevel];
-
-            // Reset all doors first
-            var roomBehaviours = floor.GetComponentsInChildren<RoomBehaviour>();
-            foreach (var room in roomBehaviours)
-            {
-                for (int i = 0; i < room.wallSections.Length; i++)
-                {
-                    room.ShowWall(i);
-                }
-            }
-
-            yield return new WaitForSeconds(0.1f);
-
-            // Reprocess connections
-            DungeonConnectionHandler.Instance.ProcessConnections();
-
-            // Teleport player to the stored stair position
-            if (lastStairPositions.ContainsKey(floorLevel))
-            {
-                GameObject player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null)
-                {
-                    CharacterController cc = player.GetComponent<CharacterController>();
-                    if (cc != null) cc.enabled = false;
-
-                    player.transform.position = lastStairPositions[floorLevel];
-
-                    if (cc != null) cc.enabled = true;
-                }
-            }
-
-            currentFloorLevel = floorLevel;
+            Debug.LogError($"Floor {floorLevel} is null!");
+            yield break;
         }
+
+        DungeonGenerator generator = floor.GetComponent<DungeonGenerator>();
+        if (generator != null)
+        {
+            generator.ResetAllDoors();
+        }
+
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(0.2f);
+
+        DungeonConnectionHandler.Instance.ProcessConnections();
+
+        float timeoutDuration = 5f;
+        float elapsedTime = 0f;
+        while (DungeonConnectionHandler.Instance.IsProcessingConnections && elapsedTime < timeoutDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (lastStairPositions.ContainsKey(floorLevel))
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                CharacterController cc = player.GetComponent<CharacterController>();
+                if (cc != null) cc.enabled = false;
+
+                player.transform.position = lastStairPositions[floorLevel];
+                yield return new WaitForFixedUpdate();
+
+                if (cc != null) cc.enabled = true;
+            }
+        }
+
+        currentFloorLevel = floorLevel;
     }
 }

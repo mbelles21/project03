@@ -398,37 +398,6 @@ public class DungeonGenerator : MonoBehaviour
             enemySpawner = gameObject.AddComponent<EnemySpawner>();
         }
     }
-
-    // private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size, bool enemiesAllowed = true)
-    // {
-    //     Debug.Log($"PlaceRoom: Placing {prefab.name} at position ({gridPos.x}, {gridPos.y})");
-
-    //     float heightOffset = 1f;
-    //     Vector3 worldPos = new Vector3(gridPos.x * roomSpacing, heightOffset, gridPos.y * roomSpacing);
-    //     GameObject room = Instantiate(prefab, worldPos, Quaternion.identity);
-    //     room.transform.SetParent(transform);
-    //     generatedRooms.Add(room);
-
-    //     Debug.Log($"PlaceRoom: Before OccupyTiles, current occupied count: {occupiedTiles.Count}");
-    //     OccupyTiles(gridPos, size);
-    //     Debug.Log($"PlaceRoom: After OccupyTiles, new occupied count: {occupiedTiles.Count}");
-
-    //     RoomBehaviour roomBehaviour = room.GetComponent<RoomBehaviour>();
-    //     if (roomBehaviour != null)
-    //     {
-    //         for (int i = 0; i < roomBehaviour.wallSections.Length; i++)
-    //         {
-    //             roomBehaviour.ShowWall(i);
-    //         }
-    //     }
-
-    //     // Enemy spawning logic
-    //     if (enemySpawner != null && enemiesAllowed)
-    //     {
-    //         enemySpawner.SpawnEnemy(worldPos, (int)size);
-    //     }
-    // }
-
     private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size, bool enemiesAllowed = true)
     {
         Debug.Log($"PlaceRoom: Placing {prefab.name} at position ({gridPos.x}, {gridPos.y})");
@@ -509,7 +478,7 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
     }
-    void ResetAllDoors()
+    public void ResetAllDoors()
     {
         var allRooms = FindObjectsByType<RoomBehaviour>(FindObjectsSortMode.None);
         foreach (var room in allRooms)
