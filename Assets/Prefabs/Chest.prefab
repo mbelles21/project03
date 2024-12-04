@@ -369,6 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f27ccaf4fa8ef4c44b3c1cef6f255546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemGottenText: {fileID: 5605041663143085460}
 --- !u!1 &3024896178829646170
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,6 +606,8 @@ MonoBehaviour:
   interactPromptUI: {fileID: 6227416916655904954}
   chestLid: {fileID: 3082070016281309428}
   itemPopupUI: {fileID: 2589003790542783463}
+  flashChance: 1
+  taserChance: 0.4
 --- !u!1 &3884054847216775334
 GameObject:
   m_ObjectHideFlags: 0

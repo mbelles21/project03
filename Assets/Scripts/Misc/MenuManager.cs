@@ -18,6 +18,13 @@ public class MenuManager : MonoBehaviour
         } else {
             TutorialManager.TutorialCompleted = false;
         }
+
+        // get ammo 
+        int savedFlashAmmo = PlayerPrefs.GetInt("flash", 0);
+        int savedTaserAmmo = PlayerPrefs.GetInt("taser", 0);
+
+        // get floor
+        int savedFloor = PlayerPrefs.GetInt("floor", 1);
     }
 
     public void StartNewGame()
@@ -45,6 +52,7 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("not yet implemented");
         // TODO: implement
+        // TODO: logic for going straight to treasure room 
     }
 
     public void GoToMainMenu()

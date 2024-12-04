@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Aim(InputAction.CallbackContext context){
         // only allow if player has grenades to use (note: logic will need to be changed if adding different throwables)
-        if(Inventory.GrenadeCount > 0) {
+        if(playerInventory.ReturnCurrentAmmo() > 0) {
             if(context.started){
                 Debug.Log("Aiming");
                 isAiming = true;
@@ -185,9 +185,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public IEnumerator Throw(){
-        Inventory.GrenadeCount--; // use a grenade
-        playerInventory.UpdateUIText(); // update count text 
-        // Debug.Log("Grenades: " + Inventory.GrenadeCount);
+        playerInventory.ThrowGrenade(); // use a grenade
 
         isThrowing = true;
         GrenadeThrow grenadeScript = thrownGrenade.GetComponent<GrenadeThrow>();
@@ -232,6 +230,8 @@ public class PlayerMovement : MonoBehaviour
         if(context.started){
             currentIndex = (currentIndex + 1) % grenadeList.Count;
             grenade = grenadeList[currentIndex];
+            Inventory.GrenadeType = currentIndex; // to update to correct ammo count
+            playerInventory.UpdateUIText();
         }
     }
 

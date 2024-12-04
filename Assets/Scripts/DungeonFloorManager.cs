@@ -231,6 +231,10 @@ public class DungeonFloorManager : MonoBehaviour
         {
             Debug.LogError("No spawn point found in new floor!");
         }
+
+        // save data when player moves to new floor
+        LevelManager levelManager = FindAnyObjectByType<LevelManager>();
+        levelManager.SaveCheckpoint();
     }
 
     private void CopyGeneratorSettings(DungeonGenerator generator)

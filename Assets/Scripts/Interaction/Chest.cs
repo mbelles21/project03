@@ -9,7 +9,12 @@ public class Chest : MonoBehaviour, IInteractable
     public GameObject chestLid;
     public GameObject itemPopupUI;
 
+    [Header("Item Rates")]
+    public float flashChance;
+    public float taserChance;
+
     private bool isOpen = false; 
+    private Inventory playerInventory;
 
     public string InteractPrompt => prompt; // return the prompt
 
@@ -21,17 +26,13 @@ public class Chest : MonoBehaviour, IInteractable
             chestLid.transform.Rotate(0f, 0f, -45f);
             interactPromptUI.Close();
 
-            // TODO: adjust based on item pool
-            Inventory playerInventory = interactor.GetComponent<Inventory>();
+            playerInventory = interactor.GetComponent<Inventory>(); // assigned here bc interactor
             if(playerInventory != null) {
-                Inventory.GrenadeCount++;
-                playerInventory.UpdateUIText();
+                GiveItem();
             }
             else {
                 Debug.Log("no inventory");
             }
-
-            itemPopupUI.SetActive(true);
 
             return true;
         }
@@ -58,5 +59,23 @@ public class Chest : MonoBehaviour, IInteractable
         else {
             interactPromptUI.Close();
         }
+    }
+
+    void GiveItem()
+    {
+        string itemName = "";
+        float rand = Random.value;
+        if(rand < taserChance) {
+            Inventory.TaserAmmo++;
+            itemName = "Taser";
+        }
+        else if(rand < flashChance) {
+            Inventory.FlashbangAmmo++;
+            itemName = "Flashbang";
+        }
+        playerInventory.UpdateUIText();
+
+        itemPopupUI.SetActive(true);
+        itemPopupUI.GetComponent<PopupUI>().UpdateItemPopupText(itemName); // update text on UI
     }
 }

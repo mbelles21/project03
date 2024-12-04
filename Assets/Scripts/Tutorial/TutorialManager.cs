@@ -12,7 +12,11 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // TutorialCompleted = false;
+        // set player ammo for tutorial
+        Inventory.FlashbangAmmo = 1;
+        Inventory.TaserAmmo = 1;
+        Inventory inventory = FindAnyObjectByType<Inventory>();
+        inventory.UpdateUIText();
     }
 
     // function will be called by player (OnTriggerEnter)

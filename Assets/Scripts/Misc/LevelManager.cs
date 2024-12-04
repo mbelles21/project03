@@ -16,6 +16,17 @@ public class LevelManager : MonoBehaviour
         uiManager.UnPause(); // to make sure game starts not paused
     }
 
+    // TODO: call each time player goes between floors (still needed for going back up)
+    public void SaveCheckpoint()
+    {
+        // save ammo count, current floor, and floor layout (TODO)
+        PlayerPrefs.SetInt("flash", Inventory.FlashbangAmmo);
+        PlayerPrefs.SetInt("taser", Inventory.TaserAmmo);
+        PlayerPrefs.SetInt("floor", CurrentFloor);
+
+        PlayerPrefs.Save();
+    }
+
     public void GoDownFloor()
     {
         //
