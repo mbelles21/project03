@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class DungeonConnectionHandler : MonoBehaviour
@@ -17,14 +18,17 @@ public class DungeonConnectionHandler : MonoBehaviour
         }
     }
 
-    public void ProcessConnections()
-    {
-        Debug.Log("Starting door connection process...");
-        Invoke("ProcessDoorConnections", 0.1f);
-    }
+    public bool IsProcessingConnections { get; private set; }
 
-    private void ProcessDoorConnections()
+    public IEnumerator ProcessConnectionsCoroutine()
     {
+        IsProcessingConnections = true;
+        Debug.Log("Starting door connection process...");
+
+        // Wait for physics to settle
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(0.2f);
+
         DoorPoint[] allDoors = FindObjectsByType<DoorPoint>(FindObjectsSortMode.None);
         Debug.Log($"Found {allDoors.Length} door points in scene");
 
@@ -34,9 +38,15 @@ public class DungeonConnectionHandler : MonoBehaviour
         {
             if (processedDoors.Contains(door1)) continue;
 
+            // Check if door1 is still valid
+            if (door1 == null) continue;
+
             foreach (var door2 in allDoors)
             {
                 if (door1 == door2 || processedDoors.Contains(door2)) continue;
+
+                // Check if door2 is still valid
+                if (door2 == null) continue;
 
                 if (Vector3.Distance(door1.transform.position, door2.transform.position) < 2f)
                 {
@@ -60,6 +70,9 @@ public class DungeonConnectionHandler : MonoBehaviour
 
                                 processedDoors.Add(door1);
                                 processedDoors.Add(door2);
+
+                                // Give physics a moment to update
+                                yield return new WaitForFixedUpdate();
                                 break;
                             }
                         }
@@ -67,11 +80,17 @@ public class DungeonConnectionHandler : MonoBehaviour
                 }
             }
         }
+
+        // Final wait to ensure all physics and rendering is complete
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(0.1f);
+
+        IsProcessingConnections = false;
+        Debug.Log("Door connection process complete");
     }
 
     private int GetDoorIndex(string doorName)
     {
-        // Handle both normal rooms and big rooms
         switch (doorName)
         {
             // Normal rooms and first set of big room doors
@@ -88,5 +107,10 @@ public class DungeonConnectionHandler : MonoBehaviour
                 Debug.LogWarning($"Unknown door name: {doorName}");
                 return -1;
         }
+    }
+
+    public void ProcessConnections()
+    {
+        StartCoroutine(ProcessConnectionsCoroutine());
     }
 }
