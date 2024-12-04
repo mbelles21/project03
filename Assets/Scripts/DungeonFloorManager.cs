@@ -221,10 +221,54 @@ public class DungeonFloorManager : MonoBehaviour
         generator.normalRoomRange = dungeonGeneratorPrefab.normalRoomRange;
         generator.largeRoomRange = dungeonGeneratorPrefab.largeRoomRange;
         generator.longRoomRange = dungeonGeneratorPrefab.longRoomRange;
-
         generator.roomSpacing = dungeonGeneratorPrefab.roomSpacing;
         generator.minimumDistanceFromStart = dungeonGeneratorPrefab.minimumDistanceFromStart;
+
+        // Copy enemy spawner settings
+        generator.SetupEnemySpawner();
+
+        EnemySpawner originalSpawner = dungeonGeneratorPrefab.GetComponent<EnemySpawner>();
+        if (originalSpawner != null)
+        {
+            EnemySpawner newSpawner = generator.GetComponent<EnemySpawner>();
+            newSpawner.enemyPrefabs = originalSpawner.enemyPrefabs;
+            newSpawner.baseSpawnChance = originalSpawner.baseSpawnChance;
+            newSpawner.incrementPerFloor = originalSpawner.incrementPerFloor;
+            newSpawner.maxSpawnChance = originalSpawner.maxSpawnChance;
+
+            Debug.Log($"Enemy spawner set up with {newSpawner.enemyPrefabs.Count} prefabs and base chance {newSpawner.baseSpawnChance}");
+        }
+        else
+        {
+            Debug.LogWarning("Original spawner not found on prefab!");
+        }
     }
+
+    // private void CopyGeneratorSettings(DungeonGenerator generator)
+    // {
+    //     if (dungeonGeneratorPrefab == null || generator == null) return;
+
+    //     // Copy all room prefabs
+    //     generator.startingRoomPrefab = dungeonGeneratorPrefab.startingRoomPrefab;
+    //     generator.stairRoomPrefab = dungeonGeneratorPrefab.stairRoomPrefab;
+    //     generator.normalRoomPrefabs = dungeonGeneratorPrefab.normalRoomPrefabs;
+    //     generator.largeRoomPrefabs = dungeonGeneratorPrefab.largeRoomPrefabs;
+    //     generator.longRoomPrefabs = dungeonGeneratorPrefab.longRoomPrefabs;
+
+    //     // Copy generation settings
+    //     generator.useRandomCounts = dungeonGeneratorPrefab.useRandomCounts;
+    //     generator.numberOfNormalRooms = dungeonGeneratorPrefab.numberOfNormalRooms;
+    //     generator.numberOfLargeRooms = dungeonGeneratorPrefab.numberOfLargeRooms;
+    //     generator.numberOfLongRooms = dungeonGeneratorPrefab.numberOfLongRooms;
+
+    //     // Copy random generation ranges
+    //     generator.normalRoomRange = dungeonGeneratorPrefab.normalRoomRange;
+    //     generator.largeRoomRange = dungeonGeneratorPrefab.largeRoomRange;
+    //     generator.longRoomRange = dungeonGeneratorPrefab.longRoomRange;
+
+    //     generator.roomSpacing = dungeonGeneratorPrefab.roomSpacing;
+    //     generator.minimumDistanceFromStart = dungeonGeneratorPrefab.minimumDistanceFromStart;
+    // }
     public void MoveToNextFloor(Vector3 stairPosition)
     {
         int nextFloorLevel = currentFloorLevel + 1;

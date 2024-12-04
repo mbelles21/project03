@@ -42,8 +42,10 @@ public class DungeonGenerator : MonoBehaviour
     public bool IsFinalFloor { get; private set; } = false;
 
 
+
     void Start()
     {
+
         if (stairRoomPrefab == null)
         {
             Debug.LogError("Stair Room Prefab is not assigned!");
@@ -51,6 +53,15 @@ public class DungeonGenerator : MonoBehaviour
         }
         StartCoroutine(GenerateDungeonSequence());
     }
+    // void Start()
+    // {
+    //     if (stairRoomPrefab == null)
+    //     {
+    //         Debug.LogError("Stair Room Prefab is not assigned!");
+    //         return;
+    //     }
+    //     StartCoroutine(GenerateDungeonSequence());
+    // }
 
 
     private void DetermineRoomCounts(out int normalCount, out int largeCount, out int longCount)
@@ -378,6 +389,46 @@ public class DungeonGenerator : MonoBehaviour
         return false;
     }
 
+    public void SetupEnemySpawner()
+    {
+        // Get or add the enemy spawner component
+        enemySpawner = GetComponent<EnemySpawner>();
+        if (enemySpawner == null)
+        {
+            enemySpawner = gameObject.AddComponent<EnemySpawner>();
+        }
+    }
+
+    // private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size, bool enemiesAllowed = true)
+    // {
+    //     Debug.Log($"PlaceRoom: Placing {prefab.name} at position ({gridPos.x}, {gridPos.y})");
+
+    //     float heightOffset = 1f;
+    //     Vector3 worldPos = new Vector3(gridPos.x * roomSpacing, heightOffset, gridPos.y * roomSpacing);
+    //     GameObject room = Instantiate(prefab, worldPos, Quaternion.identity);
+    //     room.transform.SetParent(transform);
+    //     generatedRooms.Add(room);
+
+    //     Debug.Log($"PlaceRoom: Before OccupyTiles, current occupied count: {occupiedTiles.Count}");
+    //     OccupyTiles(gridPos, size);
+    //     Debug.Log($"PlaceRoom: After OccupyTiles, new occupied count: {occupiedTiles.Count}");
+
+    //     RoomBehaviour roomBehaviour = room.GetComponent<RoomBehaviour>();
+    //     if (roomBehaviour != null)
+    //     {
+    //         for (int i = 0; i < roomBehaviour.wallSections.Length; i++)
+    //         {
+    //             roomBehaviour.ShowWall(i);
+    //         }
+    //     }
+
+    //     // Enemy spawning logic
+    //     if (enemySpawner != null && enemiesAllowed)
+    //     {
+    //         enemySpawner.SpawnEnemy(worldPos, (int)size);
+    //     }
+    // }
+
     private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size, bool enemiesAllowed = true)
     {
         Debug.Log($"PlaceRoom: Placing {prefab.name} at position ({gridPos.x}, {gridPos.y})");
@@ -401,10 +452,15 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        // Enemy spawning logic
-        if (enemySpawner != null && enemiesAllowed)
+        // Enemy spawning logic - now with better error checking
+        if (enemySpawner != null && enemiesAllowed && prefab != startingRoomPrefab && prefab != stairRoomPrefab)
         {
+            Debug.Log($"Attempting to spawn enemies in room at {worldPos}");
             enemySpawner.SpawnEnemy(worldPos, (int)size);
+        }
+        else if (enemySpawner == null)
+        {
+            Debug.LogWarning("Enemy spawner is null - no enemies will be spawned");
         }
     }
 
