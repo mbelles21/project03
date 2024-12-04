@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class TriggerManager : MonoBehaviour
 {
-    private LevelManager levelManager;
+    private TutorialManager tutorialManager;
     private TutorialCollider tutorialCollider;
 
     void Start() 
     {
-        levelManager = FindAnyObjectByType<LevelManager>();
+        tutorialManager = FindAnyObjectByType<TutorialManager>();
     }
 
     void OnTriggerEnter(Collider collider)
     {
         // logic for loading next floor (if necessary)
         if(collider.CompareTag("Finish")) {
-            if(levelManager != null) {
-                levelManager.GoDownFloor();
+            if(tutorialManager != null) {
+                tutorialManager.EndTutorial();
             }
         }
 

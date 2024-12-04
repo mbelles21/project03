@@ -5,10 +5,40 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+    private MainMenu mainMenu;
+
+    void Start()
+    {
+        mainMenu = GetComponent<MainMenu>();
+
+        // get tutorial completion state
+        int tutorialProgress = PlayerPrefs.GetInt("tutorial", 0);
+        if(tutorialProgress == 1) {
+            TutorialManager.TutorialCompleted = true;
+        } else {
+            TutorialManager.TutorialCompleted = false;
+        }
+    }
+
     public void StartNewGame()
     {
+        // to give option to replay tutorial level if already played
+        if(TutorialManager.TutorialCompleted) {
+            mainMenu.ActivateTutorialUI();
+        }
+        else {
+            GoToTutorial();
+        }
+    }
+
+    public void GoToTutorial()
+    {
         SceneManager.LoadScene("Tutorial");
-        // TODO: add extra functionality to skip tutorial if game already completed
+    }
+
+    public void GoToLevel()
+    {
+        SceneManager.LoadScene("DungeonGeneration");
     }
 
     public void LoadGame()

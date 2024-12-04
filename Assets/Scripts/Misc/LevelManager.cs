@@ -18,31 +18,11 @@ public class LevelManager : MonoBehaviour
 
     public void GoDownFloor()
     {
-        // will need extra logic for keeping track of progression
-        Debug.Log("going down...");
-        
-        TutorialManager tutorialManager = GetComponent<TutorialManager>();
-
-        // if scene has TutorialManager it's the tutorial, else it's a normal level
-        // TODO: change logic when getting the real level
-        if(tutorialManager != null) {
-            // SceneManager.LoadScene("DemoLevel");
-            Debug.Log("tutorial completed!");
-        }
-        else {
-            SceneManager.LoadScene("MainMenu");
-        }
+        //
     }
 
     public void GoUpFloor()
     {
-        // will also need extra logic for keeping track of progression
-        Debug.Log("going up...");
-    }
-
-    public void EndTutorial()
-    {
-        Debug.Log("tutorial complete");
-        
+        //
     }
 }
