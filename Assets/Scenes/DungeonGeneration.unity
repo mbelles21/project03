@@ -227,6 +227,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &679001798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 679001799}
+  m_Layer: 0
+  m_Name: Enemy Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &679001799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679001798}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1161330478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -334,6 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1386853172}
   - component: {fileID: 1386853171}
+  - component: {fileID: 1386853173}
   m_Layer: 0
   m_Name: DungeonFloorManager
   m_TagString: Untagged
@@ -355,7 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dungeonGeneratorPrefab: {fileID: 503466310063357574, guid: b4d6d28783c06410cb1e4507e12d5838, type: 3}
   verticalFloorSpacing: 50
-  maxFloors: 3
+  maxFloors: 1
   baseHeight: 1
   loadingScreenUI: {fileID: 0}
 --- !u!4 &1386853172
@@ -373,6 +405,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1386853173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386853170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5506362e2dc70b843ab23f94ce1ffc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyParent: {fileID: 679001799}
+  enemyPrefabs:
+  - {fileID: 7688541550393679934, guid: 19e7a67704dfa054291da823b3b362a3, type: 3}
+  - {fileID: 8347136970724159149, guid: 70a0038d63871e34d907a965e60e2572, type: 3}
+  baseSpawnChance: 0.2
+  incrementPerFloor: 0.05
+  maxSpawnChance: 1
 --- !u!1 &1576815967
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,6 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18029b5314bdb62458857d9735fb50b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxFloor: 2
 --- !u!4 &1576815969
 Transform:
   m_ObjectHideFlags: 0
@@ -424,4 +476,5 @@ SceneRoots:
   - {fileID: 1576815969}
   - {fileID: 611644742}
   - {fileID: 1161330478}
+  - {fileID: 679001799}
   - {fileID: 1386853172}

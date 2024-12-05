@@ -7,6 +7,10 @@ public class MenuManager : MonoBehaviour
 {
     private MainMenu mainMenu;
 
+    private int savedFlashAmmo;
+    private int savedTaserAmmo;
+    private int savedFloor;
+
     void Start()
     {
         mainMenu = GetComponent<MainMenu>();
@@ -20,15 +24,20 @@ public class MenuManager : MonoBehaviour
         }
 
         // get ammo 
-        int savedFlashAmmo = PlayerPrefs.GetInt("flash", 0);
-        int savedTaserAmmo = PlayerPrefs.GetInt("taser", 0);
+        savedFlashAmmo = PlayerPrefs.GetInt("flash", 0);
+        savedTaserAmmo = PlayerPrefs.GetInt("taser", 0);
 
         // get floor
-        int savedFloor = PlayerPrefs.GetInt("floor", 1);
+        savedFloor = PlayerPrefs.GetInt("floor", 1);
     }
 
     public void StartNewGame()
     {
+        // set defaults for new game
+        Inventory.FlashbangAmmo = 0;
+        Inventory.TaserAmmo = 0;
+        LevelManager.CurrentFloor = 1;
+
         // to give option to replay tutorial level if already played
         if(TutorialManager.TutorialCompleted) {
             mainMenu.ActivateTutorialUI();
@@ -50,9 +59,16 @@ public class MenuManager : MonoBehaviour
 
     public void LoadGame()
     {
-        Debug.Log("not yet implemented");
-        // TODO: implement
-        // TODO: logic for going straight to treasure room 
+        // TODO: finish implementing
+        // TODO: logic for going straight to treasure room (maybe not necessary bc checkpoint doesn't get triggered in TreasureRoom)
+        // TODO: load timer value
+
+        Inventory.FlashbangAmmo = savedFlashAmmo;
+        Inventory.TaserAmmo = savedTaserAmmo;
+        LevelManager.CurrentFloor = savedFloor;
+
+        // Debug.Log("loading floor " + LevelManager.CurrentFloor);
+        SceneManager.LoadScene("DungeonGeneration");
     }
 
     public void GoToMainMenu()

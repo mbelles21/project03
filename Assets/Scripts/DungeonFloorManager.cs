@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class DungeonFloorManager : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class DungeonFloorManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject); // taken out so new level would load when scene reloaded
         }
         else if (instance != this)
         {
@@ -258,6 +259,7 @@ public class DungeonFloorManager : MonoBehaviour
         generator.roomSpacing = dungeonGeneratorPrefab.roomSpacing;
         generator.minimumDistanceFromStart = dungeonGeneratorPrefab.minimumDistanceFromStart;
 
+        /*
         generator.SetupEnemySpawner();
 
         EnemySpawner originalSpawner = dungeonGeneratorPrefab.GetComponent<EnemySpawner>();
@@ -274,10 +276,12 @@ public class DungeonFloorManager : MonoBehaviour
         {
             Debug.LogWarning("Original spawner not found on prefab!");
         }
+        */
     }
 
     public void MoveToNextFloor(Vector3 stairPosition)
     {
+        /*
         int nextFloorLevel = currentFloorLevel + 1;
         if (nextFloorLevel <= maxFloors)
         {
@@ -289,6 +293,11 @@ public class DungeonFloorManager : MonoBehaviour
         {
             Debug.Log("Reached maximum floor level!");
         }
+        */
+
+        // changes done by Matthew for the sake of the project
+        LevelManager levelManager = FindAnyObjectByType<LevelManager>();
+        levelManager.GoDownFloor();
     }
 
     public void ReturnToPreviousFloor()

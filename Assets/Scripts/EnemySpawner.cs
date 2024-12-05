@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public Transform enemyParent;
     public List<GameObject> enemyPrefabs;
 
     [Header("Spawn Chance Variables")]
@@ -26,7 +27,14 @@ public class EnemySpawner : MonoBehaviour
             if(canSpawn) {
                 Debug.Log("enemy spawned at " + roomPos);
                 Vector3 spawnPos = new Vector3(roomPos.x + i * 18, -5f, roomPos.z + i * 18); // to offset second enemy pos (if applicable)
-                Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity);
+                GameObject newEnemy = Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity);
+                if(enemyParent != null) {
+                    Debug.Log("setting parent");
+                    newEnemy.transform.SetParent(enemyParent);
+                }
+                else {
+                    Debug.Log("no parent");
+                }
             }
         }
     }

@@ -63,6 +63,7 @@ MonoBehaviour:
   longRoomRange: {x: 0, y: 0}
   roomSpacing: 18
   minimumDistanceFromStart: 6
+  enemySpawner: {fileID: 0}
 --- !u!114 &7070342206913274607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5506362e2dc70b843ab23f94ce1ffc1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyParent: {fileID: 0}
   enemyPrefabs:
   - {fileID: 7688541550393679934, guid: 19e7a67704dfa054291da823b3b362a3, type: 3}
   - {fileID: 8347136970724159149, guid: 70a0038d63871e34d907a965e60e2572, type: 3}
