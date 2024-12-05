@@ -50,16 +50,21 @@ MonoBehaviour:
   stairRoomPrefab: {fileID: 7307159777703094897, guid: 4ccf4b1076c4a43ff85ca4c5d69000b7, type: 3}
   normalRoomPrefabs:
   - {fileID: 6974592565622917001, guid: bc7f016572f8a4a6990c45d6568a568e, type: 3}
+  - {fileID: 3131860553003493287, guid: 097f057043fe04b728a40624d8041114, type: 3}
+  - {fileID: 2261903991822882158, guid: 47d77ac818c854d4d829852e6d3a02ff, type: 3}
+  - {fileID: 6913255513038358320, guid: d9845749956814bad97fde60aba67fc8, type: 3}
   largeRoomPrefabs:
   - {fileID: 54125094164079368, guid: 764b13a05fa1d4e2cb0ac7d275163428, type: 3}
   - {fileID: 8239437837450737668, guid: 0c7d847f79f144108995264bf3b25c0f, type: 3}
+  - {fileID: 7167132863339819272, guid: 681498f7cfb3c45f6b50b40452b1f75f, type: 3}
+  - {fileID: 3813492322797517565, guid: b53cc33d32dbe4b639d5591c434fc2ca, type: 3}
   longRoomPrefabs: []
   useRandomCounts: 1
   numberOfNormalRooms: 5
   numberOfLargeRooms: 1
   numberOfLongRooms: 0
-  normalRoomRange: {x: 5, y: 12}
-  largeRoomRange: {x: 1, y: 5}
+  normalRoomRange: {x: 6, y: 14}
+  largeRoomRange: {x: 2, y: 7}
   longRoomRange: {x: 0, y: 0}
   roomSpacing: 18
   minimumDistanceFromStart: 6
