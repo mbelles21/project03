@@ -13,6 +13,10 @@ public class EnemyBehavior : MonoBehaviour
     public float detectionRange = 5f;
     public float chaseStopRange = 6f;
 
+    public bool blindMode; // Enable blind mode in the Inspector
+    public float sprintDetectionBoost = 10f; // Extra detection range when the player is sprinting
+    private bool isPlayerSprinting = false;
+
     // Ranged-specific properties
     public float attackRange = 8f;
     public float attackCooldown = 2f;
@@ -70,6 +74,48 @@ public class EnemyBehavior : MonoBehaviour
             return;
         }
 
+        // Check player's sprinting state
+        PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+        if (playerMovement != null)
+        {
+            isPlayerSprinting = playerMovement.movement.isSprinting;
+        }
+
+        if (blindMode)
+        {
+            HandleBlindModeLogic();
+        }
+        else
+        {
+            HandleNormalLogic();
+        }
+    }
+
+    private void HandleBlindModeLogic()
+    {
+        float effectiveDetectionRange = meleeAttackRange;
+
+        // Extend detection range if the player is sprinting
+        if (isPlayerSprinting)
+        {
+            effectiveDetectionRange += sprintDetectionBoost;
+        }
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= effectiveDetectionRange)
+        {
+            // Blind enemy is dangerous in melee range or if the player is sprinting nearby
+            AttackMelee();
+        }
+        else if (distanceToPlayer > effectiveDetectionRange)
+        {
+            PatrolOrWander();
+        }
+    }
+
+    private void HandleNormalLogic()
+    {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (enemyType == EnemyType.Ranged && distanceToPlayer <= attackRange && distanceToPlayer > detectionRange)
@@ -99,28 +145,31 @@ public class EnemyBehavior : MonoBehaviour
         }
         else if (distanceToPlayer > attackRange)
         {
+            PatrolOrWander();
+        }
+    }
+
+    private void PatrolOrWander()
+    {
+        if (waypoints.Length > 0)
+        {
             Patrol();
+        }
+        else
+        {
+            WanderRandomly();
         }
     }
 
     private void Patrol()
     {
-        if (waypoints.Length > 0)
-        {
-            // Patrol to waypoints
-            Transform targetWaypoint = waypoints[currentWaypointIndex];
-            MoveTowards(targetWaypoint.position, patrolSpeed);
-            RotateTowards(targetWaypoint.position);
+        Transform targetWaypoint = waypoints[currentWaypointIndex];
+        MoveTowards(targetWaypoint.position, patrolSpeed);
+        RotateTowards(targetWaypoint.position);
 
-            if (Vector3.Distance(transform.position, targetWaypoint.position) < 2f)
-            {
-                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
-            }
-        }
-        else
+        if (Vector3.Distance(transform.position, targetWaypoint.position) < 2f)
         {
-            // Random wandering
-            WanderRandomly();
+            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
         }
     }
 
@@ -128,21 +177,17 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (timeToNextRandomMove <= 0f || Vector3.Distance(transform.position, randomTarget) < 1f)
         {
-            // Generate a random target position within a certain range
             randomTarget = new Vector3(
-                transform.position.x + Random.Range(-10f, 10f), // Adjust range as needed
+                transform.position.x + Random.Range(-10f, 10f),
                 transform.position.y,
                 transform.position.z + Random.Range(-10f, 10f)
             );
 
-            timeToNextRandomMove = Random.Range(2f, 5f); // Random time before next move
+            timeToNextRandomMove = Random.Range(2f, 5f);
         }
 
-        // Move towards the random target
         MoveTowards(randomTarget, patrolSpeed);
         RotateTowards(randomTarget);
-
-        // Decrease the time to the next random move
         timeToNextRandomMove -= Time.deltaTime;
     }
 
@@ -157,14 +202,14 @@ public class EnemyBehavior : MonoBehaviour
         anim.SetBool("Walk", true);
         Vector3 direction = (target - transform.position).normalized;
         Vector3 velocity = direction * speed;
-        velocity.y = rb.velocity.y; // Retain vertical velocity for gravity
+        velocity.y = rb.velocity.y;
         rb.velocity = velocity;
     }
 
     private void RotateTowards(Vector3 targetPosition)
     {
         Vector3 direction = (targetPosition - transform.position).normalized;
-        direction.y = 0; // Ignore vertical differences
+        direction.y = 0;
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
@@ -174,7 +219,6 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (Time.time - lastAttackTime >= attackCooldown)
         {
-            Debug.Log("Enemy is attacking with a ranged projectile!"); // Debug log
             lastAttackTime = Time.time;
 
             if (projectilePrefab != null && projectileSpawnPoint != null)
@@ -186,7 +230,6 @@ public class EnemyBehavior : MonoBehaviour
                 {
                     Vector3 direction = (player.position - projectileSpawnPoint.position).normalized;
                     projectileScript.Initialize(direction);
-                    Debug.Log("Projectile initialized with direction.");
                 }
             }
         }
@@ -194,23 +237,12 @@ public class EnemyBehavior : MonoBehaviour
 
     private void AttackMelee()
     {
-        anim.SetTrigger("Attack");
         if (Time.time - lastAttackTime >= meleeAttackCooldown)
         {
+            anim.SetTrigger("Attack");
             lastAttackTime = Time.time;
-
             Debug.Log($"Melee enemy attacked the player for {meleeDamage} damage!");
-
-            // Safely invoke the event
-            if (HitPlayer != null)
-            {
-                HitPlayer.Invoke(meleeDamage);
-            }
-            else
-            {
-                Debug.LogWarning("No subscribers for HitPlayer event.");
-            }
+            HitPlayer?.Invoke(meleeDamage);
         }
     }
-
 }
