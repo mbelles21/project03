@@ -53,11 +53,13 @@ MonoBehaviour:
   - {fileID: 3131860553003493287, guid: 097f057043fe04b728a40624d8041114, type: 3}
   - {fileID: 2261903991822882158, guid: 47d77ac818c854d4d829852e6d3a02ff, type: 3}
   - {fileID: 6913255513038358320, guid: d9845749956814bad97fde60aba67fc8, type: 3}
+  - {fileID: 230341617118457394, guid: 6338f1f8c91a44fb78bc45620af51e7a, type: 3}
   largeRoomPrefabs:
   - {fileID: 54125094164079368, guid: 764b13a05fa1d4e2cb0ac7d275163428, type: 3}
   - {fileID: 8239437837450737668, guid: 0c7d847f79f144108995264bf3b25c0f, type: 3}
   - {fileID: 7167132863339819272, guid: 681498f7cfb3c45f6b50b40452b1f75f, type: 3}
   - {fileID: 3813492322797517565, guid: b53cc33d32dbe4b639d5591c434fc2ca, type: 3}
+  - {fileID: 4368116817119279949, guid: 52d34849eb11d4fc1a5fe856c9a17f57, type: 3}
   longRoomPrefabs: []
   useRandomCounts: 1
   numberOfNormalRooms: 5
