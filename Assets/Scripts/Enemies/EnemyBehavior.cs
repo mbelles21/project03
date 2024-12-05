@@ -194,10 +194,22 @@ public class EnemyBehavior : MonoBehaviour
         {
             lastAttackTime = Time.time;
 
-            // Deal damage to the player (replace this with your own damage logic)
             Debug.Log($"Melee enemy attacked the player for {meleeDamage} damage!");
 
+<<<<<<< Updated upstream
             // Optionally, apply damage directly to the player's health script (if implemented)
+=======
+            // Safely invoke the event
+            if (HitPlayer != null)
+            {
+                HitPlayer.Invoke(meleeDamage);
+            }
+            else
+            {
+                Debug.LogWarning("No subscribers for HitPlayer event.");
+            }
+>>>>>>> Stashed changes
         }
     }
+
 }

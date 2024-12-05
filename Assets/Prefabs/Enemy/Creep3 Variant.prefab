@@ -124,8 +124,8 @@ MonoBehaviour:
   attackCooldown: 2
   projectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
-  meleeAttackRange: 1.5
-  meleeAttackCooldown: 1
+  meleeAttackRange: 3
+  meleeAttackCooldown: 5
   meleeDamage: 20
   player: {fileID: 0}
   obstacleDetectionDistance: 1.5
