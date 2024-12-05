@@ -36,9 +36,11 @@ public class PlayerMovement : MonoBehaviour
     public float dodgeDuration = 0.2f;
 
     private Inventory playerInventory;
-
-    void Start()
-    {
+    public delegate void HumanWalk();
+    public static event HumanWalk StartWalk;
+    public static event HumanWalk StopWalk;
+    
+    void Start(){
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         maceSwing = Mace.GetComponent<MaceSwing>();
@@ -102,11 +104,10 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("Walking", true);
             isMoving = true;
-        }
-        else if (context.canceled)
-        {
+        } else if(context.canceled){
             anim.SetBool("Walking", false);
             isMoving = false;
+            StopWalk.Invoke();
         }
         input = context.ReadValue<Vector2>();
         direction = new Vector3(input.x, 0, input.y);

@@ -49,6 +49,10 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void TakeDamage(float damage);
     public static event TakeDamage HitPlayer;
 
+    public delegate void HumanBonked();
+    public static event HumanBonked playerSound;
+    public static event HumanBonked fire;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -230,6 +234,8 @@ public class EnemyBehavior : MonoBehaviour
                 {
                     Vector3 direction = (player.position - projectileSpawnPoint.position).normalized;
                     projectileScript.Initialize(direction);
+                    Debug.Log("Projectile initialized with direction.");
+                    fire.Invoke();
                 }
             }
         }
@@ -242,7 +248,9 @@ public class EnemyBehavior : MonoBehaviour
             anim.SetTrigger("Attack");
             lastAttackTime = Time.time;
             Debug.Log($"Melee enemy attacked the player for {meleeDamage} damage!");
-            HitPlayer?.Invoke(meleeDamage);
+            HitPlayer.Invoke(meleeDamage);
+            playerSound.Invoke();
+            // Optionally, apply damage directly to the player's health script (if implemented)
         }
     }
 }

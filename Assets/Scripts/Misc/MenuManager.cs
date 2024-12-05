@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+    public GameObject settings;
     public void StartNewGame()
     {
         SceneManager.LoadScene("Tutorial");
@@ -31,5 +32,13 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("quitting game...");
         Application.Quit();
+    }
+
+    public void OpenSettings(){
+        settings.SetActive(true);
+    }
+
+    public void CloseSettings(){
+        settings.SetActive(false);
     }
 }

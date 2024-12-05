@@ -20,6 +20,9 @@ public class GrenadeThrow : MonoBehaviour
     private ItemTrajectory itemTrajectory;
     private bool hasTriggered = false;
     // Start is called before the first frame update
+    public delegate void Grenade();
+    public static event Grenade taserSound;
+    public static event Grenade flashSound;
     void Awake() {
         rb = GetComponent<Rigidbody>();
         itemTrajectory = GetComponentInChildren<ItemTrajectory>();
@@ -55,6 +58,7 @@ public class GrenadeThrow : MonoBehaviour
             Flash flasher = flashbang.GetComponent<Flash>();
             if(flasher != null){
                 flasher.SetDamage(stunDamage);
+                flashSound.Invoke();
             }
         }
         else
@@ -64,6 +68,7 @@ public class GrenadeThrow : MonoBehaviour
             if (enemy != null)
             {
                 enemy.StunEnemy();
+                taserSound.Invoke();
             }
         }
 

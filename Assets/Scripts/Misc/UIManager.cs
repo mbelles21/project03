@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     public CinemachineVirtualCamera cinemachineCamera;
     public GameObject deathScreen;
     private bool timerRunning = true;
-
+    public GameObject settings;
     public void Awake(){
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 cinemachineCamera.enabled = true;
                 player.enabled = true;
-                Time.timeScale = 1f;
+                Time.timeScale = PlayerPrefs.GetFloat("timeScale");
             }
         }
     }
@@ -70,7 +70,7 @@ public class UIManager : MonoBehaviour
         pauseMenu.SetActive(togglePause);
         cinemachineCamera.enabled = true;
         player.enabled = true;
-        Time.timeScale = 1f;
+        Time.timeScale = PlayerPrefs.GetFloat("timeScale");
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -97,5 +97,13 @@ public class UIManager : MonoBehaviour
         player.enabled = false;
         cinemachineCamera.enabled = false;
         Time.timeScale = 0f;
+    }
+
+    public void TurnOnSettings(){
+        settings.SetActive(true);
+    }
+
+    public void TurnOffSettings(){
+        settings.SetActive(false);
     }
 }
