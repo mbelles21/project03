@@ -89,7 +89,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 4215fbbb18f1c4f4d89a63f342c71b7d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 5549735138221924755}
   - component: {fileID: 4725545908644070242}
   - component: {fileID: 8043178490599119969}
+  - component: {fileID: 5141721129103434041}
   m_Layer: 0
   m_Name: Taser
   m_TagString: Untagged
@@ -373,6 +374,19 @@ MonoBehaviour:
   throwSpeed: 4.9
   stunDamage: 75
   flash: {fileID: 0}
+--- !u!114 &5141721129103434041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5188462909036345351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8ee434f2caf62469668fa6e12c7b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChildColor: {fileID: 1792355733677532833}
 --- !u!1 &6513624444251902920
 GameObject:
   m_ObjectHideFlags: 0
