@@ -27,14 +27,19 @@ public class LevelManager : MonoBehaviour
         PlayerPrefs.SetInt("flash", Inventory.FlashbangAmmo);
         PlayerPrefs.SetInt("taser", Inventory.TaserAmmo);
         PlayerPrefs.SetInt("floor", CurrentFloor);
+        PlayerPrefs.SetFloat("timer", UIManager.carriedTime);
 
         // Debug.Log("checkpoint reached");
 
         PlayerPrefs.Save();
+
+        uiManager.ChangeTimerState();
     }
 
     public void GoDownFloor()
     {
+        uiManager.StoreTimerValue(); // stop timer
+
         CurrentFloor++;
 
         if(CurrentFloor == maxFloor) {

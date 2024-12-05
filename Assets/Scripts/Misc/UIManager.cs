@@ -14,7 +14,9 @@ public class UIManager : MonoBehaviour
     public PlayerMovement player;
     public CinemachineVirtualCamera cinemachineCamera;
     public GameObject deathScreen;
-    private bool timerRunning = true;
+    private bool timerRunning = false;
+
+    public static float carriedTime = 0f;
 
     public void Awake(){
         Cursor.visible = false;
@@ -23,6 +25,8 @@ public class UIManager : MonoBehaviour
 
     public void Start(){
         PlayerHealth.playerDied += Died;
+
+        levelTimer = carriedTime;
     }
 
     public void OnDestroy(){
@@ -97,5 +101,17 @@ public class UIManager : MonoBehaviour
         player.enabled = false;
         cinemachineCamera.enabled = false;
         Time.timeScale = 0f;
+    }
+
+
+    public void StoreTimerValue()
+    {
+        ChangeTimerState();
+        carriedTime = levelTimer;
+    }
+
+    public void ChangeTimerState()
+    {
+        timerRunning = !timerRunning;
     }
 }

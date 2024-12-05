@@ -184,7 +184,9 @@ public class EnemyBehavior : MonoBehaviour
 
                 if (projectileScript != null)
                 {
-                    Vector3 direction = (player.position - projectileSpawnPoint.position).normalized;
+                    // adjust position bc player root is at their feet
+                    Vector3 playerPos = new Vector3(player.position.x, player.position.y + 1, player.position.z);
+                    Vector3 direction = (playerPos - projectileSpawnPoint.position).normalized;
                     projectileScript.Initialize(direction);
                     Debug.Log("Projectile initialized with direction.");
                 }

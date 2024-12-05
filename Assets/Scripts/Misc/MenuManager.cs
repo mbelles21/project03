@@ -10,6 +10,7 @@ public class MenuManager : MonoBehaviour
     private int savedFlashAmmo;
     private int savedTaserAmmo;
     private int savedFloor;
+    private float savedTime;
 
     void Start()
     {
@@ -29,6 +30,9 @@ public class MenuManager : MonoBehaviour
 
         // get floor
         savedFloor = PlayerPrefs.GetInt("floor", 1);
+
+        // get time
+        savedTime = PlayerPrefs.GetFloat("timer", 0);
     }
 
     public void StartNewGame()
@@ -37,6 +41,7 @@ public class MenuManager : MonoBehaviour
         Inventory.FlashbangAmmo = 0;
         Inventory.TaserAmmo = 0;
         LevelManager.CurrentFloor = 1;
+        UIManager.carriedTime = 0f;
 
         // to give option to replay tutorial level if already played
         if(TutorialManager.TutorialCompleted) {
@@ -66,6 +71,7 @@ public class MenuManager : MonoBehaviour
         Inventory.FlashbangAmmo = savedFlashAmmo;
         Inventory.TaserAmmo = savedTaserAmmo;
         LevelManager.CurrentFloor = savedFloor;
+        UIManager.carriedTime = savedTime;
 
         // Debug.Log("loading floor " + LevelManager.CurrentFloor);
         SceneManager.LoadScene("DungeonGeneration");
