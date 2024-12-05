@@ -112,14 +112,14 @@ MonoBehaviour:
   enemyType: 1
   waypoints: []
   patrolSpeed: 2
-  chaseSpeed: 2
+  chaseSpeed: 4
   detectionRange: 10
   chaseStopRange: 0
   attackRange: 20
   attackCooldown: 5
   projectilePrefab: {fileID: 8224441777993423001, guid: 9b626703ead4be84291eed0da77a8e0e, type: 3}
   projectileSpawnPoint: {fileID: 6877772018440599842}
-  meleeAttackRange: 0
+  meleeAttackRange: 3
   meleeAttackCooldown: 5
   meleeDamage: 20
   player: {fileID: 0}
