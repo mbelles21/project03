@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isThrowing = false;
     private Animator anim;
     private MaceSwing maceSwing;
-    [SerializeField] private Movement movement;
+    [SerializeField] public Movement movement;
     public GameObject spawnPoint;
     public List<GameObject> grenadeList = new List<GameObject>();
     private int currentIndex = 0;
