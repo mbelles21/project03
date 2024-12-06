@@ -104,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("Walking", true);
             isMoving = true;
+            StartWalk.Invoke();
         } else if(context.canceled){
             anim.SetBool("Walking", false);
             isMoving = false;
