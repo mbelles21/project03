@@ -12,6 +12,8 @@ public class MenuManager : MonoBehaviour
     private int savedFloor;
     private float savedTime;
 
+    public GameObject settings;
+
     void Start()
     {
         mainMenu = GetComponent<MainMenu>();
@@ -89,5 +91,13 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("quitting game...");
         Application.Quit();
+    }
+
+    public void OpenSettings(){
+        settings.SetActive(true);
+    }
+
+    public void CloseSettings(){
+        settings.SetActive(false);
     }
 }

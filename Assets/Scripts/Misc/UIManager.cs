@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
 
     public static float carriedTime = 0f;
 
+    public GameObject settings;
+    
     public void Awake(){
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -64,7 +66,7 @@ public class UIManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 cinemachineCamera.enabled = true;
                 player.enabled = true;
-                Time.timeScale = 1f;
+                Time.timeScale = PlayerPrefs.GetFloat("timeScale");
             }
         }
     }
@@ -74,7 +76,7 @@ public class UIManager : MonoBehaviour
         pauseMenu.SetActive(togglePause);
         cinemachineCamera.enabled = true;
         player.enabled = true;
-        Time.timeScale = 1f;
+        Time.timeScale = PlayerPrefs.GetFloat("timeScale");
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -113,5 +115,13 @@ public class UIManager : MonoBehaviour
     public void ChangeTimerState()
     {
         timerRunning = !timerRunning;
+    }
+    
+    public void TurnOnSettings(){
+        settings.SetActive(true);
+    }
+
+    public void TurnOffSettings(){
+        settings.SetActive(false);
     }
 }

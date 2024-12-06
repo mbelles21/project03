@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isThrowing = false;
     private Animator anim;
     private MaceSwing maceSwing;
-    [SerializeField] private Movement movement;
+    [SerializeField] public Movement movement;
     public GameObject spawnPoint;
     public List<GameObject> grenadeList = new List<GameObject>();
     private int currentIndex = 0;
@@ -36,6 +36,9 @@ public class PlayerMovement : MonoBehaviour
     public float dodgeDuration = 0.2f;
 
     private Inventory playerInventory;
+    public delegate void HumanWalk();
+    public static event HumanWalk StartWalk;
+    public static event HumanWalk StopWalk;
     
     void Start(){
         cc = GetComponent<CharacterController>();
@@ -46,32 +49,40 @@ public class PlayerMovement : MonoBehaviour
         grenade = grenadeList[currentIndex];
     }
 
-    void Update(){
+    void Update()
+    {
         ApplyRotation();
         ApplyGravity();
         ApplyMovement();
-        if(thrownGrenade == null && isAiming && !isThrowing && !isSwinging){
+        if (thrownGrenade == null && isAiming && !isThrowing && !isSwinging)
+        {
             thrownGrenade = Instantiate(grenade, spawnPoint.transform.position, Quaternion.identity);
             thrownGrenade.transform.SetParent(spawnPoint.transform, false);
         }
-        if(thrownGrenade != null){
-            thrownGrenade.transform.localPosition = new Vector3(0,0,0);
+        if (thrownGrenade != null)
+        {
+            thrownGrenade.transform.localPosition = new Vector3(0, 0, 0);
             Vector3 throwDirection = cam.transform.forward;
             GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
-            grenade.ApplyDirection(new Vector3(throwDirection.x-0.1f, throwDirection.y+0.55f, throwDirection.z));
+            grenade.ApplyDirection(new Vector3(throwDirection.x - 0.1f, throwDirection.y + 0.55f, throwDirection.z));
         }
     }
 
-    private void ApplyGravity(){
-        if(IsGrounded() && velocity < 0.0f){
+    private void ApplyGravity()
+    {
+        if (IsGrounded() && velocity < 0.0f)
+        {
             velocity = -1.0f;
-        } else {
+        }
+        else
+        {
             velocity += gravity * Time.deltaTime;
         }
         direction.y = velocity;
     }
 
-    private void ApplyRotation(){
+    private void ApplyRotation()
+    {
         direction = Quaternion.Euler(0.0f, cam.transform.eulerAngles.y, 0.0f) * new Vector3(input.x, 0.0f, input.y);
         Vector3 cameraForward = cam.transform.forward;
         cameraForward.y = 0;
@@ -80,48 +91,76 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-    private void ApplyMovement(){
+    private void ApplyMovement()
+    {
         var targetSpeed = movement.isSprinting ? movement.speed * movement.multiplier : movement.speed;
         movement.currentSpeed = Mathf.MoveTowards(movement.currentSpeed, targetSpeed, movement.acceleration * Time.deltaTime);
         cc.Move(direction * movement.currentSpeed * Time.deltaTime);
     }
 
-    public void Move(InputAction.CallbackContext context){
-        if(context.started){
+    public void Move(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
             anim.SetBool("Walking", true);
             isMoving = true;
         } else if(context.canceled){
             anim.SetBool("Walking", false);
             isMoving = false;
+            StopWalk.Invoke();
         }
         input = context.ReadValue<Vector2>();
         direction = new Vector3(input.x, 0, input.y);
     }
 
-    public void Sprint(InputAction.CallbackContext context){
-        if(context.started){
+    public void Sprint(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
             movement.isSprinting = true;
-        } else if (context.canceled) {
-            movement.isSprinting= false;
+        }
+        else if (context.canceled)
+        {
+            movement.isSprinting = false;
         }
     }
 
-    public void Dodge(InputAction.CallbackContext context){
-        if(context.started || context.performed){
-            if(isMoving){
+    public void Dodge(InputAction.CallbackContext context)
+    {
+        if (context.started || context.performed)
+        {
+            if (isMoving)
+            {
                 StartCoroutine(PerformDodge());
             }
         }
     }
 
-    public void Interact(InputAction.CallbackContext context){
-        if (context.started) {
-            Debug.Log("Interact With Item");
+    // public void Interact(InputAction.CallbackContext context){
+    //     if (context.started) {
+    //         Debug.Log("Interact With Item");
+    //         GetComponent<Interactor>().InteractWithObject();
+    //     }
+    // }
+
+    public void Interact(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            // First check for hiding spots
+            HidingSpot[] nearbyHidingSpots = FindObjectsByType<HidingSpot>(FindObjectsSortMode.None);
+            foreach (var hidingSpot in nearbyHidingSpots)
+            {
+                hidingSpot.TryInteract(gameObject);
+            }
+
+            // If no hiding spot interaction occurred, try other interactions
             GetComponent<Interactor>().InteractWithObject();
         }
     }
 
-    public void Aim(InputAction.CallbackContext context){
+    public void Aim(InputAction.CallbackContext context)
+    {
         // only allow if player has grenades to use (note: logic will need to be changed if adding different throwables)
         if(playerInventory.ReturnCurrentAmmo() > 0) {
             if(context.started){
@@ -131,38 +170,49 @@ public class PlayerMovement : MonoBehaviour
                 thrownGrenade = Instantiate(grenade, spawnPoint.transform.position, Quaternion.identity);
                 thrownGrenade.transform.SetParent(spawnPoint.transform, false);
             }
-            if(context.canceled){
+            if (context.canceled)
+            {
                 isAiming = false;
                 anim.SetBool("Aiming", false);
-                if(thrownGrenade != null && !isThrowing){
+                if (thrownGrenade != null && !isThrowing)
+                {
                     GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
                     grenade.DestroyGrenade();
                 }
             }
         }
-        else {
+        else
+        {
             // repeat logic to prevent getting stuck in throwing state
             Debug.Log("no grenades");
             isAiming = false;
             anim.SetBool("Aiming", false);
-            if(thrownGrenade != null && !isThrowing){
+            if (thrownGrenade != null && !isThrowing)
+            {
                 GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
                 grenade.DestroyGrenade();
             }
         }
     }
 
-    public void Attack(InputAction.CallbackContext context){
-        if(context.started){
-            if(isAiming){
+    public void Attack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (isAiming)
+            {
                 Debug.Log("Throwing");
-                if(!isThrowing && !isSwinging){
+                if (!isThrowing && !isSwinging)
+                {
                     anim.SetTrigger("Throw");
                     StartCoroutine(Throw());
                 }
-            } else {
+            }
+            else
+            {
                 Debug.Log("Attacking");
-                if(!isSwinging && !isThrowing){
+                if (!isSwinging && !isThrowing)
+                {
                     Mace.transform.SetParent(HandHit.transform, false);
                     Mace.transform.localPosition = new Vector3(0.2794f, -0.225f, 0.0393f);
                     Mace.transform.localRotation = Quaternion.Euler(23.548f, 36.662f, -14.287f);
@@ -172,7 +222,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    public IEnumerator Swing(){
+    public IEnumerator Swing()
+    {
         maceSwing.isActive = true;
         isSwinging = true;
         yield return new WaitForSeconds(2.1f);
@@ -196,29 +247,33 @@ public class PlayerMovement : MonoBehaviour
         thrownGrenade.transform.SetParent(null, false);
         thrownGrenade.transform.localPosition = spawnPoint.transform.position;
         thrownGrenade = null;
-        if(grenadeScript != null){
+        if (grenadeScript != null)
+        {
             Vector3 throwDirection = cam.transform.forward;
-            throwDirection = new Vector3(throwDirection.x, throwDirection.y+1f, throwDirection.z);
+            throwDirection = new Vector3(throwDirection.x, throwDirection.y + 1f, throwDirection.z);
             grenadeScript.Throw(throwDirection);
         }
         yield return new WaitForSeconds(.4f);
         isThrowing = false;
         isAiming = false;
         anim.SetBool("Aiming", false);
-        if(thrownGrenade != null && !isThrowing){
+        if (thrownGrenade != null && !isThrowing)
+        {
             GrenadeThrow grenade = thrownGrenade.GetComponent<GrenadeThrow>();
             grenade.DestroyGrenade();
         }
     }
 
-    private IEnumerator PerformDodge(){
+    private IEnumerator PerformDodge()
+    {
         anim.SetTrigger("Roll");
         yield return new WaitForSeconds(.8f);
         cc.height = newHeight;
         float elapsedTime = 0f;
         Vector3 dodgeDirection = direction.normalized * dodgeDistance;
 
-        while(elapsedTime < dodgeDuration){
+        while (elapsedTime < dodgeDuration)
+        {
             cc.Move(dodgeDirection * (Time.deltaTime / dodgeDuration));
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -226,8 +281,10 @@ public class PlayerMovement : MonoBehaviour
         cc.height = height;
     }
 
-    public void Swap(InputAction.CallbackContext context){
-        if(context.started){
+    public void Swap(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
             currentIndex = (currentIndex + 1) % grenadeList.Count;
             grenade = grenadeList[currentIndex];
             Inventory.GrenadeType = currentIndex; // to update to correct ammo count
@@ -237,13 +294,15 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded() => cc.isGrounded;
 
-    public bool GetAiming(){
+    public bool GetAiming()
+    {
         return isAiming;
     }
 }
 
 [Serializable]
-public struct Movement{
+public struct Movement
+{
     public float speed;
     public float multiplier;
     public float acceleration;

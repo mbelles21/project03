@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6899769094566875521}
   - component: {fileID: 6899769094566875522}
-  - component: {fileID: 7984219792157707231}
-  - component: {fileID: 2391004332431761272}
-  - component: {fileID: 3486144470114884300}
-  - component: {fileID: 970003110764462713}
-  - component: {fileID: 1898194350305976712}
+  - component: {fileID: 1373349778952406243}
+  - component: {fileID: 8750928696589584684}
+  - component: {fileID: 1578711185210908151}
+  - component: {fileID: 1166557480756260122}
   m_Layer: 0
   m_Name: Creep3
   m_TagString: Untagged
@@ -62,7 +61,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 5287604246779524036}
   m_Enabled: 1
---- !u!114 &7984219792157707231
+--- !u!114 &1373349778952406243
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,18 +78,18 @@ MonoBehaviour:
   patrolSpeed: 2
   chaseSpeed: 4
   detectionRange: 5
-  chaseStopRange: 6
+  chaseStopRange: 0
   attackRange: 1
   attackCooldown: 2
   projectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
-  meleeAttackRange: 1.5
-  meleeAttackCooldown: 1
+  meleeAttackRange: 3
+  meleeAttackCooldown: 5
   meleeDamage: 20
   player: {fileID: 0}
   obstacleDetectionDistance: 1.5
   jumpForce: 5
---- !u!54 &2391004332431761272
+--- !u!54 &8750928696589584684
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,7 +116,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 32
   m_CollisionDetection: 0
---- !u!136 &3486144470114884300
+--- !u!136 &1578711185210908151
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,7 +139,7 @@ CapsuleCollider:
   m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0, y: 1.2, z: 0.25}
---- !u!114 &970003110764462713
+--- !u!114 &1166557480756260122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,19 +155,6 @@ MonoBehaviour:
   maxStun: 100
   currStun: 0
   isStunned: 0
---- !u!114 &1898194350305976712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6899769094566875523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd45b9642fee54b43bb57a30407410cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyID: 0
 --- !u!1001 &6899769093140065942
 PrefabInstance:
   m_ObjectHideFlags: 0
