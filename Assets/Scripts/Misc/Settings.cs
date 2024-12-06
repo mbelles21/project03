@@ -40,6 +40,8 @@ public class Settings : MonoBehaviour
             SetTimeScale();
             SetMusicVolume();
             SetSfxVolume();
+            SetXToggle();
+            SetYToggle();
         }
     }
 
@@ -49,6 +51,16 @@ public class Settings : MonoBehaviour
         xValue.text = PlayerPrefs.GetFloat("xSensitivity").ToString("F2");
         yValue.text = PlayerPrefs.GetFloat("ySensitivity").ToString("F2");
         timeValue.text = PlayerPrefs.GetFloat("timeScale").ToString("F2");
+    }
+
+    public void SetAllSettings(){
+        SetXSensitivity();
+        SetYSensitivity();
+        SetTimeScale();
+        SetMusicVolume();
+        SetSfxVolume();
+        SetXToggle();
+        SetYToggle();
     }
 
     private void LoadSettings(){

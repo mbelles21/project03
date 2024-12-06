@@ -204,6 +204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9006779}
+  - component: {fileID: 9006780}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -240,6 +241,32 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &9006780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006778}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 396416a661316254992f93a0565f5e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myMixer: {fileID: 24100000, guid: 6debaa3c7e2de6b44b84bd3d4725ecbd, type: 2}
+  musicSlider: {fileID: 100563409}
+  sfxSlider: {fileID: 339025599}
+  ySlider: {fileID: 20531507}
+  xSlider: {fileID: 1932253388}
+  timeSlider: {fileID: 633044622}
+  xInvert: {fileID: 1293954984}
+  yInvert: {fileID: 1981725899}
+  Player: {fileID: 1665712289999519709, guid: 59880cb529456a54eace0de7e803c469, type: 3}
+  musicValue: {fileID: 2122286094}
+  sfxValue: {fileID: 1228541397}
+  yValue: {fileID: 869876367}
+  xValue: {fileID: 1732925842}
+  timeValue: {fileID: 137022133}
 --- !u!1 &20531505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2901,6 +2928,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1626549503}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: CloseSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 42663086}
+        m_TargetAssemblyTypeName: Settings, Assembly-CSharp
+        m_MethodName: SetAllSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
