@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8750928696589584684}
   - component: {fileID: 1578711185210908151}
   - component: {fileID: 1166557480756260122}
+  - component: {fileID: 4547294491937259170}
   m_Layer: 0
   m_Name: Creep3
   m_TagString: Untagged
@@ -79,11 +80,13 @@ MonoBehaviour:
   chaseSpeed: 4
   detectionRange: 5
   chaseStopRange: 0
+  blindMode: 0
+  sprintDetectionBoost: 10
   attackRange: 1
   attackCooldown: 2
   projectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
-  meleeAttackRange: 3
+  meleeAttackRange: 4
   meleeAttackCooldown: 5
   meleeDamage: 20
   player: {fileID: 0}
@@ -155,6 +158,19 @@ MonoBehaviour:
   maxStun: 100
   currStun: 0
   isStunned: 0
+--- !u!114 &4547294491937259170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899769094566875523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd45b9642fee54b43bb57a30407410cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: 0
 --- !u!1001 &6899769093140065942
 PrefabInstance:
   m_ObjectHideFlags: 0
