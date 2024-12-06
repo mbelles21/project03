@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
-public class DungeonFloorManager : MonoBehaviour
+public class DungeonFloorManager : MonoBehaviour, IDataPersistence
 {
     [Header("Floor Settings")]
     public DungeonGenerator dungeonGeneratorPrefab;
@@ -35,7 +36,7 @@ public class DungeonFloorManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject); // taken out so new level would load when scene reloaded
         }
         else if (instance != this)
         {
@@ -56,7 +57,48 @@ public class DungeonFloorManager : MonoBehaviour
             loadingScreenUI.SetActive(false);
         }
 
-        GenerateFirstFloor();
+        if(LevelManager.IsLoadedFloor) {
+            // load data
+            Debug.Log("loading floor from file...");
+        }
+        else {
+            Debug.Log("generating random floor");
+            GenerateFirstFloor();
+        }
+        
+    }
+
+    public void LoadData(GameData data)
+    {
+        for(int i = 0; i < data.roomPositions.Count; i++) {
+            int roomTypeIndex = data.roomTypes[i];
+            GameObject roomPrefab = GetComponent<RoomListManager>().GetRoomPrefab(roomTypeIndex);
+            Vector3 roomPos = data.roomPositions[i];
+
+            GameObject room = Instantiate(roomPrefab, roomPos, Quaternion.identity);
+            // don't think setting a parent is necessary
+        }
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if(data.roomPositions == null || data.roomTypes == null) {
+            data.roomPositions = new List<Vector3>();
+            data.roomTypes = new List<int>();
+        }
+        else {
+            // clear existing data before saving
+            Debug.Log("clearing room data");
+            data.roomPositions.Clear();
+            data.roomTypes.Clear();
+        }
+
+        GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
+        foreach(GameObject room in rooms) {
+            data.roomPositions.Add(room.transform.position);
+            int roomType = room.GetComponent<RoomID>().GetRoomID();
+            data.roomTypes.Add(roomType);
+        }
     }
 
     private void GenerateFirstFloor()
@@ -231,6 +273,10 @@ public class DungeonFloorManager : MonoBehaviour
         {
             Debug.LogError("No spawn point found in new floor!");
         }
+
+        // save data when player moves to new floor
+        LevelManager levelManager = FindAnyObjectByType<LevelManager>();
+        levelManager.SaveCheckpoint();
     }
 
     private void CopyGeneratorSettings(DungeonGenerator generator)
@@ -254,6 +300,7 @@ public class DungeonFloorManager : MonoBehaviour
         generator.roomSpacing = dungeonGeneratorPrefab.roomSpacing;
         generator.minimumDistanceFromStart = dungeonGeneratorPrefab.minimumDistanceFromStart;
 
+        /*
         generator.SetupEnemySpawner();
 
         EnemySpawner originalSpawner = dungeonGeneratorPrefab.GetComponent<EnemySpawner>();
@@ -270,10 +317,12 @@ public class DungeonFloorManager : MonoBehaviour
         {
             Debug.LogWarning("Original spawner not found on prefab!");
         }
+        */
     }
 
     public void MoveToNextFloor(Vector3 stairPosition)
     {
+        /*
         int nextFloorLevel = currentFloorLevel + 1;
         if (nextFloorLevel <= maxFloors)
         {
@@ -285,6 +334,11 @@ public class DungeonFloorManager : MonoBehaviour
         {
             Debug.Log("Reached maximum floor level!");
         }
+        */
+
+        // changes done by Matthew for the sake of the project
+        LevelManager levelManager = FindAnyObjectByType<LevelManager>();
+        levelManager.GoDownFloor();
     }
 
     public void ReturnToPreviousFloor()

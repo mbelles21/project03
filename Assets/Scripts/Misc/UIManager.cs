@@ -14,8 +14,12 @@ public class UIManager : MonoBehaviour
     public PlayerMovement player;
     public CinemachineVirtualCamera cinemachineCamera;
     public GameObject deathScreen;
-    private bool timerRunning = true;
+    private bool timerRunning = false;
+
+    public static float carriedTime = 0f;
+
     public GameObject settings;
+    
     public void Awake(){
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -23,6 +27,8 @@ public class UIManager : MonoBehaviour
 
     public void Start(){
         PlayerHealth.playerDied += Died;
+
+        levelTimer = carriedTime;
     }
 
     public void OnDestroy(){
@@ -99,6 +105,18 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+
+    public void StoreTimerValue()
+    {
+        ChangeTimerState();
+        carriedTime = levelTimer;
+    }
+
+    public void ChangeTimerState()
+    {
+        timerRunning = !timerRunning;
+    }
+    
     public void TurnOnSettings(){
         settings.SetActive(true);
     }

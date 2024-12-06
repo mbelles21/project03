@@ -5,44 +5,73 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public static bool IsLoadedFloor = false;
     public static int CurrentFloor = 1;
+    public int maxFloor = 5;
     
     private UIManager uiManager;
 
-    // Start is called before the first frame update
+    // delayed slightly in project settings so DataPersistenceManager can execute its Start before this
     void Start()
     {
         uiManager = FindAnyObjectByType<UIManager>();
         uiManager.UnPause(); // to make sure game starts not paused
+
+        // dataPersistenceManager = GetComponent<DataPersistenceManager>();
+
+        Debug.Log("Floor " + CurrentFloor);
+        maxFloor++; // incrementing value bc floor counter skips from 1 to 3 for some reason
+
+        if(IsLoadedFloor) {
+            DataPersistenceManager.instance.LoadGame();
+
+            // also move player to start of floor
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = Vector3.zero;
+        }        
+    }
+
+    public void SaveCheckpoint()
+    {
+        // save floor layout and enemy positions
+        DataPersistenceManager.instance.SaveGame();
+
+        // save ammo count, timer value, current floor
+        PlayerPrefs.SetInt("flash", Inventory.FlashbangAmmo);
+        PlayerPrefs.SetInt("taser", Inventory.TaserAmmo);
+        PlayerPrefs.SetInt("floor", CurrentFloor);
+        PlayerPrefs.SetFloat("timer", UIManager.carriedTime);
+
+        // Debug.Log("checkpoint reached");
+
+        PlayerPrefs.Save();
+
+        uiManager.ChangeTimerState();
     }
 
     public void GoDownFloor()
     {
-        // will need extra logic for keeping track of progression
-        Debug.Log("going down...");
-        
-        TutorialManager tutorialManager = GetComponent<TutorialManager>();
+        uiManager.StoreTimerValue(); // stop timer
 
-        // if scene has TutorialManager it's the tutorial, else it's a normal level
-        // TODO: change logic when getting the real level
-        if(tutorialManager != null) {
-            // SceneManager.LoadScene("DemoLevel");
-            Debug.Log("tutorial completed!");
+        CurrentFloor++;
+
+        if(CurrentFloor == maxFloor) {
+            // load treasure scene
+            SceneManager.LoadScene("TreasureRoom");
+        }
+        else if(CurrentFloor >= maxFloor) {
+            // just in case it increments weirdly again
+            Debug.Log("incremented incorrectly for some reason (see LevelManager)");
         }
         else {
-            SceneManager.LoadScene("MainMenu");
+            // regenerate level
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
         }
     }
 
     public void GoUpFloor()
     {
-        // will also need extra logic for keeping track of progression
-        Debug.Log("going up...");
-    }
-
-    public void EndTutorial()
-    {
-        Debug.Log("tutorial complete");
-        
+        //
     }
 }

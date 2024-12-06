@@ -8,6 +8,9 @@ public class DoorPoint : MonoBehaviour
         BoxCollider trigger = gameObject.AddComponent<BoxCollider>();
         trigger.isTrigger = true;
         trigger.size = new Vector3(2f, 2f, 2f);
+
+        int layerMaskNum = LayerMask.NameToLayer("Enemy");
+        trigger.gameObject.layer = layerMaskNum;
     }
 
     void OnDrawGizmos()

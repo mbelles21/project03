@@ -26,6 +26,11 @@ public class EnemyProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log($"Projectile hit: {other.name}");
+        // ignore collision if trigger
+        if(other.isTrigger) {
+            return;
+        }
+
         PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
         if (playerHealth != null){
             playerHealth.TakeDamage(damage);

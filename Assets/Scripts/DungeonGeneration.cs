@@ -45,6 +45,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void Start()
     {
+        enemySpawner = FindAnyObjectByType<EnemySpawner>();
 
         if (stairRoomPrefab == null)
         {
@@ -395,9 +396,11 @@ public class DungeonGenerator : MonoBehaviour
         enemySpawner = GetComponent<EnemySpawner>();
         if (enemySpawner == null)
         {
+            // Debug.Log("adding spawner");
             enemySpawner = gameObject.AddComponent<EnemySpawner>();
         }
     }
+
     private void PlaceRoom(GameObject prefab, Vector2Int gridPos, RoomSize size, bool enemiesAllowed = true)
     {
         Debug.Log($"PlaceRoom: Placing {prefab.name} at position ({gridPos.x}, {gridPos.y})");

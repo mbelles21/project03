@@ -162,10 +162,8 @@ public class PlayerMovement : MonoBehaviour
     public void Aim(InputAction.CallbackContext context)
     {
         // only allow if player has grenades to use (note: logic will need to be changed if adding different throwables)
-        if (Inventory.GrenadeCount > 0)
-        {
-            if (context.started)
-            {
+        if(playerInventory.ReturnCurrentAmmo() > 0) {
+            if(context.started){
                 Debug.Log("Aiming");
                 isAiming = true;
                 anim.SetBool("Aiming", true);
@@ -237,11 +235,8 @@ public class PlayerMovement : MonoBehaviour
         Mace.transform.localRotation = Quaternion.Euler(-180f, 0f, -15f);
     }
 
-    public IEnumerator Throw()
-    {
-        Inventory.GrenadeCount--; // use a grenade
-        playerInventory.UpdateUIText(); // update count text 
-        // Debug.Log("Grenades: " + Inventory.GrenadeCount);
+    public IEnumerator Throw(){
+        playerInventory.ThrowGrenade(); // use a grenade
 
         isThrowing = true;
         GrenadeThrow grenadeScript = thrownGrenade.GetComponent<GrenadeThrow>();
@@ -292,6 +287,8 @@ public class PlayerMovement : MonoBehaviour
         {
             currentIndex = (currentIndex + 1) % grenadeList.Count;
             grenade = grenadeList[currentIndex];
+            Inventory.GrenadeType = currentIndex; // to update to correct ammo count
+            playerInventory.UpdateUIText();
         }
     }
 

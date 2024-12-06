@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8079273910678197409}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire_Chalice_Particle_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 501948762164593766}
   - component: {fileID: 4260809928965137857}
   - component: {fileID: 259738998832436383}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire_GLOW
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4879,7 +4879,7 @@ GameObject:
   - component: {fileID: 929778912343198431}
   - component: {fileID: 906162029871084559}
   - component: {fileID: 2187743713380697910}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire_ALPHA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9711,7 +9711,7 @@ GameObject:
   - component: {fileID: 5070299021035311091}
   - component: {fileID: 1327174172247916273}
   - component: {fileID: 8001129652357799555}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire_SPARK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14546,7 +14546,7 @@ GameObject:
   - component: {fileID: 6548702852927431022}
   - component: {fileID: 500956204728191088}
   - component: {fileID: 5378604501022645062}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14694,7 +14694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8702869008851153707}
   - component: {fileID: 5018667131086932181}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire_LIGHT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14788,7 +14788,7 @@ GameObject:
   - component: {fileID: 7127986809126983264}
   - component: {fileID: 4262167327212663881}
   - component: {fileID: 1768886467801731513}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire_ADD
   m_TagString: Untagged
   m_Icon: {fileID: 0}

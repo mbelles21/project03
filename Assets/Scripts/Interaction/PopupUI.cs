@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PopupUI : MonoBehaviour
 {
+    public TextMeshProUGUI itemGottenText;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +26,10 @@ public class PopupUI : MonoBehaviour
 
             gameObject.SetActive(false);
         }
+    }
+
+    public void UpdateItemPopupText(string itemName)
+    {
+        itemGottenText.text = "Got 1 " + itemName;
     }
 }
