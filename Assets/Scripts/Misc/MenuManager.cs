@@ -9,6 +9,7 @@ public class MenuManager : MonoBehaviour
 
     private int savedFlashAmmo;
     private int savedTaserAmmo;
+    private float savedHealth;
     private int savedFloor;
     private float savedTime;
 
@@ -30,6 +31,9 @@ public class MenuManager : MonoBehaviour
         savedFlashAmmo = PlayerPrefs.GetInt("flash", 0);
         savedTaserAmmo = PlayerPrefs.GetInt("taser", 0);
 
+        // get health
+        savedHealth = PlayerPrefs.GetFloat("health", 0); // default to 0 bc logic in PlayerHealth will handle that
+
         // get floor
         savedFloor = PlayerPrefs.GetInt("floor", 1);
 
@@ -42,6 +46,7 @@ public class MenuManager : MonoBehaviour
         // set defaults for new game
         Inventory.FlashbangAmmo = 0;
         Inventory.TaserAmmo = 0;
+        PlayerHealth.SavedHealth = 0f;
         LevelManager.CurrentFloor = 1;
         UIManager.carriedTime = 0f;
         LevelManager.IsLoadedFloor = false;
@@ -69,6 +74,7 @@ public class MenuManager : MonoBehaviour
     {
         Inventory.FlashbangAmmo = savedFlashAmmo;
         Inventory.TaserAmmo = savedTaserAmmo;
+        PlayerHealth.SavedHealth = savedHealth;
         LevelManager.CurrentFloor = savedFloor;
         UIManager.carriedTime = savedTime;
         LevelManager.IsLoadedFloor = true; // TODO: disable this button if no saved data for room so no bugs occur
