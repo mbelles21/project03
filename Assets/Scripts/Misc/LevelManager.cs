@@ -36,9 +36,10 @@ public class LevelManager : MonoBehaviour
         // save floor layout and enemy positions
         DataPersistenceManager.instance.SaveGame();
 
-        // save ammo count, timer value, current floor
+        // save ammo count, health, timer value, current floor
         PlayerPrefs.SetInt("flash", Inventory.FlashbangAmmo);
         PlayerPrefs.SetInt("taser", Inventory.TaserAmmo);
+        PlayerPrefs.SetFloat("health", PlayerHealth.SavedHealth);
         PlayerPrefs.SetInt("floor", CurrentFloor);
         PlayerPrefs.SetFloat("timer", UIManager.carriedTime);
 
