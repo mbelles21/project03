@@ -320,7 +320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6874423088362089200, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.5233803
+      value: -3.4869802
       objectReference: {fileID: 0}
     - target: {fileID: 6874423088362089200, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.y
@@ -328,7 +328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6874423088362089200, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.237244
+      value: -11.253197
       objectReference: {fileID: 0}
     - target: {fileID: 7510231428833266310, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.y
@@ -340,7 +340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7918603444964675484, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5777531
+      value: -0.5474197
       objectReference: {fileID: 0}
     - target: {fileID: 7918603444964675484, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.y
@@ -348,7 +348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7918603444964675484, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.22720653
+      value: 0.21391231
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -366,6 +366,7 @@ GameObject:
   - component: {fileID: 1386853172}
   - component: {fileID: 1386853171}
   - component: {fileID: 1386853173}
+  - component: {fileID: 1386853174}
   m_Layer: 0
   m_Name: DungeonFloorManager
   m_TagString: Untagged
@@ -390,6 +391,7 @@ MonoBehaviour:
   maxFloors: 1
   baseHeight: 1
   loadingScreenUI: {fileID: 0}
+  isLoadedFloor: 0
 --- !u!4 &1386853172
 Transform:
   m_ObjectHideFlags: 0
@@ -424,6 +426,24 @@ MonoBehaviour:
   baseSpawnChance: 0.2
   incrementPerFloor: 0.05
   maxSpawnChance: 1
+--- !u!114 &1386853174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386853170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a900e574258184fa6b5205d989bc0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomPrefabs:
+  - {fileID: 3751251552166253454, guid: 1b92d20b413a746ae8a05b694e141c40, type: 3}
+  - {fileID: 7307159777703094897, guid: 4ccf4b1076c4a43ff85ca4c5d69000b7, type: 3}
+  - {fileID: 6974592565622917001, guid: bc7f016572f8a4a6990c45d6568a568e, type: 3}
+  - {fileID: 8239437837450737668, guid: 0c7d847f79f144108995264bf3b25c0f, type: 3}
+  - {fileID: 54125094164079368, guid: 764b13a05fa1d4e2cb0ac7d275163428, type: 3}
 --- !u!1 &1576815967
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1576815969}
   - component: {fileID: 1576815968}
+  - component: {fileID: 1576815970}
   m_Layer: 0
   m_Name: Level Manager
   m_TagString: Untagged
@@ -469,6 +490,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1576815970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576815967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103b77c6a527c384cbd7558e78258787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: data
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

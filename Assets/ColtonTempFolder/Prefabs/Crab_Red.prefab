@@ -978,6 +978,7 @@ GameObject:
   - component: {fileID: 3314113649787359444}
   - component: {fileID: 2546768100522816933}
   - component: {fileID: 2065099908432117422}
+  - component: {fileID: 6544854513518220600}
   m_Layer: 7
   m_Name: Crab_Red
   m_TagString: Untagged
@@ -1122,6 +1123,19 @@ MonoBehaviour:
   maxStun: 100
   currStun: 0
   isStunned: 0
+--- !u!114 &6544854513518220600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7022166616792728551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd45b9642fee54b43bb57a30407410cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: 1
 --- !u!1 &7340172166459521546
 GameObject:
   m_ObjectHideFlags: 0

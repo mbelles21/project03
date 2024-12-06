@@ -5,25 +5,38 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public static bool IsLoadedFloor = false;
     public static int CurrentFloor = 1;
     public int maxFloor = 5;
     
     private UIManager uiManager;
 
-    // Start is called before the first frame update
+    // delayed slightly in project settings so DataPersistenceManager can execute its Start before this
     void Start()
     {
         uiManager = FindAnyObjectByType<UIManager>();
         uiManager.UnPause(); // to make sure game starts not paused
 
+        // dataPersistenceManager = GetComponent<DataPersistenceManager>();
+
         Debug.Log("Floor " + CurrentFloor);
         maxFloor++; // incrementing value bc floor counter skips from 1 to 3 for some reason
+
+        if(IsLoadedFloor) {
+            DataPersistenceManager.instance.LoadGame();
+
+            // also move player to start of floor
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = Vector3.zero;
+        }        
     }
 
-    // TODO: call each time player goes between floors (still needed for going back up)
     public void SaveCheckpoint()
     {
-        // save ammo count, timer value (TODO), current floor, and floor layout (TODO)
+        // save floor layout and enemy positions
+        DataPersistenceManager.instance.SaveGame();
+
+        // save ammo count, timer value, current floor
         PlayerPrefs.SetInt("flash", Inventory.FlashbangAmmo);
         PlayerPrefs.SetInt("taser", Inventory.TaserAmmo);
         PlayerPrefs.SetInt("floor", CurrentFloor);

@@ -42,6 +42,7 @@ public class MenuManager : MonoBehaviour
         Inventory.TaserAmmo = 0;
         LevelManager.CurrentFloor = 1;
         UIManager.carriedTime = 0f;
+        LevelManager.IsLoadedFloor = false;
 
         // to give option to replay tutorial level if already played
         if(TutorialManager.TutorialCompleted) {
@@ -64,14 +65,11 @@ public class MenuManager : MonoBehaviour
 
     public void LoadGame()
     {
-        // TODO: finish implementing
-        // TODO: logic for going straight to treasure room (maybe not necessary bc checkpoint doesn't get triggered in TreasureRoom)
-        // TODO: load timer value
-
         Inventory.FlashbangAmmo = savedFlashAmmo;
         Inventory.TaserAmmo = savedTaserAmmo;
         LevelManager.CurrentFloor = savedFloor;
         UIManager.carriedTime = savedTime;
+        LevelManager.IsLoadedFloor = true; // TODO: disable this button if no saved data for room so no bugs occur
 
         // Debug.Log("loading floor " + LevelManager.CurrentFloor);
         SceneManager.LoadScene("DungeonGeneration");

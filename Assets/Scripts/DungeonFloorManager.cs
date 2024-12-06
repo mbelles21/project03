@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-public class DungeonFloorManager : MonoBehaviour
+public class DungeonFloorManager : MonoBehaviour, IDataPersistence
 {
     [Header("Floor Settings")]
     public DungeonGenerator dungeonGeneratorPrefab;
@@ -57,7 +57,48 @@ public class DungeonFloorManager : MonoBehaviour
             loadingScreenUI.SetActive(false);
         }
 
-        GenerateFirstFloor();
+        if(LevelManager.IsLoadedFloor) {
+            // load data
+            Debug.Log("loading floor from file...");
+        }
+        else {
+            Debug.Log("generating random floor");
+            GenerateFirstFloor();
+        }
+        
+    }
+
+    public void LoadData(GameData data)
+    {
+        for(int i = 0; i < data.roomPositions.Count; i++) {
+            int roomTypeIndex = data.roomTypes[i];
+            GameObject roomPrefab = GetComponent<RoomListManager>().GetRoomPrefab(roomTypeIndex);
+            Vector3 roomPos = data.roomPositions[i];
+
+            GameObject room = Instantiate(roomPrefab, roomPos, Quaternion.identity);
+            // don't think setting a parent is necessary
+        }
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if(data.roomPositions == null || data.roomTypes == null) {
+            data.roomPositions = new List<Vector3>();
+            data.roomTypes = new List<int>();
+        }
+        else {
+            // clear existing data before saving
+            Debug.Log("clearing room data");
+            data.roomPositions.Clear();
+            data.roomTypes.Clear();
+        }
+
+        GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
+        foreach(GameObject room in rooms) {
+            data.roomPositions.Add(room.transform.position);
+            int roomType = room.GetComponent<RoomID>().GetRoomID();
+            data.roomTypes.Add(roomType);
+        }
     }
 
     private void GenerateFirstFloor()
