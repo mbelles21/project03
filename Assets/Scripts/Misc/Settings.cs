@@ -118,7 +118,7 @@ public class Settings : MonoBehaviour
 
     public void SetYToggle(){
         bool toggle = yInvert.isOn;
-        pov.m_VerticalAxis.m_InvertInput = toggle;
+        pov.m_VerticalAxis.m_InvertInput = !toggle;
         PlayerPrefs.SetInt("yToggle", toggle ? 1 : 0);
     }
 }
