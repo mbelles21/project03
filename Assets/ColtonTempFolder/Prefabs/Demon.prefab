@@ -1030,6 +1030,9 @@ GameObject:
   - component: {fileID: 7020057149983752646}
   - component: {fileID: 3748810917602330182}
   - component: {fileID: 7107367095866419732}
+  - component: {fileID: 195491505489510732}
+  - component: {fileID: 795138898869782985}
+  - component: {fileID: 2920990206414372897}
   m_Layer: 0
   m_Name: Demon
   m_TagString: Untagged
@@ -1061,7 +1064,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5853061875599692551}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1078,7 +1081,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 32
   m_CollisionDetection: 0
 --- !u!136 &7107367095866419732
 CapsuleCollider:
@@ -1103,6 +1106,65 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.44, z: 0}
+--- !u!114 &195491505489510732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5853061875599692551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 849b7fc563400a54b901caeeffcdaeda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 0
+  waypoints: []
+  patrolSpeed: 2
+  chaseSpeed: 10
+  detectionRange: 15
+  chaseStopRange: 10
+  blindMode: 0
+  sprintDetectionBoost: 0
+  attackRange: 1
+  attackCooldown: 5
+  projectilePrefab: {fileID: 0}
+  projectileSpawnPoint: {fileID: 0}
+  meleeAttackRange: 4.5
+  meleeAttackCooldown: 5
+  meleeDamage: 20
+  player: {fileID: 0}
+  obstacleDetectionDistance: 1.5
+  jumpForce: 5
+--- !u!114 &795138898869782985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5853061875599692551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43edf44f7ab59b4fbbaa988d19ee810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunLength: 5
+  maxStun: 100
+  currStun: 0
+  isStunned: 0
+--- !u!114 &2920990206414372897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5853061875599692551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd45b9642fee54b43bb57a30407410cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: 2
 --- !u!1 &6311821855782321728
 GameObject:
   m_ObjectHideFlags: 0
