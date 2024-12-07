@@ -25,6 +25,7 @@ public class EnemyBehavior : MonoBehaviour
 
     // Melee-specific properties
     public float meleeAttackRange = 1.5f;
+    public float meleeBlindAttackRange = 1.2f;
     public float meleeAttackCooldown = 1f;
     public float meleeDamage = 20f;
 
@@ -98,21 +99,17 @@ public class EnemyBehavior : MonoBehaviour
     private void HandleBlindModeLogic()
     {
         float effectiveDetectionRange = meleeAttackRange;
-
-        // Extend detection range if the player is sprinting
-        if (isPlayerSprinting)
-        {
-            effectiveDetectionRange += sprintDetectionBoost;
-        }
-
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= effectiveDetectionRange)
+        
+
+        if (distanceToPlayer <= meleeBlindAttackRange)
         {
             // Blind enemy is dangerous in melee range or if the player is sprinting nearby
             AttackMelee();
-        }
-        else if (distanceToPlayer > effectiveDetectionRange)
+        } else if (distanceToPlayer <= sprintDetectionBoost && isPlayerSprinting){
+            ChasePlayer();
+        } else if (distanceToPlayer > sprintDetectionBoost)
         {
             PatrolOrWander();
         }
