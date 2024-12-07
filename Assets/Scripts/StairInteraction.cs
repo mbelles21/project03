@@ -1,31 +1,57 @@
 using UnityEngine;
 
-public class StairInteraction : MonoBehaviour
+public class StairInteraction : MonoBehaviour, IInteractable
 {
-    private bool canInteract = false;
+    // private bool canInteract = false;
+    public string prompt;
+    public InteractPromptUI interactPromptUI;
 
-    private void OnTriggerEnter(Collider other)
+    public string InteractPrompt => prompt; // return the prompt
+
+    public bool Interact(Interactor interactor)
     {
-        if (other.CompareTag("Player"))
-        {
-            canInteract = true;
+        DungeonFloorManager.Instance.MoveToNextFloor(transform.position);
+        return true;
+    }
+
+    public bool GetInteractUIState()
+    {
+        return interactPromptUI.isDisplayed;
+    }
+
+    public void ToggleInteractUI()
+    {
+        bool state = interactPromptUI.isDisplayed;
+        if(!state) {
+            interactPromptUI.SetUp(prompt);
+        }
+        else {
+            interactPromptUI.Close();
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            canInteract = false;
-        }
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         canInteract = true;
+    //     }
+    // }
 
-    private void Update()
-    {
-        if (canInteract && Input.GetKeyDown(KeyCode.E))
-        {
-            // Pass the stair position when moving to next floor
-            DungeonFloorManager.Instance.MoveToNextFloor(transform.position);
-        }
-    }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         canInteract = false;
+    //     }
+    // }
+
+    // private void Update()
+    // {
+    //     if (canInteract && Input.GetKeyDown(KeyCode.E))
+    //     {
+    //         // Pass the stair position when moving to next floor
+    //         DungeonFloorManager.Instance.MoveToNextFloor(transform.position);
+    //     }
+    // }
 }

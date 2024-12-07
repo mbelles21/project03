@@ -219,7 +219,7 @@ public class DungeonGenerator : MonoBehaviour
 
         if (!successfulGeneration)
         {
-            Debug.LogError($"Failed to generate valid dungeon after {maxAttempts} attempts!");
+            Debug.LogWarning($"Failed to generate valid dungeon after {maxAttempts} attempts!"); // changed to warning bc sometimes it does still generate a valid dungeon despite this
             IsGenerationComplete = true; // Set to true even on failure so we don't hang
             yield break;
         }
