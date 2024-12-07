@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: StringTable_es
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: 1a89d12fc4d7afd49ac34c2f4ad83ee1, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 229379907584
+    m_Localized: Jugar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 475799461888
+    m_Localized: Carga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 595307765760
+    m_Localized: "\rAjustes"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756163518464
+    m_Localized: Abandonar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 887550091264
+    m_Localized: "Cr\xE9ditos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1243424202752
+    m_Localized: En pausa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1398890274816
+    m_Localized: "\rReanudar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1852655247360
+    m_Localized: Invertir x
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1871030493184
+    m_Localized: Invertir y
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1822930214912
+    m_Localized: "\rSensibilidad Y"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1797751808000
+    m_Localized: Sensibilidad X
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1776964837376
+    m_Localized: "\rEscala de tiempo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1754718248960
+    m_Localized: Elige color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1738884751360
+    m_Localized: efectos de sonido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1710296375296
+    m_Localized: "M\xFAsica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3398096887808
+    m_Localized: "\r\xA1Moriste!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4755788898304
+    m_Localized: Devolver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6632765104128
+    m_Localized: "Fran\xE7ais"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6618902929408
+    m_Localized: Espagnol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6603958624256
+    m_Localized: Anglais
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18696661344256
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18684703383552
+    m_Localized: "S\xED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19001645965312
+    m_Localized: "El tutorial ya se ha completado.\r\n\xBFRepetici\xF3n?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20439616954368
+    m_Localized: "C\xF3mo moverse:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20493887053824
+    m_Localized: 'Otro movimiento:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20548408811520
+    m_Localized: "C\xF3mo lanzar:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20598975340544
+    m_Localized: "C\xF3mo atacar:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20678323183616
+    m_Localized: "C\xF3mo interactuar:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21779323789312
+    m_Localized: "LMB\r\n(nota: m\xE1s efectivo desde atr\xE1s)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22097151369216
+    m_Localized: 'Mantenga presionado RMB para apuntar
+
+      LMB para tirar
+
+      1
+      para cambiar de arma'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22395685150720
+    m_Localized: "L May\xFAs para ejecutar\r\nL Ctrl para rodar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22626933907456
+    m_Localized: "WASD para caminar\r\nrat\xF3n para mirar"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

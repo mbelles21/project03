@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: StringTable Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: StringTable
+  m_TableCollectionNameGuidString: 1a89d12fc4d7afd49ac34c2f4ad83ee1
+  m_Entries:
+  - m_Id: 229379907584
+    m_Key: Play button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 475799461888
+    m_Key: Load button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 595307765760
+    m_Key: Settings button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 756163518464
+    m_Key: Quit button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 887550091264
+    m_Key: Credits button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1243424202752
+    m_Key: Paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1398890274816
+    m_Key: Resume button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1710296375296
+    m_Key: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1738884751360
+    m_Key: SFX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1754718248960
+    m_Key: Pick Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1776964837376
+    m_Key: Time Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1797751808000
+    m_Key: X Sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1822930214912
+    m_Key: Y Sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1852655247360
+    m_Key: Invert x
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1871030493184
+    m_Key: Invert y
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3398096887808
+    m_Key: Death
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4755788898304
+    m_Key: Return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6603958624256
+    m_Key: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6618902929408
+    m_Key: Spanish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6632765104128
+    m_Key: French
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18684703383552
+    m_Key: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18696661344256
+    m_Key: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19001645965312
+    m_Key: SkipTutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20439616954368
+    m_Key: HowMove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20493887053824
+    m_Key: OtherMove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20548408811520
+    m_Key: HowThrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20598975340544
+    m_Key: HowAttack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20678323183616
+    m_Key: HowInteract
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21779323789312
+    m_Key: LMB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22097151369216
+    m_Key: Aim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22395685150720
+    m_Key: RollSprint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22626933907456
+    m_Key: LookWalk
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8899530857096937911
+  references:
+    version: 2
+    RefIds:
+    - rid: 8899530857096937911
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1733608025187
