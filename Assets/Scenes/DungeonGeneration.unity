@@ -270,6 +270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 1665712289999519709, guid: 59880cb529456a54eace0de7e803c469, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 2864196640587193105, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.3
@@ -320,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6874423088362089200, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.4093091
+      value: -3.4104867
       objectReference: {fileID: 0}
     - target: {fileID: 6874423088362089200, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.y
@@ -328,7 +332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6874423088362089200, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.287243
+      value: -11.286728
       objectReference: {fileID: 0}
     - target: {fileID: 7510231428833266310, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.y
@@ -340,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7918603444964675484, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.48269385
+      value: -0.48367515
       objectReference: {fileID: 0}
     - target: {fileID: 7918603444964675484, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.y
@@ -348,7 +352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7918603444964675484, guid: 59880cb529456a54eace0de7e803c469, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.1855405
+      value: 0.18596965
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -500,6 +504,13 @@ MonoBehaviour:
   - {fileID: 6974592565622917001, guid: bc7f016572f8a4a6990c45d6568a568e, type: 3}
   - {fileID: 8239437837450737668, guid: 0c7d847f79f144108995264bf3b25c0f, type: 3}
   - {fileID: 54125094164079368, guid: 764b13a05fa1d4e2cb0ac7d275163428, type: 3}
+  - {fileID: 7167132863339819272, guid: 681498f7cfb3c45f6b50b40452b1f75f, type: 3}
+  - {fileID: 3813492322797517565, guid: b53cc33d32dbe4b639d5591c434fc2ca, type: 3}
+  - {fileID: 4368116817119279949, guid: 52d34849eb11d4fc1a5fe856c9a17f57, type: 3}
+  - {fileID: 3131860553003493287, guid: 097f057043fe04b728a40624d8041114, type: 3}
+  - {fileID: 2261903991822882158, guid: 47d77ac818c854d4d829852e6d3a02ff, type: 3}
+  - {fileID: 6913255513038358320, guid: d9845749956814bad97fde60aba67fc8, type: 3}
+  - {fileID: 230341617118457394, guid: 6338f1f8c91a44fb78bc45620af51e7a, type: 3}
 --- !u!1 &1576815967
 GameObject:
   m_ObjectHideFlags: 0
