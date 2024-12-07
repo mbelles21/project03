@@ -57,48 +57,247 @@ public class DungeonFloorManager : MonoBehaviour, IDataPersistence
             loadingScreenUI.SetActive(false);
         }
 
-        if(LevelManager.IsLoadedFloor) {
+        if (LevelManager.IsLoadedFloor)
+        {
             // load data
             Debug.Log("loading floor from file...");
         }
-        else {
+        else
+        {
             Debug.Log("generating random floor");
             GenerateFirstFloor();
         }
-        
+
     }
+
+    // public void LoadData(GameData data)
+    // {
+    //     for (int i = 0; i < data.roomPositions.Count; i++)
+    //     {
+    //         int roomTypeIndex = data.roomTypes[i];
+    //         GameObject roomPrefab = GetComponent<RoomListManager>().GetRoomPrefab(roomTypeIndex);
+    //         Vector3 roomPos = data.roomPositions[i];
+
+    //         GameObject room = Instantiate(roomPrefab, roomPos, Quaternion.identity);
+    //         // don't think setting a parent is necessary
+    //     }
+    // }
 
     public void LoadData(GameData data)
     {
-        for(int i = 0; i < data.roomPositions.Count; i++) {
-            int roomTypeIndex = data.roomTypes[i];
-            GameObject roomPrefab = GetComponent<RoomListManager>().GetRoomPrefab(roomTypeIndex);
-            Vector3 roomPos = data.roomPositions[i];
+        StartCoroutine(LoadDungeonSequence(data));
+    }
 
-            GameObject room = Instantiate(roomPrefab, roomPos, Quaternion.identity);
-            // don't think setting a parent is necessary
+    private IEnumerator LoadDungeonSequence(GameData data)
+    {
+        Debug.Log($"Starting to load {data.roomPositions.Count} rooms");
+        if (loadingScreenUI != null)
+        {
+            loadingScreenUI.SetActive(true);
+        }
+
+        try
+        {
+            // Clear existing floor
+            foreach (var floor in floors.Values)
+            {
+                if (floor != null)
+                {
+                    Destroy(floor);
+                }
+            }
+            floors.Clear();
+
+            GameObject floorContainer = new GameObject($"Floor_1");
+            floorContainer.transform.position = new Vector3(0, baseHeight, 0);
+            floors[1] = floorContainer;
+
+            RoomListManager roomList = GetComponent<RoomListManager>();
+            if (roomList == null)
+            {
+                Debug.LogError("No RoomListManager found!");
+                yield break;
+            }
+
+            // First validate all room types
+            for (int i = 0; i < data.roomTypes.Count; i++)
+            {
+                int roomType = data.roomTypes[i];
+                if (roomType < 0 || roomType >= roomList.roomPrefabs.Length)
+                {
+                    Debug.LogError($"Invalid room type {roomType} at index {i}. Valid range: 0-{roomList.roomPrefabs.Length - 1}");
+                    yield break;
+                }
+            }
+
+            List<RoomBehaviour> loadedRooms = new List<RoomBehaviour>();
+            Dictionary<Vector3, RoomBehaviour> roomPositions = new Dictionary<Vector3, RoomBehaviour>();
+
+            for (int i = 0; i < data.roomPositions.Count; i++)
+            {
+                int roomTypeIndex = data.roomTypes[i];
+                GameObject roomPrefab = roomList.GetRoomPrefab(roomTypeIndex);
+                Vector3 roomPos = data.roomPositions[i];
+
+                Debug.Log($"Loading room type {roomTypeIndex} at position {roomPos}");
+                GameObject room = Instantiate(roomPrefab, roomPos, Quaternion.identity, floorContainer.transform);
+
+                RoomBehaviour roomBehaviour = room.GetComponent<RoomBehaviour>();
+                if (roomBehaviour != null)
+                {
+                    loadedRooms.Add(roomBehaviour);
+                    // Storing this for the door positions
+                    roomPositions[roomPos] = roomBehaviour;
+                    for (int j = 0; j < roomBehaviour.wallSections.Length; j++)
+                    {
+                        roomBehaviour.ShowWall(j);
+                    }
+                }
+
+                yield return null;
+            }
+
+            // Give time for rooms to fully initialize
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(0.5f);
+
+            // Reset all doors before processing connections
+            Debug.Log("Resetting doors before connection...");
+            foreach (var roomBehaviour in loadedRooms)
+            {
+                for (int i = 0; i < roomBehaviour.wallSections.Length; i++)
+                {
+                    if (roomBehaviour.wallSections[i].completeWall != null)
+                    {
+                        roomBehaviour.wallSections[i].completeWall.SetActive(true);
+                    }
+                    if (roomBehaviour.wallSections[i].doorwayOpen != null)
+                    {
+                        roomBehaviour.wallSections[i].doorwayOpen.SetActive(false);
+                    }
+                }
+            }
+
+            // Restore doorpoints
+            if (data.doorStates != null && data.doorStates.Count > 0)
+            {
+                Debug.Log("Restoring door states...");
+                foreach (var doorData in data.doorStates)
+                {
+                    if (roomPositions.TryGetValue(doorData.roomPosition, out RoomBehaviour room))
+                    {
+                        if (doorData.wallIndex < room.wallSections.Length)
+                        {
+                            if (doorData.isDoorway)
+                            {
+                                room.ShowDoorway(doorData.wallIndex);
+                            }
+                            else
+                            {
+                                room.ShowWall(doorData.wallIndex);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Process door connections
+            Debug.Log("Processing door connections...");
+            DungeonConnectionHandler.Instance.ProcessConnections();
+
+            // Wait for door connections with timeout
+            float timeoutDuration = 5f;
+            float elapsedTime = 0f;
+            while (DungeonConnectionHandler.Instance.IsProcessingConnections && elapsedTime < timeoutDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // More wait time after connections are processed
+            yield return new WaitForSeconds(0.2f);
+
+            // Setup player spawn
+            yield return StartCoroutine(TeleportPlayerToNewFloor(floorContainer));
+
+            currentFloorLevel = 1;
+            IsGenerationComplete = true;
+
+            Debug.Log("Dungeon loading complete!");
+        }
+        finally
+        {
+            if (loadingScreenUI != null)
+            {
+                loadingScreenUI.SetActive(false);
+            }
         }
     }
 
+    // public void SaveData(ref GameData data)
+    // {
+    //     if(data.roomPositions == null || data.roomTypes == null) {
+    //         data.roomPositions = new List<Vector3>();
+    //         data.roomTypes = new List<int>();
+    //     }
+    //     else {
+    //         // clear existing data before saving
+    //         Debug.Log("clearing room data");
+    //         data.roomPositions.Clear();
+    //         data.roomTypes.Clear();
+    //     }
+
+    //     GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
+    //     foreach(GameObject room in rooms) {
+    //         data.roomPositions.Add(room.transform.position);
+    //         int roomType = room.GetComponent<RoomID>().GetRoomID();
+    //         data.roomTypes.Add(roomType);
+    //     }
+    // }
+
     public void SaveData(ref GameData data)
     {
-        if(data.roomPositions == null || data.roomTypes == null) {
-            data.roomPositions = new List<Vector3>();
-            data.roomTypes = new List<int>();
-        }
-        else {
-            // clear existing data before saving
-            Debug.Log("clearing room data");
-            data.roomPositions.Clear();
-            data.roomTypes.Clear();
-        }
+        // Clear existing room data
+        Debug.Log("clearing room data");
+        data.roomPositions.Clear();
+        data.roomTypes.Clear();
+        data.doorStates.Clear();
 
-        GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
-        foreach(GameObject room in rooms) {
+        // Find all rooms by RoomID component
+        RoomID[] allRooms = FindObjectsOfType<RoomID>(true);
+        Debug.Log($"Found {allRooms.Length} rooms to save");
+
+        foreach (RoomID room in allRooms)
+        {
+            if (room == null || room.gameObject == null) continue;
+
+            // Save room position and type
             data.roomPositions.Add(room.transform.position);
-            int roomType = room.GetComponent<RoomID>().GetRoomID();
+            int roomType = room.GetRoomID();
+            Debug.Log($"Saving room {room.gameObject.name} at position {room.transform.position} with type {roomType}");
             data.roomTypes.Add(roomType);
+
+            // Save door states for this room
+            RoomBehaviour roomBehaviour = room.GetComponent<RoomBehaviour>();
+            if (roomBehaviour != null)
+            {
+                for (int i = 0; i < roomBehaviour.wallSections.Length; i++)
+                {
+                    var wallSection = roomBehaviour.wallSections[i];
+                    bool isDoorway = wallSection.doorwayOpen != null &&
+                                   wallSection.doorwayOpen.activeSelf;
+
+                    data.doorStates.Add(new GameData.DoorData
+                    {
+                        roomPosition = room.transform.position,
+                        wallIndex = i,
+                        isDoorway = isDoorway
+                    });
+                }
+            }
         }
+        // Probably dont need this. This is just Debug to see how many rooms we are saving
+        Debug.Log($"Saved total of {data.roomPositions.Count} rooms with positions and types");
     }
 
     private void GenerateFirstFloor()
@@ -231,10 +430,33 @@ public class DungeonFloorManager : MonoBehaviour, IDataPersistence
     {
         yield return new WaitForEndOfFrame();
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        // Find player
+        GameObject player = null;
+
+        player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
-            Debug.LogError("Player not found!");
+            player = GameObject.Find("Player");
+        }
+
+        // As a last resort, try finding the player controller component directly
+        if (player == null)
+        {
+            CharacterController[] controllers = FindObjectsOfType<CharacterController>();
+            foreach (var controller in controllers)
+            {
+                // You might want to add additional checks here specific to your player object
+                if (controller.gameObject.name.ToLower().Contains("player"))
+                {
+                    player = controller.gameObject;
+                    break;
+                }
+            }
+        }
+
+        if (player == null)
+        {
+            Debug.LogError("Player not found using any method! Please ensure the player object exists in the scene.");
             yield break;
         }
 
