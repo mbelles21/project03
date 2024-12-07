@@ -35,7 +35,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
-    private float lastAttackTime;
+    private float lastAttackTime = 0f;
 
     public float obstacleDetectionDistance = 1.5f; // Distance to check for obstacles
     public float jumpForce = 5f; // Force applied to the enemy's Rigidbody for jumping

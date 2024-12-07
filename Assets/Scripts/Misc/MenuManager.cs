@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class MenuManager : MonoBehaviour
     private float savedTime;
 
     public GameObject settings;
+    public Button loadButton;
 
     void Start()
     {
@@ -25,6 +27,7 @@ public class MenuManager : MonoBehaviour
             TutorialManager.TutorialCompleted = true;
         } else {
             TutorialManager.TutorialCompleted = false;
+            loadButton.interactable = false;
         }
 
         // get ammo 
