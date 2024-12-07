@@ -98,6 +98,59 @@ MonoBehaviour:
     m_Localized: "Franc\xE9s"
     m_Metadata:
       m_Items: []
+  - m_Id: 18684703383552
+    m_Localized: Oui
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18696661344256
+    m_Localized: Non
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19001645965312
+    m_Localized: "Le tutoriel est d\xE9j\xE0 termin\xE9.\r\nRejouer?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20678323183616
+    m_Localized: "Comment interagir\_:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20598975340544
+    m_Localized: "Comment attaquer\_:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20548408811520
+    m_Localized: "Comment lancer\_:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20493887053824
+    m_Localized: "Autre mouvement\_:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20439616954368
+    m_Localized: "Comment d\xE9m\xE9nager\_:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21779323789312
+    m_Localized: "LMB\r\n(attention : plus efficace par derri\xE8re)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22097151369216
+    m_Localized: "D\xE9tenir le RMB pour viser\r\nLMB \xE0 lancer\r\n1 pour changer
+      d'arme"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22395685150720
+    m_Localized: 'L Maj pour courir
+
+      L Ctrl pour rouler'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22626933907456
+    m_Localized: 'WASD pour marcher
+
+      Souris pour regarder'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

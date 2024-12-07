@@ -98,6 +98,66 @@ MonoBehaviour:
     m_Localized: French
     m_Metadata:
       m_Items: []
+  - m_Id: 18684703383552
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18696661344256
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19001645965312
+    m_Localized: 'The tutorial has already been completed.
+
+      Replay?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20439616954368
+    m_Localized: 'How to Move:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20493887053824
+    m_Localized: 'Other Movement:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20548408811520
+    m_Localized: 'How to Throw:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20598975340544
+    m_Localized: 'How to Attack:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20678323183616
+    m_Localized: 'How to Interact:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21779323789312
+    m_Localized: 'LMB
+
+      (note: more effective from behind)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22097151369216
+    m_Localized: 'Hold RMB to aim
+
+      LMB to throw
+
+      1 to switch weapons'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22395685150720
+    m_Localized: 'L Shift to run
+
+      L Ctrl to roll'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22626933907456
+    m_Localized: 'WASD to walk
+
+      Mouse to look'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

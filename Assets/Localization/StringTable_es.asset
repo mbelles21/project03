@@ -98,6 +98,59 @@ MonoBehaviour:
     m_Localized: Anglais
     m_Metadata:
       m_Items: []
+  - m_Id: 18696661344256
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18684703383552
+    m_Localized: "S\xED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19001645965312
+    m_Localized: "El tutorial ya se ha completado.\r\n\xBFRepetici\xF3n?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20439616954368
+    m_Localized: "C\xF3mo moverse:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20493887053824
+    m_Localized: 'Otro movimiento:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20548408811520
+    m_Localized: "C\xF3mo lanzar:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20598975340544
+    m_Localized: "C\xF3mo atacar:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20678323183616
+    m_Localized: "C\xF3mo interactuar:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21779323789312
+    m_Localized: "LMB\r\n(nota: m\xE1s efectivo desde atr\xE1s)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22097151369216
+    m_Localized: 'Mantenga presionado RMB para apuntar
+
+      LMB para tirar
+
+      1
+      para cambiar de arma'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22395685150720
+    m_Localized: "L May\xFAs para ejecutar\r\nL Ctrl para rodar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22626933907456
+    m_Localized: "WASD para caminar\r\nrat\xF3n para mirar"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

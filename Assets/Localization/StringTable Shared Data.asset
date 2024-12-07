@@ -95,6 +95,54 @@ MonoBehaviour:
     m_Key: French
     m_Metadata:
       m_Items: []
+  - m_Id: 18684703383552
+    m_Key: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18696661344256
+    m_Key: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19001645965312
+    m_Key: SkipTutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20439616954368
+    m_Key: HowMove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20493887053824
+    m_Key: OtherMove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20548408811520
+    m_Key: HowThrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20598975340544
+    m_Key: HowAttack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20678323183616
+    m_Key: HowInteract
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21779323789312
+    m_Key: LMB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22097151369216
+    m_Key: Aim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22395685150720
+    m_Key: RollSprint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22626933907456
+    m_Key: LookWalk
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
