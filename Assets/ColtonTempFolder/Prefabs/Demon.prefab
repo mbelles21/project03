@@ -1121,11 +1121,11 @@ MonoBehaviour:
   enemyType: 0
   waypoints: []
   patrolSpeed: 2
-  chaseSpeed: 10
-  detectionRange: 15
+  chaseSpeed: 4
+  detectionRange: 5
   chaseStopRange: 10
   blindMode: 0
-  sprintDetectionBoost: 0
+  sprintDetectionBoost: 7
   attackRange: 1
   attackCooldown: 5
   projectilePrefab: {fileID: 0}
