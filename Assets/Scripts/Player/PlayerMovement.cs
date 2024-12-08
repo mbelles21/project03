@@ -230,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
         isSwinging = true;
         yield return new WaitForSeconds(2.1f);
         Debug.Log("Done Swinging");
-        maceSwing.isActive = true;
+        maceSwing.isActive = false;
         isSwinging = false;
         Mace.transform.SetParent(HipSpot.transform, false);
         Mace.transform.localPosition = new Vector3(0.191f, 1.075f, -0.044f);
