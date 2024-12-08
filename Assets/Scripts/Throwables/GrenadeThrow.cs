@@ -95,7 +95,7 @@ public class GrenadeThrow : MonoBehaviour
     }
 
     public float GetCustomGravity(){
-        return customGravity;
+        return customGravity-.5f;
     }
 
     public float GetThrowSpeed(){
