@@ -1137,6 +1137,7 @@ MonoBehaviour:
   player: {fileID: 0}
   obstacleDetectionDistance: 1.5
   jumpForce: 5
+  attackReady: 1
 --- !u!114 &795138898869782985
 MonoBehaviour:
   m_ObjectHideFlags: 0
