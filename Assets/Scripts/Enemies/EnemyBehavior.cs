@@ -47,6 +47,7 @@ public class EnemyBehavior : MonoBehaviour
     // Random wandering variables
     private Vector3 randomTarget;
     private float timeToNextRandomMove = 0f;
+    public bool attackReady = true;
 
     public delegate void TakeDamage(float damage);
     public static event TakeDamage HitPlayer;
@@ -88,12 +89,11 @@ public class EnemyBehavior : MonoBehaviour
             isPlayerRolling = playerMovement.isRolling;
         }
 
-        if (blindMode)
-        {
+        if (blindMode){
             HandleBlindModeLogic();
-        }
-        else
-        {
+        } else if(enemyType == EnemyType.Ranged){
+            HandleRangedLogic();
+        } else {
             HandleNormalLogic();
         }
     }
@@ -105,14 +105,26 @@ public class EnemyBehavior : MonoBehaviour
 
         
 
-        if (distanceToPlayer <= meleeBlindAttackRange)
-        {
+        if (distanceToPlayer <= meleeBlindAttackRange){
             // Blind enemy is dangerous in melee range or if the player is sprinting nearby
             AttackMelee();
         } else if (distanceToPlayer <= sprintDetectionBoost && (isPlayerSprinting || isPlayerRolling)){
             ChasePlayer();
-        } else if (distanceToPlayer > sprintDetectionBoost)
+        } else if (distanceToPlayer > sprintDetectionBoost){
+            PatrolOrWander();
+        }
+    }
+
+
+    private void HandleRangedLogic()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= attackRange)
         {
+            RotateTowards(player.position);
+            AttackRanged();
+        } else if (distanceToPlayer > sprintDetectionBoost){
             PatrolOrWander();
         }
     }
@@ -121,12 +133,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (enemyType == EnemyType.Ranged && distanceToPlayer <= attackRange && distanceToPlayer > detectionRange)
-        {
-            // Ranged enemy attacks if within attack range but outside detection range
-            AttackRanged();
-        }
-        else if (enemyType == EnemyType.Melee && distanceToPlayer <= meleeAttackRange)
+        if (distanceToPlayer <= meleeAttackRange)
         {
             // Melee enemy attacks if within melee range
             AttackMelee();
@@ -220,37 +227,40 @@ public class EnemyBehavior : MonoBehaviour
 
     private void AttackRanged()
     {
-        if (Time.time - lastAttackTime >= attackCooldown)
-        {
-            lastAttackTime = Time.time;
+        anim.SetBool("Walk", false);
+        if (attackReady){
+            GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
+            EnemyProjectile projectileScript = projectile.GetComponent<EnemyProjectile>();
 
-            if (projectilePrefab != null && projectileSpawnPoint != null)
-            {
-                GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
-                EnemyProjectile projectileScript = projectile.GetComponent<EnemyProjectile>();
-
-                if (projectileScript != null)
-                {
-                    // adjust position bc player root is at their feet
-                    Vector3 playerPos = new Vector3(player.position.x, player.position.y + 1, player.position.z);
-                    Vector3 direction = (playerPos - projectileSpawnPoint.position).normalized;
-                    projectileScript.Initialize(direction);
-                    Debug.Log("Projectile initialized with direction.");
-                    fire.Invoke();
-                }
+            if (projectileScript != null){
+                // adjust position bc player root is at their feet
+                Vector3 playerPos = new Vector3(player.position.x, player.position.y + 1, player.position.z);
+                Vector3 direction = (playerPos - projectileSpawnPoint.position).normalized;
+                projectileScript.Initialize(direction);
+                Debug.Log("Projectile initialized with direction.");
+                anim.SetTrigger("Attack");
+                fire.Invoke();
+                StartCoroutine(AttackCooldown());
             }
         }
     }
 
+    public IEnumerator AttackCooldown(){
+        attackReady = false;
+        yield return new WaitForSeconds(attackCooldown);
+        attackReady = true;
+    }
+
     private void AttackMelee()
     {
-        if (Time.time - lastAttackTime >= meleeAttackCooldown)
+        if (attackReady)
         {
             anim.SetTrigger("Attack");
             lastAttackTime = Time.time;
             Debug.Log($"Melee enemy attacked the player for {meleeDamage} damage!");
             HitPlayer.Invoke(meleeDamage);
             playerSound.Invoke();
+            StartCoroutine(AttackCooldown());
             // Optionally, apply damage directly to the player's health script (if implemented)
         }
     }

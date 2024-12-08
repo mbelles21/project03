@@ -1099,16 +1099,18 @@ MonoBehaviour:
   chaseStopRange: 0
   blindMode: 0
   sprintDetectionBoost: 10
-  attackRange: 20
+  attackRange: 15
   attackCooldown: 5
   projectilePrefab: {fileID: 8224441777993423001, guid: 9b626703ead4be84291eed0da77a8e0e, type: 3}
   projectileSpawnPoint: {fileID: 3400800723420222393}
   meleeAttackRange: 0
+  meleeBlindAttackRange: 1.2
   meleeAttackCooldown: 5
   meleeDamage: 20
   player: {fileID: 0}
   obstacleDetectionDistance: 1.5
   jumpForce: 5
+  attackReady: 1
 --- !u!114 &2065099908432117422
 MonoBehaviour:
   m_ObjectHideFlags: 0
