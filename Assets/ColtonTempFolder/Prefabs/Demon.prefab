@@ -1121,16 +1121,17 @@ MonoBehaviour:
   enemyType: 0
   waypoints: []
   patrolSpeed: 2
-  chaseSpeed: 4
+  chaseSpeed: 6
   detectionRange: 5
   chaseStopRange: 10
-  blindMode: 0
-  sprintDetectionBoost: 7
+  blindMode: 1
+  sprintDetectionBoost: 8
   attackRange: 1
   attackCooldown: 5
   projectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
   meleeAttackRange: 4.5
+  meleeBlindAttackRange: 1.2
   meleeAttackCooldown: 5
   meleeDamage: 20
   player: {fileID: 0}
@@ -1149,7 +1150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunLength: 5
-  maxStun: 100
+  maxStun: 500
   currStun: 0
   isStunned: 0
 --- !u!114 &2920990206414372897
