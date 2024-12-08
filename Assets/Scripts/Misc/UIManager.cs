@@ -71,6 +71,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // used by level manager, not pause menu
     public void UnPause(){
         togglePause = false;
         pauseMenu.SetActive(togglePause);

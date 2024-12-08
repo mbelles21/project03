@@ -15,7 +15,13 @@ public class ResultsManager : MonoBehaviour
     public float bTime;
     public float cTime;
     public float dTime;
-    public float fTime;
+
+    void Start()
+    {
+        // set timer to active in this scene otherwise it won't be
+        UIManager uiManager = FindAnyObjectByType<UIManager>();
+        uiManager.ChangeTimerState();
+    }
     
     public void GetResults(float clearTime)
     {
@@ -46,12 +52,8 @@ public class ResultsManager : MonoBehaviour
         else if(clearTime < dTime) {
             return "D";
         }
-        else if(clearTime < fTime) {
-            return "F";
-        }
         else {
-            Debug.Log("error getting rank");
-            return "--";
+            return "F";
         }
     }
 }

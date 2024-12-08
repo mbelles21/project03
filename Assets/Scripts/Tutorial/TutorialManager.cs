@@ -25,8 +25,12 @@ public class TutorialManager : MonoBehaviour
         if(prevTutorial != null) {
             prevTutorial.SetActive(false);
         }
-        tutorials[i].SetActive(true);
-        prevTutorial = tutorials[i];
+
+        // if index exists show the next tutorial
+        if(i >= 0 && i < tutorials.Count) {
+            tutorials[i].SetActive(true);
+            prevTutorial = tutorials[i];
+        }
     }
 
     public void EndTutorial()
