@@ -87,11 +87,13 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
   meleeAttackRange: 4
+  meleeBlindAttackRange: 1.2
   meleeAttackCooldown: 5
   meleeDamage: 20
   player: {fileID: 0}
   obstacleDetectionDistance: 1.5
   jumpForce: 5
+  attackReady: 1
 --- !u!54 &8750928696589584684
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -155,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunLength: 5
-  maxStun: 100
+  maxStun: 300
   currStun: 0
   isStunned: 0
 --- !u!114 &4547294491937259170

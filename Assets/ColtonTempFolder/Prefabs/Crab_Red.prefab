@@ -1124,7 +1124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunLength: 5
-  maxStun: 100
+  maxStun: 400
   currStun: 0
   isStunned: 0
 --- !u!114 &6544854513518220600
