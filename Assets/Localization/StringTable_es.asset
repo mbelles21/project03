@@ -144,7 +144,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 22395685150720
-    m_Localized: "L May\xFAs para ejecutar\r\nL Ctrl para rodar"
+    m_Localized: "L May\xFAs para ejecutar\r\nBarra espaciadora para rodar"
     m_Metadata:
       m_Items: []
   - m_Id: 22626933907456

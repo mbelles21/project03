@@ -58,6 +58,7 @@ public class LevelManager : MonoBehaviour
 
         if(CurrentFloor == maxFloor) {
             // load treasure scene
+            IsLoadedFloor = false; // to resolve error with entering treasure room after loading a save
             SceneManager.LoadScene("TreasureRoom");
         }
         else if(CurrentFloor >= maxFloor) {
