@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private float height = 2f;
     public float newHeight;
     private bool isMoving;
+    public bool isRolling = false;
     public float dodgeDistance = 5f;
     public float dodgeDuration = 0.2f;
 
@@ -130,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.started || context.performed)
         {
-            if (isMoving)
+            if (isMoving && !isRolling)
             {
                 StartCoroutine(PerformDodge());
             }
@@ -269,6 +270,7 @@ public class PlayerMovement : MonoBehaviour
     {
         anim.SetTrigger("Roll");
         yield return new WaitForSeconds(.8f);
+        isRolling = true;
         cc.height = newHeight;
         float elapsedTime = 0f;
         Vector3 dodgeDirection = direction.normalized * dodgeDistance;
@@ -280,6 +282,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
         cc.height = height;
+        isRolling = false;
     }
 
     public void Swap(InputAction.CallbackContext context)

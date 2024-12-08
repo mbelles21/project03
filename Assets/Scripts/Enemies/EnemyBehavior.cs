@@ -16,6 +16,7 @@ public class EnemyBehavior : MonoBehaviour
     public bool blindMode; // Enable blind mode in the Inspector
     public float sprintDetectionBoost = 10f; // Extra detection range when the player is sprinting
     private bool isPlayerSprinting = false;
+    private bool isPlayerRolling = false;
 
     // Ranged-specific properties
     public float attackRange = 8f;
@@ -84,6 +85,7 @@ public class EnemyBehavior : MonoBehaviour
         if (playerMovement != null)
         {
             isPlayerSprinting = playerMovement.movement.isSprinting;
+            isPlayerRolling = playerMovement.isRolling;
         }
 
         if (blindMode)
@@ -107,7 +109,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             // Blind enemy is dangerous in melee range or if the player is sprinting nearby
             AttackMelee();
-        } else if (distanceToPlayer <= sprintDetectionBoost && isPlayerSprinting){
+        } else if (distanceToPlayer <= sprintDetectionBoost && (isPlayerSprinting || isPlayerRolling)){
             ChasePlayer();
         } else if (distanceToPlayer > sprintDetectionBoost)
         {
