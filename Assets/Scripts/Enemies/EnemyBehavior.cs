@@ -69,7 +69,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             anim = GetComponentInChildren<Animator>();
         }
-
+        anim.SetBool("Walk", true);
         player = FindAnyObjectByType<PlayerMovement>().gameObject.transform;
     }
 
