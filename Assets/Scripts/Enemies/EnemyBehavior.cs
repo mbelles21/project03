@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class EnemyBehavior : MonoBehaviour
 {
-    public enum EnemyType { Melee, Ranged } // Define types of enemies
+    public enum EnemyType { Melee, Ranged, Shy  } // Define types of enemies
     public EnemyType enemyType; // Choose Melee or Ranged in the Inspector
 
     public Transform[] waypoints;
@@ -48,6 +48,7 @@ public class EnemyBehavior : MonoBehaviour
     private Vector3 randomTarget;
     private float timeToNextRandomMove = 0f;
     public bool attackReady = true;
+    private bool isSeen;
 
     public delegate void TakeDamage(float damage);
     public static event TakeDamage HitPlayer;
@@ -55,6 +56,8 @@ public class EnemyBehavior : MonoBehaviour
     public delegate void HumanBonked();
     public static event HumanBonked playerSound;
     public static event HumanBonked fire;
+    
+    public void SetSeen(bool seen) => isSeen = seen;
 
     private void Start()
     {
@@ -75,6 +78,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Update()
     {
+        anim.SetBool("Walk", false);
         if (enemyStun.isStunned)
         {
             rb.velocity = Vector3.zero; // Stop all movement while stunned
@@ -93,6 +97,8 @@ public class EnemyBehavior : MonoBehaviour
             HandleBlindModeLogic();
         } else if(enemyType == EnemyType.Ranged){
             HandleRangedLogic();
+        } else if (enemyType == EnemyType.Shy) {
+            HandleShyLogic();
         } else {
             HandleNormalLogic();
         }
@@ -125,6 +131,30 @@ public class EnemyBehavior : MonoBehaviour
             RotateTowards(player.position);
             AttackRanged();
         } else if (distanceToPlayer > sprintDetectionBoost){
+            PatrolOrWander();
+        }
+    }
+    
+    private void HandleShyLogic()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        
+        if (distanceToPlayer <= attackRange)
+        {
+            RotateTowards(player.position);
+            AttackMelee();
+        } 
+        else if (distanceToPlayer <= detectionRange && !isSeen)
+        {
+            ChasePlayer();
+        } 
+        else if(distanceToPlayer <= detectionRange && isSeen)
+        {
+            RotateTowards(player.position);
+            StopMovement();
+        }
+        else
+        {
             PatrolOrWander();
         }
     }
@@ -263,5 +293,11 @@ public class EnemyBehavior : MonoBehaviour
             StartCoroutine(AttackCooldown());
             // Optionally, apply damage directly to the player's health script (if implemented)
         }
+    }
+    
+    private void StopMovement()
+    {
+        rb.velocity = Vector3.zero;
+        anim.SetBool("Walk", false);
     }
 }

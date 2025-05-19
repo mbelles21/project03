@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 8532877709187443714}
   - component: {fileID: 1059235996857363152}
   - component: {fileID: 5606895953649619182}
+  - component: {fileID: 3947398800418262065}
+  - component: {fileID: 8378833955133654436}
+  - component: {fileID: 2092443394256411918}
+  - component: {fileID: 1122953991434297049}
   m_Layer: 0
   m_Name: Rhinoceros
   m_TagString: Untagged
@@ -29,8 +33,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.0869136, y: -0.385, z: 0.67}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7563595973139049638}
   - {fileID: 1045637712775140970}
@@ -72,7 +76,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306428612806820135}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -114,6 +118,81 @@ CapsuleCollider:
   m_Height: 3.8380377
   m_Direction: 1
   m_Center: {x: 0, y: 1.904019, z: -0.22813189}
+--- !u!114 &3947398800418262065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306428612806820135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 849b7fc563400a54b901caeeffcdaeda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 2
+  waypoints: []
+  patrolSpeed: 3
+  chaseSpeed: 4
+  detectionRange: 15
+  chaseStopRange: 18
+  blindMode: 0
+  sprintDetectionBoost: 10
+  attackRange: 2
+  attackCooldown: 2
+  projectilePrefab: {fileID: 0}
+  projectileSpawnPoint: {fileID: 0}
+  meleeAttackRange: 1.5
+  meleeBlindAttackRange: 1.2
+  meleeAttackCooldown: 1
+  meleeDamage: 30
+  player: {fileID: 0}
+  obstacleDetectionDistance: 1.5
+  jumpForce: 5
+  attackReady: 1
+--- !u!114 &8378833955133654436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306428612806820135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43edf44f7ab59b4fbbaa988d19ee810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunLength: 15
+  maxStun: 1000
+  currStun: 0
+  isStunned: 0
+--- !u!114 &2092443394256411918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306428612806820135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd45b9642fee54b43bb57a30407410cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: 3
+--- !u!114 &1122953991434297049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306428612806820135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd031d8a839d2d4286d42d29c5727dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionDistance: 30
+  viewAngle: 60
 --- !u!1 &441983740796554787
 GameObject:
   m_ObjectHideFlags: 0

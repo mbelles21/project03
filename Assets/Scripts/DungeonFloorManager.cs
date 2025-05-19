@@ -13,6 +13,8 @@ public class DungeonFloorManager : MonoBehaviour, IDataPersistence
     [Header("UI")]
     public GameObject loadingScreenUI;
 
+    public GameObject playerPrefab;
+
     private Dictionary<int, GameObject> floors = new Dictionary<int, GameObject>();
     private Dictionary<int, Vector3> lastStairPositions = new Dictionary<int, Vector3>();
     private int currentFloorLevel = 1;
@@ -69,19 +71,6 @@ public class DungeonFloorManager : MonoBehaviour, IDataPersistence
         }
 
     }
-
-    // public void LoadData(GameData data)
-    // {
-    //     for (int i = 0; i < data.roomPositions.Count; i++)
-    //     {
-    //         int roomTypeIndex = data.roomTypes[i];
-    //         GameObject roomPrefab = GetComponent<RoomListManager>().GetRoomPrefab(roomTypeIndex);
-    //         Vector3 roomPos = data.roomPositions[i];
-
-    //         GameObject room = Instantiate(roomPrefab, roomPos, Quaternion.identity);
-    //         // don't think setting a parent is necessary
-    //     }
-    // }
 
     public void LoadData(GameData data)
     {
@@ -233,28 +222,6 @@ public class DungeonFloorManager : MonoBehaviour, IDataPersistence
             }
         }
     }
-
-    // public void SaveData(ref GameData data)
-    // {
-    //     if(data.roomPositions == null || data.roomTypes == null) {
-    //         data.roomPositions = new List<Vector3>();
-    //         data.roomTypes = new List<int>();
-    //     }
-    //     else {
-    //         // clear existing data before saving
-    //         Debug.Log("clearing room data");
-    //         data.roomPositions.Clear();
-    //         data.roomTypes.Clear();
-    //     }
-
-    //     GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
-    //     foreach(GameObject room in rooms) {
-    //         data.roomPositions.Add(room.transform.position);
-    //         int roomType = room.GetComponent<RoomID>().GetRoomID();
-    //         data.roomTypes.Add(roomType);
-    //     }
-    // }
-
     public void SaveData(ref GameData data)
     {
         // Clear existing room data
@@ -430,76 +397,55 @@ public class DungeonFloorManager : MonoBehaviour, IDataPersistence
     {
         yield return new WaitForEndOfFrame();
 
-        // Find player
-        GameObject player = null;
-
-        player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null)
+        if (playerPrefab == null)
         {
-            player = GameObject.Find("Player");
-        }
-
-        // As a last resort, try finding the player controller component directly
-        if (player == null)
-        {
-            CharacterController[] controllers = FindObjectsOfType<CharacterController>();
-            foreach (var controller in controllers)
-            {
-                // You might want to add additional checks here specific to your player object
-                if (controller.gameObject.name.ToLower().Contains("player"))
-                {
-                    player = controller.gameObject;
-                    break;
-                }
-            }
-        }
-
-        if (player == null)
-        {
-            Debug.LogError("Player not found using any method! Please ensure the player object exists in the scene.");
+            Debug.LogError("Player reference is missing! Assign the player GameObject before calling this coroutine.");
             yield break;
         }
 
         PlayerSpawnPoint spawnPointComponent = newFloor.GetComponentInChildren<PlayerSpawnPoint>(true);
-        if (spawnPointComponent != null)
-        {
-            Rigidbody rb = player.GetComponent<Rigidbody>();
-            CharacterController cc = player.GetComponent<CharacterController>();
-
-            if (rb != null)
-            {
-                rb.isKinematic = true;
-                rb.velocity = Vector3.zero;
-            }
-
-            if (cc != null)
-            {
-                cc.enabled = false;
-            }
-
-            player.transform.position = spawnPointComponent.transform.position;
-
-            yield return new WaitForFixedUpdate();
-
-            if (cc != null)
-            {
-                cc.enabled = true;
-            }
-
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-            }
-        }
-        else
+        if (spawnPointComponent == null)
         {
             Debug.LogError("No spawn point found in new floor!");
+            yield break;
         }
 
-        // save data when player moves to new floor
+        // Disable physics/movement
+        Rigidbody rb = playerPrefab.GetComponent<Rigidbody>();
+        CharacterController cc = playerPrefab.GetComponent<CharacterController>();
+
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.velocity = Vector3.zero;
+        }
+
+        if (cc != null)
+        {
+            cc.enabled = false;
+        }
+
+        // Move player
+        playerPrefab.transform.position = spawnPointComponent.transform.position;
+
+        yield return new WaitForFixedUpdate();
+
+        // Re-enable components
+        if (cc != null)
+        {
+            cc.enabled = true;
+        }
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+        }
+
+        // Save game state
         LevelManager levelManager = FindAnyObjectByType<LevelManager>();
         levelManager.SaveCheckpoint();
     }
+
 
     private void CopyGeneratorSettings(DungeonGenerator generator)
     {
